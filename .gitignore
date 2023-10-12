@@ -1,0 +1,8 @@
+*/node_modules
+*/dist
+dist-ssr
+*/config/env
+*/volumes
+
+data/*.csv
+data/*.sql

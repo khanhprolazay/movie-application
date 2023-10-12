@@ -1,0 +1,18 @@
+1> List topics: kafka-topics.sh --list --bootstrap-server <BROKER-LIST>
+   Example: kafka-topics --list --bootstrap-server localhost:9092
+
+Topics: 
+AUTH.LOGIN
+AUTH.LOGIN.reply
+AUTH.REGISTER
+AUTH.REGISTER.reply
+AUTH.VALIDATE
+AUTH.VALIDATE.reply
+USER.CHECK_BY_EMAIL
+USER.CHECK_BY_EMAIL.reply
+USER.CREATE
+USER.CREATE.reply
+USER.GET_BY_EMAIL_AND_PASSWORD
+USER.GET_BY_EMAIL_AND_PASSWORD.reply
+USER.GET_BY_ID
+USER.GET_BY_ID.reply
