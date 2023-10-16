@@ -6,8 +6,8 @@ interface ComponentProps {
 
 export const Container = (props: ComponentProps) => {
   return (
-    <div className="flex w-screen justify-around">
-      <div className="relative w-full min-w-[360px] max-w-7xl px-8 md:px-24">
+    <div className="flex w-screen justify-around bg-gradient-to-b from-black via-green-900 to-black">
+      <div className="relative w-full min-w-[360px] max-w-7xl md:px-9">
         {props.children}
       </div>
     </div>

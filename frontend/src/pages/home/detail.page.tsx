@@ -1,57 +1,67 @@
 import { Container } from "@/components/container";
-import { Banner } from "@/components/banner";
-import { NavbarWithMegaMenu } from "@/components/navbar";
-import PosterFilm from "@/components/posterFilm";
+import { Header } from "@/components/Header";
+import PosterFilm from "@/components/PosterFilm";
 import { FC } from "react";
 
-import imageFilmDetail from "../assets/imageMovie/oppenheimer_ver3.jpg";
-import imageFilm1 from "../assets/imageMovie/meg_two_the_trench_ver3.jpg";
+import imageFilmDetail from "@/assets/imageMovie/oppenheimer_ver3.jpg";
+import imageFilm1 from "@/assets/imageMovie/meg_two_the_trench_ver3.jpg";
 
-import actor1 from "../assets/imageActor/DetailFilm/1.jpg";
-import actor2 from "../assets/imageActor/DetailFilm/2.jpg";
-import actor3 from "../assets/imageActor/DetailFilm/3.jpg";
-import actor4 from "../assets/imageActor/DetailFilm/4.jpg";
+import actor1 from "@/assets/imageActor/DetailFilm/1.jpg";
+import actor2 from "@/assets/imageActor/DetailFilm/2.jpg";
+import actor3 from "@/assets/imageActor/DetailFilm/3.jpg";
+import actor4 from "@/assets/imageActor/DetailFilm/4.jpg";
 
-import imageBackgroundDetail from "../assets/imagePage/background_detail.png";
 
-export const DetailPage: FC = () => {
+interface DetailsFilmProps {
+  name: string;
+  discription: string;
+  imageCast: string[];
+  rating: number;
+  duration: number;
+  releaseDate: string;
+  genres: string
+}
+
+// export const DetailPage = (props: DetailsFilmProps) => {
+export const DetailPage = () => {
+
+
   return (
     <main className="relative flex flex-col bg-black">
-      {/* <Banner /> */}
-      <NavbarWithMegaMenu />
-      <img
-        className="absolute z-0 max-h-max "
-        src={imageBackgroundDetail}
-      ></img>
+      <Header />
       <div className="z-10">
         <Container>
-          <div className="mb-10 flex gap-24">
-            <div className="mt-8 flex-1 flex-col items-center justify-center ">
-              <h1 className="my-5 text-center text-lg font-semibold text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+          <div className="mb-10 flex gap-10">
+            <div className="mt-8 ml-5 flex-1 flex-col items-center justify-center">
+              <h1 className="my-5 text-center text-lg font-semibold text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl">
                 Oppenheimer
+                {/* {props.name} */}
               </h1>
               <h2 className="text-xs font-light text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl ">
                 Delivering a thrilling dramatic experience as a mysterious man
                 must risk destroying the world just to save itself. The story is
                 about American scientist J. Robert Oppenheimer and his role in
                 developing the atomic bomb
+                {/* {props.discription} */}
               </h2>
               <h2 className="mb-2 mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
                 Cast:
               </h2>
               <div className="flex gap-2">
-                <img className="h-28 border-2 border-white " src={actor1} />
-                <img className="h-28 border-2 border-white " src={actor2} />
-                <img className="h-28 border-2 border-white " src={actor3} />
-                <img className="h-28 border-2 border-white " src={actor4} />
+                {/* <img className="h-28 border-2 border-white " src={props.imageCast[0]} /> */}
+                <img className="h-16 sm:h-28 border-2 border-white " src={actor1} />
+                <img className="h-16 sm:h-28 border-2 border-white " src={actor2} />
+                <img className="h-16 sm:h-28 border-2 border-white " src={actor3} />
+                <img className="h-16 sm:h-28 border-2 border-white " src={actor4} />
               </div>
               <h2 className="mt-3 flex items-center text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
                 Rating: 8.5/10
+                {/* Rating: {props.rating} */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className=" ml-3 h-8 w-8"
+                  className="ml-1 h-7 w-7 text-yellow-500"
                 >
                   <path
                     fillRule="evenodd"
@@ -62,12 +72,15 @@ export const DetailPage: FC = () => {
               </h2>
               <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
                 Duration: 105 minutes
+                {/* Duration: {props.duration} */}
               </h2>
               <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
                 Release Date: 2023-08-11
+                {/* Release Date: {props.releaseDate} */}
               </h2>
               <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-                Genres: Biography, Psychology, Drama{" "}
+                Genres: Biography, Psychology, Drama
+                {/* Genres: {props.genres} */}
               </h2>
               <div className="mt-5 flex gap-5">
                 <button className="flex items-center gap-2 bg-green-600 text-sm font-bold hover:bg-red-600 sm:text-sm lg:text-lg xl:text-xl">
@@ -85,7 +98,7 @@ export const DetailPage: FC = () => {
                   </svg>
                   Watch Trailer
                 </button>
-                <button className="flex items-center gap-2 bg-green-600 text-sm font-bold hover:bg-red-600 sm:text-sm lg:text-lg xl:text-xl">
+                {/* <button className="flex items-center gap-2 bg-green-600 text-sm font-bold hover:bg-red-600 sm:text-sm lg:text-lg xl:text-xl">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -101,13 +114,13 @@ export const DetailPage: FC = () => {
                     />
                   </svg>
                   Watch Movie
-                </button>
+                </button> */}
               </div>
             </div>
 
             <div className="flex-1">
               <img
-                className="my-40 h-96 border-2 border-white "
+                className="my-36 hidden xs:block h-52 sm:h-80 xl:h-96 border-2 border-white mx-auto"
                 src={imageFilmDetail}
               ></img>
             </div>
@@ -118,62 +131,18 @@ export const DetailPage: FC = () => {
           </text>
           <hr className="full-width-underline mb-5 mt-4" />
 
-          <div className="mb-10 ml-5 grid grid-cols-6 gap-4">
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
-            <PosterFilm
-              image={imageFilm1}
-              name="Meg 2:The Trench"
-              rating={9.5}
-            />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 ml-10">
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
+            <PosterFilm image={imageFilm1} name="Meg 2:The Trench" rating={9.5} />
           </div>
         </Container>
       </div>
