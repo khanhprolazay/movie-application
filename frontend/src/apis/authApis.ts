@@ -9,6 +9,10 @@ class AuthApis {
   async register(values: RegisterDTO) {
     return await axiosClient.post("/auth/register", { ...values });
   }
+
+  async googleLogin(accessToken: string): Promise<LoginResponseDto> {
+    return await axiosClient.post("/auth/google", { accessToken });
+  }
 }
 
 const authApis = new AuthApis();

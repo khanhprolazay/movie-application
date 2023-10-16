@@ -1,8 +1,9 @@
+import { v4 } from 'uuid';
 import { verify } from 'argon2';
 import { UserRepository } from './user.repository';
 import { RoleService } from '../role/role.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseService, UserEntity, LoggerService, LoginRequestDto, RegisterRequestDto, Role } from '@app/shared';
+import { BaseService, UserEntity, LoggerService, LoginRequestDto, RegisterRequestDto, Role, RegisterGoogleRequestDto } from '@app/shared';
 
 @Injectable()
 export class UserService extends BaseService<UserEntity, UserRepository> {
@@ -37,10 +38,24 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
 
   async createUser(dto: RegisterRequestDto) {
     const role = await this.roleService.getByName(Role.USER);
-    
     const user = new UserEntity();
     Object.assign(user, dto);
     user.role = role;
+    return await this.repository.save(user);
+  }
+
+  async getByEmail(email: string) {
+    return await this.repository.getByEmail(email);
+  }
+
+  async createGoogleUser(dto: RegisterGoogleRequestDto) {
+    const role = await this.roleService.getByName(Role.USER);
+    const user = new UserEntity();
+    Object.assign(user, dto);
+
+    user.password = v4();
+    user.role = role;
+    
     return await this.repository.save(user);
   }
 }

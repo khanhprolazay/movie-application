@@ -44,7 +44,7 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => response.data ? response.data : response,
   (error) => {
-    if (error.response.data?.message) throw error.response.data.message;
+    if (error.response?.data?.message) throw error.response.data.message;
     throw "Internal Server Error !!!";
   }
 )

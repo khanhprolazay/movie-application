@@ -80,6 +80,28 @@ export function authentication(state: AuthenticationRootState = initialState, ac
         error: action.payload?.error,
       }
     }
+
+    case authenticationConstants.AUTH_GOOGLE_LOGIN_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+
+    case authenticationConstants.AUTH_GOOGLE_LOGIN_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+
+    case authenticationConstants.AUTH_GOOGLE_LOGIN_ERROR: {
+      return {
+        ...state, 
+        loading: false,
+        error: action.payload?.error,
+      }
+    }
       
     default: 
       return state;

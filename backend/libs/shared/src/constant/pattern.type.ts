@@ -19,8 +19,8 @@ export type BasePattern<key extends EntityKeyUnion> = {
 
 export type GenrePattern = BasePattern<"GENRE"> | "GENRE.GET_ALL"
 export type MoviePattern = BasePattern<"MOVIE"> | "MOVIE.GET_BY_PAGINATION"
-export type AuthPattern = "AUTH.LOGIN" | "AUTH.REGISTER" | "AUTH.VALIDATE"
-export type UserPattern = BasePattern<"USER"> | "USER.CHECK_BY_EMAIL" | "USER.GET_BY_EMAIL_AND_PASSWORD"
+export type AuthPattern = "AUTH.LOGIN" | "AUTH.REGISTER" | "AUTH.VALIDATE" | "AUTH.GOOGLE_LOGIN"
+export type UserPattern = BasePattern<"USER"> | "USER.GET_BY_EMAIL" | "USER.CREATE_GOOGLE" | "USER.CHECK_BY_EMAIL" | "USER.GET_BY_EMAIL_AND_PASSWORD"
 
 export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern
 
@@ -34,6 +34,8 @@ export const PatternOption: PatternOptionType = {
   "USER.UPDATE": "USER.UPDATE",
   "USER.DELETE": "USER.DELETE",
   "USER.GET_BY_ID": "USER.GET_BY_ID",
+  "USER.CREATE_GOOGLE": "USER.CREATE_GOOGLE",
+  "USER.GET_BY_EMAIL": "USER.GET_BY_EMAIL",
   "USER.CHECK_BY_EMAIL": "USER.CHECK_BY_EMAIL",
   "USER.GET_BY_EMAIL_AND_PASSWORD": "USER.GET_BY_EMAIL_AND_PASSWORD",
 
@@ -46,6 +48,7 @@ export const PatternOption: PatternOptionType = {
 
   // AUTH
   "AUTH.LOGIN": "AUTH.LOGIN",
+  "AUTH.GOOGLE_LOGIN": "AUTH.GOOGLE_LOGIN",
   "AUTH.REGISTER": "AUTH.REGISTER",
   "AUTH.VALIDATE": "AUTH.VALIDATE",
 

@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginRequestDto, PatternOption, RegisterRequestDto } from '@app/shared';
+import { LoginRequestDto, PatternOption, RegisterGoogleRequestDto, RegisterRequestDto } from '@app/shared';
 import { Payload, MessagePattern } from '@nestjs/microservices';
 
 
@@ -26,5 +26,15 @@ export class UserController {
   @MessagePattern(PatternOption['USER.GET_BY_EMAIL_AND_PASSWORD'])
   getByEmailAndPassword(@Payload() dto: LoginRequestDto) {
     return this.userService.getUserByEmailAndPassword(dto);  
+  }
+
+  @MessagePattern(PatternOption['USER.GET_BY_EMAIL'])
+  getByEmail(@Payload() email: string) {
+    return this.userService.getByEmail(email);
+  }
+
+  @MessagePattern(PatternOption['USER.CREATE_GOOGLE'])
+  createGoogleUser(@Payload() dto: RegisterGoogleRequestDto) {
+    return this.userService.createGoogleUser(dto);
   }
 }

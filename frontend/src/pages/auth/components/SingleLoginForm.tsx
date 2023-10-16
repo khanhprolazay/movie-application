@@ -1,17 +1,20 @@
 import {
+  Avatar,
   Button,
   Input,
   Radio,
   Spinner,
   Typography,
 } from "@material-tailwind/react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import "./animation.css";
 import React, { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { LoginDTO } from "@/type";
+import google from "../../../assets/images/google.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import authenticationActions from "@/actions/authentication.action";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginForm: FC = () => {
   const navigate = useNavigate();
@@ -21,6 +24,14 @@ const LoginForm: FC = () => {
   const { register, handleSubmit } = useForm<LoginDTO>();
   const onSubmit: SubmitHandler<LoginDTO> = (values) =>
     dispatch(authenticationActions.login(values, navigate));
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (response) =>
+      dispatch(
+        authenticationActions.googleLogin(response.access_token, navigate),
+      ),
+    onError: (error) => console.log(error),
+  });
 
   return (
     <form
@@ -110,9 +121,29 @@ const LoginForm: FC = () => {
             to="/auth/register"
             className="inline font-manrope text-xs font-medium text-cyan-400"
           >
-            &nbsp;Register
+            &nbsp;&nbsp;Register
           </Link>
         </Typography>
+
+        <div className="mb-6 mt-8 flex w-full items-center justify-between gap-8">
+          <div className="w-full border-b border-slate-400"></div>
+          <Typography className="font-manrope text-sm text-slate-200">
+            OR
+          </Typography>
+          <div className="w-full border-b border-slate-400"></div>
+        </div>
+
+        <div className="flex w-full items-center justify-evenly gap-8">
+          <div
+            onClick={() => googleLogin()}
+            className="flex cursor-pointer flex-col items-center transition-all duration-300 ease-in-out hover:-translate-y-1"
+          >
+            <Avatar src={google} className="mb-1 h-8 w-8 bg-stone-100 p-1" />
+            <Typography className="font-manrope text-sm text-slate-200">
+              Google
+            </Typography>
+          </div>
+        </div>
       </div>
     </form>
   );

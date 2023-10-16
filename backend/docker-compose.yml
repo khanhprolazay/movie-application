@@ -43,18 +43,18 @@ services:
         timeout: 10s
         retries: 20
 
-  kafka_ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
-    networks:
-      - backend
-    ports:
-      - 8080:8080
-    depends_on:
-      - kafka
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+  # kafka_ui:
+  #   container_name: kafka-ui
+  #   image: provectuslabs/kafka-ui:latest
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - kafka
+  #   environment:
+  #     KAFKA_CLUSTERS_0_NAME: local
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
   mysql:
     container_name: mysql
@@ -70,51 +70,51 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: user
 
-  api-gateway:
-    container_name: api-gateway
-    image: api-gateway:version1
-    networks:
-      - backend
-    ports:
-      - 5000:5000
-    depends_on:
-      kafka:
-        condition: service_healthy
-    links:
-      - kafka
+  # api-gateway:
+  #   container_name: api-gateway
+  #   image: api-gateway:version1
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - 5000:5000
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   links:
+  #     - kafka
 
-  auth-service:
-    container_name: auth-service
-    image: auth-service:version1
-    networks:
-      - backend
-    depends_on:
-      kafka:
-        condition: service_healthy
-    links:
-      - kafka
+  # auth-service:
+  #   container_name: auth-service
+  #   image: auth-service:version1
+  #   networks:
+  #     - backend
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   links:
+  #     - kafka
 
-  user-service:
-    container_name: user-service
-    image: user-service:version1
-    networks:
-      - backend
-    depends_on:
-      kafka:
-        condition: service_healthy
-    links:
-      - kafka
+  # user-service:
+  #   container_name: user-service
+  #   image: user-service:version1
+  #   networks:
+  #     - backend
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   links:
+  #     - kafka
 
-  movie-service:
-    container_name: movie-service
-    image: movie-service:version1
-    networks:
-      - backend
-    depends_on:
-      kafka:
-        condition: service_healthy
-    links:
-      - kafka
+  # movie-service:
+  #   container_name: movie-service
+  #   image: movie-service:version1
+  #   networks:
+  #     - backend
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   links:
+  #     - kafka
 
 networks:
   backend:

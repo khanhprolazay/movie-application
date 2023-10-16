@@ -121,5 +121,47 @@ function register(values: RegisterDTO, navigate: NavigateFunction) {
   }
 }
 
-const authenticationActions = { check, login, register };
+function googleLogin(accessToken: string, navigate: NavigateFunction) {
+  return (dispatch: TypedDispatch) => {
+
+    dispatch(request());
+    authApis.googleLogin(accessToken)
+      .then(response => {
+        tokenUtils.saveAccessToken(response.accessToken);
+        tokenUtils.saveRefreshToken(response.refreshToken);
+
+        dispatch(success());
+        dispatch(check());
+        dispatch(alertActions.add("success", "Login successfully !!!"));
+
+        navigate("/");
+      })
+      .catch(err => {
+        dispatch(error(err));
+        dispatch(alertActions.add("error", err));
+      }) 
+
+    function request() {
+      return {
+        type: authenticationConstants.AUTH_LOGIN_REQUEST,
+      }
+    }
+
+    function success(): ReduxAction {
+      return {
+        type: authenticationConstants.AUTH_GOOGLE_LOGIN_REQUEST,
+      }
+    }
+
+    function error(error: string): ReduxAction {
+      return {
+        type: authenticationConstants.AUTH_GOOGLE_LOGIN_ERROR,
+        payload: { error },
+      }
+    }
+
+  }
+}
+
+const authenticationActions = { check, login, register, googleLogin };
 export default authenticationActions;

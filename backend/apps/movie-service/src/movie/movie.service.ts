@@ -20,10 +20,11 @@ export class MovieService extends BaseService<MovieEntity, MovieRepository>{
       select: {
         id: true,
         title: true,
-        movieLength: true,
         rating: true,
         imageUrl: true,
         release: true,
+        banner: true,
+        movieLength: true,
       }
     })
   }
@@ -35,6 +36,7 @@ export class MovieService extends BaseService<MovieEntity, MovieRepository>{
         actors: { actor: true }
       },
       select: {
+        imdbId: false,
         genres: { name: true },
         actors: {
           role: true,

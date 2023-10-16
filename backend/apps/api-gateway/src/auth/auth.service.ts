@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
-import { LoginRequestDto, RegisterRequestDto, Service, UserEntity } from "@app/shared";
+import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RegisterRequestDto, Service, UserEntity } from "@app/shared";
 
 @Injectable()
 export class AuthService {
@@ -10,21 +10,27 @@ export class AuthService {
     private readonly authClient: ClientKafka
   ) {}
 
-  async validate(token: string): Promise<UserEntity> {
+  async validate(token: string) {
     return await firstValueFrom(
-      this.authClient.send("AUTH.VALIDATE", token)
+      this.authClient.send<UserEntity>(PatternOption["AUTH.VALIDATE"], token)
     );
   }
 
-  async login(dto: LoginRequestDto): Promise<LoginRequestDto> {
+  async login(dto: LoginRequestDto) {
     return await firstValueFrom(
-      this.authClient.send("AUTH.LOGIN", dto)
+      this.authClient.send<LoginResonseDto>(PatternOption["AUTH.LOGIN"], dto)
     );
   }
 
-  async register(dto: RegisterRequestDto): Promise<UserEntity> {
+  async googleLogin(dto: LoginGoogleRequestDto) {
     return await firstValueFrom(
-      this.authClient.send("AUTH.REGISTER", dto)
+      this.authClient.send<LoginResonseDto>(PatternOption["AUTH.GOOGLE_LOGIN"], dto)
+    );
+  }
+
+  async register(dto: RegisterRequestDto) {
+    return await firstValueFrom(
+      this.authClient.send<UserEntity>(PatternOption["AUTH.REGISTER"], dto)
     );
   }
 }

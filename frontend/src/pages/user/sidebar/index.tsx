@@ -85,7 +85,7 @@ const Sidebar: FC = () => {
 
   // Handle opening sidebar when on the mobile or tablet
   useLayoutEffect(() => {
-    const width = window.innerWidth;
+    const width = window.screen.width;
     const main = document.getElementById("main");
     const sidebar = document.getElementById("sidebar");
 
@@ -105,12 +105,16 @@ const Sidebar: FC = () => {
       main?.classList.add(opacity);
       sidebar?.classList.add(appear);
       sidebar?.classList.remove(disappear);
+      console.log("open")
     } else {
       main?.classList.remove(opacity);
       sidebar?.classList.remove(appear);
       sidebar?.classList.add(disappear);
+      console.log("close")
     }
   }, [open]);
+
+
 
   return (
     <>
@@ -130,7 +134,7 @@ const Sidebar: FC = () => {
             className="h-6 w-6 text-slate-200/50 hover:text-white"
           />
         </div>
-        <Card className="no-scrollbar h-screen max-h-screen rounded-none bg-[#18191A] py-4 shadow-none xl:h-[80vh] xl:max-h-[80vh]">
+        <Card className=" no-scrollbar min-h-screen rounded-none bg-[#18191A] py-4 shadow-none xl:h-[80vh] xl:max-h-[80vh]">
           <List className="min-w-[240px] px-1 pt-0">
             <div className="flex flex-col items-center truncate pb-3 xl:flex-row">
               {loading ? (
@@ -138,9 +142,9 @@ const Sidebar: FC = () => {
               ) : (
                 <>
                   <Avatar src={data?.avatar} alt="avatar" />
-                  <div className="ml-3">
+                  <div className="mt-1 xl:ml-3 xl:mt-0">
                     <Typography
-                      className="font-manrope text-slate-200"
+                      className="text-center font-manrope text-slate-200 xl:text-start"
                       variant="h6"
                     >
                       {`${data?.firstName} ${data?.lastName}`}

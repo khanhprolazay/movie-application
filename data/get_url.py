@@ -12,3 +12,9 @@ def get_actor_information_url(actor_imdb_id: str) -> str:
 def get_actor_bio_url(actor_imdb_id: str) -> str:
     return f'/actor/id/{actor_imdb_id}/bio/'
 
+# def get_image_url(movie_imdb_id: str):
+#   return f'/titles/{movie_imdb_id}'
+
+
+
+

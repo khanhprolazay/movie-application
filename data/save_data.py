@@ -24,15 +24,17 @@ keys = [
 ]
 
 
-def save(movie_imdb_id: str, index: int, connection: mysql.connector.MySQLConnection):
-  movie_id = save_movie_information(movie_imdb_id, index, connection)
+def save(movie_imdb_id: str, index: int, total: int, connection: mysql.connector.MySQLConnection):
+
+
+  movie_id = save_movie_information(movie_imdb_id, index, total, connection)
   if movie_id is not None:
-    save_actor_information(movie_imdb_id, movie_id, connection)
+    save_actor_information(movie_imdb_id, movie_id, index, total, connection)
 
 def select_last_movie(connection: mysql.connector.MySQLConnection):
   try:
     cursor = connection.cursor()
-    query = "SELECT imdbId FROM movie ORDER BY id DESC LIMIT 1";
+    query = "SELECT imdbId FROM movie ORDER BY id DESC LIMIT 1"
     cursor.execute(query, ())
     row = cursor.fetchone()
     return row[0]
@@ -68,7 +70,7 @@ def get(url):
   conn.close()
 
   # Check if the key has reach limit
-  message = result.get("message");
+  message = result.get("message")
   if message is not None:
     print(message)
     print(f'\n- - - - - - - {keys[current_key]} HAS REACH LIMITATION. CHANGING KEY ... - - - - - - -\n')
@@ -104,19 +106,19 @@ def save_genre():
     cursor.close()
     connection.close()
 
-def save_movie_information(movie_imdb_id: str, index: int, connection: mysql.connector.MySQLConnection):
+def save_movie_information(movie_imdb_id: str, index: int, total: int, connection: mysql.connector.MySQLConnection):
   cursor = connection.cursor()
   cursor.execute("SELECT * FROM movie WHERE imdbId = %s", (movie_imdb_id, ))
   row = cursor.fetchone()
 
   if row is not None:
-    print(f'\n- - - - - - - - - - - {index} MOVIE {movie_imdb_id.upper()} ALREADY IN DATABASE - - - - - - - - - - -\n')
+    print(f'\n- - - - - - - - - - - {index} OF {total}.  MOVIE {movie_imdb_id.upper()} ALREADY IN DATABASE - - - - - - - - - - -\n')
     cursor.close()
     return None
 
   try:
     url = get_movie_information_url(movie_imdb_id)
-    data = get(url);
+    data = get(url)
 
     if data is not None:
       movie_id = insert_movie(data, index, cursor)
@@ -133,10 +135,10 @@ def save_movie_information(movie_imdb_id: str, index: int, connection: mysql.con
   
   except TypeError as err:
     if type(movie_imdb_id) == str:
-      print(f'\n- - - - - - - - - - - {index} DONT HAVE INFORMATION ABOUT MOVIE {movie_imdb_id.upper()} - - - - - - - - - - -\n')
+      print(f'\n- - - - - - - - - - - {index} OF {total}. DONT HAVE INFORMATION ABOUT MOVIE {movie_imdb_id.upper()} - - - - - - - - - - -\n')
     
     if type(movie_imdb_id) == float:
-      print(f'\n- - - - - - - - - - - {index} DONT HAVE INFORMATION ABOUT MOVIE {movie_imdb_id.upper()} - - - - - - - - - - -\n')
+      print(f'\n- - - - - - - - - - - {index} OF {total}. DONT HAVE INFORMATION ABOUT MOVIE {movie_imdb_id.upper()} - - - - - - - - - - -\n')
     cursor.close()
     return None
 
@@ -144,7 +146,7 @@ def save_movie_information(movie_imdb_id: str, index: int, connection: mysql.con
     # Close the cursor
     cursor.close()
   
-def save_actor_information(movie_imdb_id: str, movie_id: int, connection: mysql.connector.MySQLConnection): 
+def save_actor_information(movie_imdb_id: str, movie_id: int, index: int, total: int, connection: mysql.connector.MySQLConnection): 
   actors = get(get_movie_cast_url(movie_imdb_id))
 
   # [{'role': 'Director', 'actor': {'imdb_id': 'nm0005124', 'name': 'John Lasseter'}}, ...]
@@ -231,7 +233,7 @@ def save_actor_information(movie_imdb_id: str, movie_id: int, connection: mysql.
     cursor.close()
 
   finally:
-    print(f'\n- - - - - - - - - - - INSERT MOVIE {movie_imdb_id.upper()} TAKES {round(time()-t1, 2)}s - - - - - - - - - - -\n')
+    print(f'\n- - - - - - - - - - -  {index} OF {total} INSERT MOVIE {movie_imdb_id.upper()} TAKES {round(time()-t1, 2)}s - - - - - - - - - - -\n')
     cursor.close()
 
 

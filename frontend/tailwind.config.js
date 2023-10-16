@@ -38,6 +38,7 @@ module.exports = withMT({
 
       fontFamily: {
         manrope: "Manrope",
+        roboto: "Roboto",
       },
     },
   },

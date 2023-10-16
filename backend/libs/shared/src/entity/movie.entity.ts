@@ -27,10 +27,10 @@ export class MovieEntity extends BaseEntity {
   @Column({ nullable: true })
   imageUrl: string
 
-  @Column('date')
+  @Column({type: 'date', nullable: true})
   release: Date
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   plot: string
 
   @Column({ nullable: true })

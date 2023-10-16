@@ -2,7 +2,8 @@ import { useAppSelector } from "@/redux/hooks";
 import { Spinner, Typography } from "@material-tailwind/react";
 import { ReactNode } from "react";
 
-export const span = "col-span-full even:mb-4 xs:even:mb-0 xs:odd:col-span-3 xs:even:col-span-9";
+export const span =
+  "col-span-full even:mb-4 xs:even:mb-0 xs:odd:col-span-3 xs:even:col-span-9";
 export const grid = "grid grid-cols-12 gap-x-4 gap-y-0 xs:gap-y-4";
 export const inputHeader =
   "text-start xs:text-end font-manrope text-sm font-normal text-slate-200/50";
@@ -22,15 +23,15 @@ export const FormContainer = (props: FormContainerProps) => {
 
   return (
     <section
-      className={`flex h-auto min-h-[384px] max-w-[719.2px] flex-col ${
+      className={`mx-3 h-fit flex min-h-[384px] max-w-full flex-col ${
         loading ? "items-center" : "items-start"
-      } justify-around gap-1 rounded-md bg-[#242526] px-8 py-4`}
+      } gap-1 rounded-md bg-[#242526] px-8 py-4`}
     >
       {loading ? (
         <Spinner className="h-8 w-8" />
       ) : (
         <>
-          <div className="mb-3 h:auto xs:h-12">
+          <div className="mb-3 xs:h-12">
             <Typography variant="h5" className="font-manrope text-slate-200">
               {header}
             </Typography>
@@ -43,7 +44,7 @@ export const FormContainer = (props: FormContainerProps) => {
           </div>
           <hr className="my-2 w-full border-slate-50/[0.06]" />
 
-          <div className="pb-6 pt-2 w-full h-full">{children}</div>
+          <div className="w-full pb-6 pt-2">{children}</div>
         </>
       )}
     </section>
