@@ -10,7 +10,6 @@ import authenticationActions from "./actions/authentication.action";
 import { useAppDispatch } from "./redux/hooks";
 import { AuthLayout, SingleLoginForm, SingleRegisterForm } from "./pages/auth";
 import AppAlert from "./components/AppAlert";
-import WatchMoviePage from "./pages/user/watch";
 import HistoryPage from "./pages/user/history";
 
 const App: FC = () => {
@@ -27,7 +26,6 @@ const App: FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="detail" element={<DetailPage />} />
         <Route path="search" element={<SearchPage />} />
-        <Route path="watch" element={<WatchMoviePage />} />
 
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<SingleLoginForm />} />
