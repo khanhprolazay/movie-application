@@ -14,13 +14,14 @@ function check() {
     const accessToken = tokenUtils.getAccessToken();
     const refreshToken = tokenUtils.getRefreshToken();
 
-    if (!accessToken || !refreshToken) {
-      dispatch(error("User does not log in !!!"));
+    if (accessToken && refreshToken) {
+      dispatch(success());
+      dispatch(userActions.getUser());
       return;
     }
 
-    dispatch(success());
-    dispatch(userActions.getUser());
+    tokenUtils.clearToken();
+    dispatch(error("User does not log in !!!"));
   }
 
   function request(): ReduxAction {
@@ -80,6 +81,28 @@ function login(values: LoginDTO, navigate: NavigateFunction) {
       return {
         type: authenticationConstants.AUTH_LOGIN_ERROR,
         payload: { error }
+      }
+    }
+  }
+}
+
+function logout() {
+  return (dispatch: TypedDispatch) => {
+    dispatch(request());
+    dispatch(success());
+    tokenUtils.clearToken();
+    dispatch(userActions.clearUser());
+
+
+    function request(): ReduxAction {
+      return {
+        type: authenticationConstants.AUTH_LOGOUT_REQUEST,
+      }
+    }
+
+    function success(): ReduxAction {
+      return {
+        type: authenticationConstants.AUTH_LOGIN_SUCCESS
       }
     }
   }
@@ -159,9 +182,8 @@ function googleLogin(accessToken: string, navigate: NavigateFunction) {
         payload: { error },
       }
     }
-
   }
 }
 
-const authenticationActions = { check, login, register, googleLogin };
+const authenticationActions = { check, login, logout, register, googleLogin };
 export default authenticationActions;

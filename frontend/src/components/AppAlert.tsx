@@ -94,7 +94,7 @@ const AlertItem: FC<AlertItemProps> = (props) => {
         mount: { x: 0, y },
         unmount: { x: 200, y },
       }}
-      className={`absolute right-0 top-0 z-50 h-[88px] max-h-[88px] w-[360px] max-w-[360px] rounded-none border-l-4 px-6 py-5 text-slate-900 sm:w-[428px] sm:max-w-[428px] ${getColor(
+      className={`absolute right-0 top-0 z-50 h-auto w-fit min-w-[360px] rounded-none border-l-4 px-6 py-5 text-slate-900 sm:min-w-[428px] ${getColor(
         alert.type,
       )}`}
     >

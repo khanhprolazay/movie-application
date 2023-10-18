@@ -1,7 +1,7 @@
 import { Controller, Inject, OnModuleInit } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ClientKafka, Payload, MessagePattern } from '@nestjs/microservices';
-import { LoginRequestDto, Pattern, RegisterRequestDto, Service, PatternOption, LoginGoogleRequestDto } from '@app/shared';
+import { LoginRequestDto, Pattern, RegisterRequestDto, Service, PatternOption, LoginGoogleRequestDto, RefreshTokenDto } from '@app/shared';
 
 @Controller()
 export class AuthController implements OnModuleInit {
@@ -30,6 +30,11 @@ export class AuthController implements OnModuleInit {
   @MessagePattern(PatternOption['AUTH.GOOGLE_LOGIN'])
   googleLogin(@Payload() dto: LoginGoogleRequestDto) {
     return this.authService.googleLogin(dto);
+  }
+
+  @MessagePattern(PatternOption['AUTH.REFRESH_TOKEN'])
+  refreshToken(@Payload() dto: RefreshTokenDto) {
+    return this.authService.refreshToken(dto);
   }
 
   async onModuleInit() {

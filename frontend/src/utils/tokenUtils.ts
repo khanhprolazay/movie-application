@@ -7,6 +7,11 @@ const getRefreshToken = () => localStorage.getItem("refreshToken");
 const saveAccessToken = (accessToken: string) => localStorage.setItem("accessToken", accessToken);
 const saveRefreshToken = (refreshToken: string) => localStorage.setItem("refreshToken", refreshToken);
 
+const clearToken = () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+}
+
 const checkExpried = (token: string) => {
   const payload = jwtDecode<JwtPayload>(token);
   return payload.exp ? payload.exp < Date.now() / 1000 : false;
@@ -21,5 +26,5 @@ const addTokenToConfig = (config: AxiosRequestConfig, token: string): AxiosReque
 
 })
 
-const tokenUtils = { getAccessToken, getRefreshToken, checkExpried, addTokenToConfig, saveAccessToken, saveRefreshToken };
+const tokenUtils = { getAccessToken, getRefreshToken, clearToken, checkExpried, addTokenToConfig, saveAccessToken, saveRefreshToken };
 export default tokenUtils;

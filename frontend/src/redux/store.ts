@@ -1,8 +1,12 @@
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import rootReducer, { RootState as RootReducerState } from './rootReducer';
 import { Store, createStore, applyMiddleware, AnyAction } from "redux";
+import { composeWithDevTools } from '@redux-devtools/extension';
 
-const store: Store<RootReducerState> = createStore(rootReducer, applyMiddleware(thunk))
+
+const composeEnhancers = composeWithDevTools({});
+
+const store: Store<RootReducerState> = createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)))
 
 
 export default store;

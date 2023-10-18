@@ -57,3 +57,17 @@ export class LoginGoogleRequestDto {
   @IsNotEmpty()
   accessToken: string
 }
+
+export class RefreshTokenDto {
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string
+}
+
+export interface GoogleResponseDto  {
+  id: string,
+  email: string,
+  given_name: string,
+  family_name: string,
+  picture: string
+}

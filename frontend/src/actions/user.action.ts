@@ -7,12 +7,15 @@ function getUser() {
   return (dispatch: Dispatch) => {
     dispatch(request());
     userApis.getProfile()
-      .then(data => dispatch(success(data)))
+      .then(data => {
+        console.log(data);
+        dispatch(success(data));
+      })
       .catch(err => dispatch(error(err)))
 
     function request(): ReduxAction {
       return { 
-        type: userConstants.GET_USER 
+        type: userConstants.GET_USER_REQUEST
       }
     }
 
@@ -32,5 +35,24 @@ function getUser() {
   }
 }
 
-const userActions = { getUser };
+function clearUser() {
+  return (dispatch: Dispatch) => {
+    dispatch(request());
+    dispatch(success());
+
+    function request(): ReduxAction {
+      return { 
+        type: userConstants.CLEAR_USER_REQUEST
+      }
+    }
+
+    function success(): ReduxAction {
+      return {
+        type: userConstants.CLEAR_USER_SUCCESS,
+      }
+    }
+  }
+}
+
+const userActions = { getUser, clearUser };
 export default userActions;

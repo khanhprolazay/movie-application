@@ -4,5 +4,8 @@ dist-ssr
 */config/env
 */volumes
 
-data/*.csv
+data/*/*.csv
+data/v1/*
 data/*.sql
+
+image-volumes

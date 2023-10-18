@@ -59,6 +59,29 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       }
     }
 
+    case authenticationConstants.AUTH_LOGOUT_REQUEST: {
+      return {
+        ...state,
+        loading: true
+      }
+    }
+
+    case authenticationConstants.AUTH_LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        isLogin: false,
+      }
+    }
+
+    case authenticationConstants.AUTH_LOGOUT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        isLogin: false,
+      }
+    }
+
     case authenticationConstants.AUTH_SIGNUP_REQUEST: {
       return {
         ...state,

@@ -4,7 +4,7 @@ type Computed_Range<N extends number, Result extends Array<unknown> = []> = (
   Computed_Range<N, [...Result, Result['length']]> 
 )
 
-type TimeUnit = 's' | 'm' | 'h' | 'd';
+type TimeUnit = 'm' | 'h' | 'd';
 type ZeroToSixty = Computed_Range<60>[number]
 
 export type ExpiresInType = {

@@ -19,7 +19,7 @@ export type BasePattern<key extends EntityKeyUnion> = {
 
 export type GenrePattern = BasePattern<"GENRE"> | "GENRE.GET_ALL"
 export type MoviePattern = BasePattern<"MOVIE"> | "MOVIE.GET_BY_PAGINATION"
-export type AuthPattern = "AUTH.LOGIN" | "AUTH.REGISTER" | "AUTH.VALIDATE" | "AUTH.GOOGLE_LOGIN"
+export type AuthPattern = "AUTH.LOGIN" | "AUTH.REGISTER" | "AUTH.VALIDATE" | "AUTH.GOOGLE_LOGIN" | "AUTH.REFRESH_TOKEN"
 export type UserPattern = BasePattern<"USER"> | "USER.GET_BY_EMAIL" | "USER.CREATE_GOOGLE" | "USER.CHECK_BY_EMAIL" | "USER.GET_BY_EMAIL_AND_PASSWORD"
 
 export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern
@@ -48,9 +48,10 @@ export const PatternOption: PatternOptionType = {
 
   // AUTH
   "AUTH.LOGIN": "AUTH.LOGIN",
-  "AUTH.GOOGLE_LOGIN": "AUTH.GOOGLE_LOGIN",
   "AUTH.REGISTER": "AUTH.REGISTER",
   "AUTH.VALIDATE": "AUTH.VALIDATE",
+  "AUTH.GOOGLE_LOGIN": "AUTH.GOOGLE_LOGIN",
+  "AUTH.REFRESH_TOKEN": "AUTH.REFRESH_TOKEN",
 
   // GENRE
   "GENRE.CREATE": "GENRE.CREATE",

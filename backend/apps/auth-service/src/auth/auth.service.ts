@@ -1,29 +1,12 @@
-import { first, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { ExpiresInType } from '../type';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../interface';
 import { ConfigService } from '@nestjs/config';
+import goolgeUtils from '../utils/googleUtils';
 import { ClientKafka } from '@nestjs/microservices';
 import { Inject, Injectable, ConflictException, ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import { LoggerService, LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RegisterGoogleRequestDto, RegisterRequestDto, Service, UserEntity } from '@app/shared';
-import axios from 'axios';
-
-interface GoogleResponse  {
-  id: string,
-  email: string,
-  given_name: string,
-  family_name: string,
-  picture: string
-}
-
-async function getGooleUserProfile(accessToken: string) {
-  return axios.get<GoogleResponse>("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", {
-    headers: {
-      Authorization: "Bearer " + accessToken 
-    }})
-    .then(response => response.data)
-    .catch(error => { throw(error)}) 
-}
+import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, UserEntity } from '@app/shared';
 
 @Injectable()
 export class AuthService {
@@ -35,19 +18,17 @@ export class AuthService {
     ) {}
 
   
-  async validate(token: string) : Promise<UserEntity> {
+  async validate(token: string) {
     try {
-      var verify = this.jwtService.verify<JwtPayload>(token, {
-        secret: this.configService.get<string>('ACCESS_TOKEN_SECRET')
-      });
+      const secret = this.configService.get<string>('ACCESS_TOKEN_SECRET');
+      const verify = this.jwtService.verify<JwtPayload>(token, {secret});
+
+      return await firstValueFrom(
+        this.userClient.send<UserEntity>(PatternOption['USER.GET_BY_ID'], verify.sub)
+      );
     } catch (err) {
       throw new ForbiddenException("Token expried !!!");
     }
-      
-    return await firstValueFrom(
-      this.userClient.send<UserEntity>(PatternOption['USER.GET_BY_ID'], verify.sub)
-    );
-    
   }
 
   async login(dto: LoginRequestDto): Promise<LoginResonseDto> {
@@ -57,15 +38,15 @@ export class AuthService {
     
     const payload: JwtPayload = {sub: user.id, email: user.email};
     return { 
-      accessToken: await this.generateToken('accessToken', payload, '30m'), 
-      refreshToken: await this.generateToken('refreshToken', payload, '7d'), 
+      accessToken: this.generateToken('accessToken', payload, '30m'), 
+      refreshToken: this.generateToken('refreshToken', payload, '7d'), 
     };
   }
 
   async googleLogin(dto: LoginGoogleRequestDto) : Promise<LoginResonseDto> {
     try {
       const googleToken = dto.accessToken;
-      const response = await getGooleUserProfile(googleToken);
+      const response = await goolgeUtils.getUserProfile(googleToken);
       
       const check = await firstValueFrom(
         this.userClient.send<string>(PatternOption['USER.CHECK_BY_EMAIL'], response.email)
@@ -87,8 +68,8 @@ export class AuthService {
       
       const payload: JwtPayload = {sub: user.id, email: user.email};
       return { 
-        accessToken: await this.generateToken('accessToken', payload, '30m'), 
-        refreshToken: await this.generateToken('refreshToken', payload, '7d'), 
+        accessToken: this.generateToken('accessToken', payload, '30m'), 
+        refreshToken: this.generateToken('refreshToken', payload, '7d'), 
       };
       
     } catch (err) {
@@ -96,7 +77,7 @@ export class AuthService {
     }
   }
 
-  async register(dto: RegisterRequestDto): Promise<UserEntity> {
+  async register(dto: RegisterRequestDto) {
     if (dto.password !== dto.rePassword) {
       throw new ConflictException('Two provided password is not the same !!!');
     }
@@ -114,15 +95,28 @@ export class AuthService {
     )
   }
 
-  private async generateToken(type: keyof LoginResonseDto, payload: JwtPayload, expiresIn: ExpiresInType) {
+  async refreshToken(dto: RefreshTokenDto) {
+    try {
+      const secret = this.configService.get<string>('REFRESH_TOKEN_SECRET');
+      const verify = this.jwtService.verify<JwtPayload>(dto.refreshToken, {secret});
+      const payload: JwtPayload = { sub: verify.sub, email: verify.email };
+      const accessToken = this.generateToken('accessToken', payload, '30m');
+      return { accessToken };
+    } catch (err) {
+      throw new ForbiddenException("Token expried !!!");
+    }
+    
+  }
+
+  private generateToken(type: keyof LoginResonseDto, payload: JwtPayload, expiresIn: ExpiresInType | number) {
     const secretKey = 
       type === 'accessToken' ? 
       "ACCESS_TOKEN_SECRET" : 
       "REFRESH_TOKEN_SECRET";
 
-    return await this.jwtService.signAsync(payload, {
+    return this.jwtService.sign(payload, {
       expiresIn: expiresIn,
-      secret: this.configService.get(secretKey),
+      secret: this.configService.get(secretKey),    
     })
   }
 
