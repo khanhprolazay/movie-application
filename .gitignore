@@ -8,4 +8,6 @@ data/*/*.csv
 data/v1/*
 data/*.sql
 
+backend/
+
 image-volumes
