@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 
 interface PosterFilmProps {
     image: string;
@@ -7,8 +8,17 @@ interface PosterFilmProps {
 
 const PosterFilm = (props: PosterFilmProps) => {
 
+    const navigate = useNavigate()
+
+    const handleDetail = () => {
+        navigate("/detail")
+    }
+
     return (
-        <div className="bg-black w-36 mr-7 flex flex-col items-center relative transition-transform transform hover:scale-105">
+        <div
+            className="w-24 xs:w-36 sm:w-48 flex flex-col items-center relative transition-transform transform hover:scale-105 mb-8"
+            onClick={handleDetail}
+        >
             <img className="border border-white cursor-pointer" src={props.image} ></img>
             <label className="text-white text-lg cursor-pointer">{props.name}</label>
             <div className="flex items-center absolute text-white text-sm bg-black rounded-lg px-2 py-0.5 right-1 top-1 cursor-pointer">

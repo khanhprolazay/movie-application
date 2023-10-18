@@ -1,21 +1,3 @@
-
-
-// export const Navbar = () => {
-//     return (
-//         <div className="w-full h-14 bg-green-700 flex items-center z-10" >
-//             <a href="#" className="hover:cursor-pointer hover:text-red-600 text-white text-sm lg:text-lg xl:text-xl 2xl:text-2xl" style={{ marginLeft: "10%" }}>Home</a>
-//             <a href="#" className="hover:cursor-pointer hover:text-red-600 text-white text-sm lg:text-lg xl:text-xl 2xl:text-2xl" style={{ marginLeft: "3%" }}>Top Films</a>
-//             <a href="#" className="hover:cursor-pointer hover:text-red-600 text-white text-sm lg:text-lg xl:text-xl 2xl:text-2xl" style={{ marginLeft: "3%" }}>About</a>
-//             <button className="bg-red-700 text-sm hover:bg-green-500 lg:text-lg xl:text-xl 2xl:text-2xl px-2 py-0.5 ml-auto" >Sign In</button>
-//             <button className="bg-red-700 text-sm hover:bg-green-500 lg:text-lg xl:text-xl 2xl:text-2xl px-2 py-0.5 ml-5" style={{ marginRight: "10%" }}>Sign Up</button>
-//         </div>
-
-//     );
-// };
-
-
-
-
 import React from "react";
 import {
     Navbar,
@@ -46,8 +28,10 @@ import {
     FaceSmileIcon,
     PuzzlePieceIcon,
     GiftIcon,
+    GiftTopIcon,
 } from "@heroicons/react/24/outline";
-import { HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from "react-router-dom";
 
 const colors = {
     blue: "bg-blue-50 text-blue-500",
@@ -62,63 +46,52 @@ const colors = {
 
 const navListMenuItems = [
     {
+        color: "pink",
+        icon: GiftIcon,
+        title: "Top",
+        description: "Top 10 Best Movies."
+    },
+    {
         color: "blue",
         icon: FlagIcon,
-        title: "About us",
-        description: "Learn about our story and our mission statement.",
+        title: "Action",
+        description: "Top 10 Action Movies.",
     },
     {
         color: "orange",
         icon: ChatBubbleOvalLeftIcon,
-        title: "Press",
-        description: "News and writings, press releases, and resources",
+        title: "Adventure",
+        description: "Top 10 Adventure Movies.",
     },
     {
         color: "green",
         icon: UsersIcon,
-        title: (
-            <div className="flex items-center gap-1">
-                Careers{" "}
-                <Chip
-                    size="sm"
-                    color="green"
-                    variant="ghost"
-                    value="We're hiring!"
-                    className="capitalize"
-                />
-            </div>
-        ),
-        description: "We are always looking for talented people. Join us!",
+        title: "Science Fiction",
+        description: "Top 10 Adventure Movies.",
     },
     {
         color: "blue-gray",
         icon: FolderIcon,
-        title: "Legal",
-        description: "All the stuff that we dan from legal made us add.",
+        title: "Romantic",
+        description: "Top 10 Romantic Movies.",
     },
     {
         color: "purple",
         icon: RocketLaunchIcon,
-        title: "Products",
-        description: "Checkout our products that helps a startup running.",
+        title: "Comedy",
+        description: "Top 10 Comedy Movies.",
     },
     {
         color: "teal",
         icon: FaceSmileIcon,
-        title: "Icons",
-        description: "Set of beautiful icons that you can use in your project.",
+        title: "Thriller",
+        description: "Top 10 Thriller Movies.",
     },
     {
         color: "cyan",
         icon: PuzzlePieceIcon,
-        title: "UI Kits",
-        description: "High quality UI Kits helps you to 2x faster.",
-    },
-    {
-        color: "pink",
-        icon: GiftIcon,
-        title: "Open Source",
-        description: "List of all our open-source projects, it's all free.",
+        title: "Detective",
+        description: "Top 10 Detective Movies.",
     },
 ];
 
@@ -129,7 +102,7 @@ function NavListMenu() {
     const renderItems = navListMenuItems.map(
         ({ icon, title, description, color }, key) => (
             <a href="#" key={key}>
-                <MenuItem className="flex items-center gap-3 rounded-lg">
+                <MenuItem className="flex items-center gap-3 rounded-lg bg-white">
                     <div className={`rounded-lg p-5 ${(colors as any)[color]}`}>
                         {React.createElement(icon, {
                             strokeWidth: 2,
@@ -163,7 +136,7 @@ function NavListMenu() {
                 allowHover={true}
             >
                 <MenuHandler>
-                    <Typography as="div" variant="small" className=" text-orange-500 text-2xl font-semibold font-manrope hover:text-white">
+                    <Typography as="div" variant="small" className=" text-orange-500 text-xl font-semibold font-manrope hover:text-white">
                         <ListItem
                             className="flex items-center gap-2 py-2 pr-4"
                             selected={isMenuOpen || isMobileMenuOpen}
@@ -196,30 +169,32 @@ function NavListMenu() {
 }
 
 function NavList() {
+
+
     return (
         <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1 gap-7">
-            <Typography
+            {/* <Typography
                 as="a"
-                href="#"
+                href="/"
                 variant="small"
                 color="blue-gray"
                 className="font-normal"
             >
-                <ListItem className="flex items-center gap-2 py-2 pr-4 text-orange-500 text-2xl font-semibold font-manrope hover:text-white">
+                <ListItem className="flex items-center gap-2 py-2 pr-4 text-orange-500 text-xl font-semibold font-manrope hover:text-white">
                     <HomeIcon className="h-[20px] w-[20px] font-semibold" />
                     Home
                 </ListItem>
-            </Typography>
+            </Typography> */}
             <NavListMenu />
             <Typography
                 as="a"
-                href="#"
+                href="/aboutus"
                 variant="small"
                 color="blue-gray"
                 className="font-normal"
             >
-                <ListItem className="flex items-center gap-2 py-2 pr-4 text-orange-500 text-2xl font-semibold font-manrope hover:text-white">
-                    <UserCircleIcon className="h-[20px] w-[20px] font-semibold" />
+                <ListItem className="flex items-center gap-2 py-2 pr-4 text-orange-500 text-xl font-semibold font-manrope hover:text-white">
+                    <InformationCircleIcon className="h-[20px] w-[20px] font-semibold" />
                     About us
                 </ListItem>
             </Typography>
@@ -227,7 +202,7 @@ function NavList() {
     );
 }
 
-export function NavbarWithMegaMenu() {
+export function Header() {
     const [openNav, setOpenNav] = React.useState(false);
 
     React.useEffect(() => {
@@ -237,20 +212,34 @@ export function NavbarWithMegaMenu() {
         );
     }, []);
 
+    const navigate = useNavigate()
+
+    const hanldeSignIn = () => {
+        navigate("/auth/login")
+    }
+
+    const hanldeSignUp = () => {
+        navigate("/auth/register")
+    }
+
+    const handleHome = () => {
+        navigate("/")
+    }
+
     return (
-        <Navbar className="max-w-screen-2xl px-10 py-4 bg-green-800 rounded-none border-none z-10">
+        <Navbar className="max-w-screen-2xl px-16 py-1 bg-green-800 rounded-none border-none z-10">
             <div className="flex items-center justify-between">
-                <Typography className="text-4xl font-manrope font-extrabold">
+                <a className="text-2xl font-manrope font-extrabold hover:cursor-pointer text-red-600" onClick={handleHome}>
                     T.M.T Movies
-                </Typography>
+                </a>
                 <div className="hidden lg:block">
                     <NavList />
                 </div>
                 <div className="hidden gap-5 lg:flex mr-5">
-                    <Button size="lg" className="text-gray-800 bg-slate-200 text-base font-manrope">
+                    <Button size="sm" className="text-gray-800 bg-slate-200 text-sm font-manrope px-2" onClick={hanldeSignIn}>
                         Sign In
                     </Button>
-                    <Button size="lg" className="text-white bg-slate-800 text-base font-manrope">
+                    <Button size="sm" className="text-white bg-slate-800 text-sm font-manrope px-2" onClick={hanldeSignUp}>
                         Sign Up
                     </Button>
                 </div>

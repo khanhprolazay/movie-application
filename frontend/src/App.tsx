@@ -3,9 +3,7 @@ import { FC, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import UserLayout from "./pages/user/layout";
 import { ChangePasswordForm, ProfileForm } from "./pages/user/profile";
-import { HomePage } from "./pages/home.page";
-import { DetailPage } from "./pages/detail.page";
-import { SearchPage } from "./pages/search.page";
+import { HomePage, DetailPage, SearchPage, AboutUsPage } from "./pages/home";
 import authenticationActions from "./actions/authentication.action";
 import { useAppDispatch } from "./redux/hooks";
 import { AuthLayout, SingleLoginForm, SingleRegisterForm } from "./pages/auth";
@@ -26,6 +24,7 @@ const App: FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="detail" element={<DetailPage />} />
         <Route path="search" element={<SearchPage />} />
+        <Route path="aboutus" element={<AboutUsPage />} />
 
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<SingleLoginForm />} />
