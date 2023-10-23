@@ -26,7 +26,7 @@ const AppHeader: FC = () => {
   const triggerOpen = () => dispatch(sidebarActions.trigger());
 
   return (
-    <header className="flex items-center justify-between box-border sticky z-50 top-0 right-0 left-0 h-[60px] border-b border-divider bg-cblack-100">
+    <header className="flex items-center justify-between box-border sticky z-40 top-0 right-0 left-0 h-[60px] border-b border-divider bg-cblack-100">
       <AppContainer className="flex h-full items-center justify-between">
         <div className="flex w-3/5 items-center gap-4">
           <IconButton

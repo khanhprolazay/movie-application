@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { ListMovieResult } from "@/pages/home/components/ListMovieResult";
 
 import imageFilmDetail from "@/assets/imageMovie/oppenheimer_ver3.jpg";
@@ -8,173 +8,250 @@ import actor2 from "@/assets/imageActor/DetailFilm/2.jpg";
 import actor3 from "@/assets/imageActor/DetailFilm/3.jpg";
 import actor4 from "@/assets/imageActor/DetailFilm/4.jpg";
 import AppContainer from "@/components/AppContainer";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
+  Typography,
+} from "@material-tailwind/react";
 
-interface DetailsFilmProps {
+type TabValues = "summary" | "cast" | "trailer";
+type Actor = {
   name: string;
-  discription: string;
-  imageCast: string[];
-  rating: number;
-  duration: number;
-  releaseDate: string;
-  genres: string;
-}
+  avatar: string;
+  role: string;
+};
+
+type Tab = {
+  label: string;
+  value: TabValues;
+  desc?: string;
+  actors?: Actor[];
+  trailer?: string;
+};
+
+const tabs: Tab[] = [
+  {
+    label: "Summary",
+    value: "summary",
+    desc: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+  },
+  {
+    label: "Casts",
+    value: "cast",
+    actors: [
+      {
+        name: "Cillian Murphy",
+        avatar: actor1,
+        role: "Abc Xyz",
+      },
+      {
+        name: "Cillian Murphy",
+        avatar: actor2,
+        role: "Abc Xyz",
+      },
+      {
+        name: "Cillian Murphy",
+        avatar: actor3,
+        role: "Abc Xyz",
+      },
+      {
+        name: "Cillian Murphyyy Cillian Murphyyy",
+        avatar: actor4,
+        role: "Abc Xyz",
+      },
+      {
+        name: "Cillian Murphy",
+        avatar: actor4,
+        role: "Abc Xyz",
+      },
+      {
+        name: "Cillian Murphy",
+        avatar: actor4,
+        role: "Abc Xyz",
+      },
+    ],
+  },
+  {
+    label: "Trailer",
+    value: "trailer",
+    trailer: "https://www.youtube.com/embed/0UXPIa5cNws?si=T9Q6_Lhhhvqqln6z",
+  },
+];
+
+const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
+  switch (tab.value) {
+    case "summary":
+      return (
+        <>
+          {tab.desc &&
+            tab.desc.split("\n").map((content, index) => (
+              <Typography
+                key={index}
+                className={`${
+                  index && "mt-4"
+                } inline-block font-manrope text-sm text-slate-400`}
+              >
+                {content}
+              </Typography>
+            ))}
+        </>
+      );
+
+    case "cast":
+      return (
+        <div className="flex flex-wrap gap-x-12 gap-y-6">
+          {tab.actors &&
+            tab.actors.map((actor) => (
+              <div className="flex min-w-[200px] max-w-[200px] items-center gap-3">
+                <Avatar src={actor.avatar} className="min-w-[48px]" />
+                <div className="font-manrope">
+                  <div className="line-clamp-1">
+                    <Typography
+                      variant="h6"
+                      className="text-sm font-medium text-slate-400"
+                    >
+                      {actor.name}
+                    </Typography>
+                  </div>
+                  <Typography className="text-xs font-normal text-slate-400/70">
+                    {actor.role}
+                  </Typography>
+                </div>
+              </div>
+            ))}
+        </div>
+      );
+
+    case "trailer":
+      return <iframe className="h-full w-full rounded-lg" src={tab.trailer} />;
+
+    default:
+      return <></>;
+  }
+};
 
 // export const DetailPage = (props: DetailsFilmProps) => {
 const DetailPage = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
+  const [activeTab, setActiveTab] = useState<TabValues>("summary");
 
   return (
-    <AppContainer className="z-10">
-      <div className="flex gap-10">
-        <div className="mt-6 flex-1 flex-col items-center justify-center">
-          <h1 className="my-1 text-center text-lg font-semibold text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl">
-            Oppenheimer
-            {/* {props.name} */}
-          </h1>
-          <h2 className="text-xs font-light text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl ">
-            Delivering a thrilling dramatic experience as a mysterious man must
-            risk destroying the world just to save itself. The story is about
-            American scientist J. Robert Oppenheimer and his role in developing
-            the atomic bomb
-            {/* {props.discription} */}
-          </h2>
-          <h2 className="mb-2 mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-            Cast:
-          </h2>
-          <div className="flex gap-2">
-            {/* <img className="h-28 border-2 border-white " src={props.imageCast[0]} /> */}
-            <img className="h-16 border-2 border-white sm:h-28 " src={actor1} />
-            <img className="h-16 border-2 border-white sm:h-28 " src={actor2} />
-            <img className="h-16 border-2 border-white sm:h-28 " src={actor3} />
-            <img className="h-16 border-2 border-white sm:h-28 " src={actor4} />
-          </div>
-          <h2 className="mt-3 flex items-center text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-            Rating: 8.5/10
-            {/* Rating: {props.rating} */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="ml-1 h-7 w-7 text-yellow-500"
+    <AppContainer className="z-10 pt-8">
+      <div className="grid w-full grid-cols-[294px_1fr] gap-4">
+        <Card className="w-auto bg-cblack-600">
+          <CardHeader floated={false}>
+            <img
+              src={imageFilmDetail}
+              alt="movie-picture"
+              className="h-96 w-full"
+            />
+          </CardHeader>
+          <CardBody className="p-4 font-manrope">
+            <Typography
+              variant="h5"
+              className="text-base font-bold text-slate-200/90"
             >
-              <path
-                fillRule="evenodd"
-                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </h2>
-          <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-            Duration: 105 minutes
-            {/* Duration: {props.duration} */}
-          </h2>
-          <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-            Release Date: 2023-08-11
-            {/* Release Date: {props.releaseDate} */}
-          </h2>
-          <h2 className="mt-3 text-xs font-normal text-white sm:text-sm md:text-lg lg:text-xl xl:text-2xl">
-            Genres: Biography, Psychology, Drama
-            {/* Genres: {props.genres} */}
-          </h2>
+              Director
+            </Typography>
+            <Typography className="mb-2 text-[13.6px] text-slate-400">
+              Jon Watts
+            </Typography>
 
-          <div className="mt-4 flex gap-5">
-            <div>
-              <button
-                className="flex items-center gap-2 bg-green-600 text-sm font-bold hover:bg-blue-400 sm:text-sm lg:text-lg xl:text-xl"
-                onClick={openPopup}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-6 w-6"
+            <Typography
+              variant="h5"
+              className="text-base font-bold text-slate-200/90"
+            >
+              Cast
+            </Typography>
+            <Typography className="mb-2 text-[13.6px] text-slate-400">
+              Tom Holland, Jake Gyllenhaal, Zendaya
+            </Typography>
+
+            <Typography
+              variant="h5"
+              className="text-base font-bold text-slate-200/90"
+            >
+              Plot
+            </Typography>
+            <Typography className="line-clamp-3 text-[13.6px] text-slate-400">
+              Peter Parker and his friends go on a summer trip to Europe.
+              However, they will hardly be able to rest - Peter.
+            </Typography>
+          </CardBody>
+        </Card>
+
+        <div className="grid w-full grid-rows-[auto_1fr] gap-4">
+          <Card className="bg-cblack-600">
+            <CardBody className="flex items-center justify-between p-4 font-manrope">
+              <div>
+                <Typography
+                  variant="h2"
+                  className="text-[28px] font-bold text-slate-200/90"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Watch Trailer
-              </button>
+                  Openheimmer &nbsp;
+                  <small className="text-lg font-light">2023</small>
+                </Typography>
+                <Typography className="text-xs text-slate-400/80">
+                  Action / Adventure / Science Fiction
+                </Typography>
+              </div>
 
-              {isPopupOpen && (
-                <div
-                  style={{ background: "rgba(0, 0, 0, 0.6)" }}
-                  className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center"
+              <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
+                Watch
+              </Button>
+            </CardBody>
+          </Card>
+          <Tabs
+            value={activeTab}
+            className="flex h-full flex-col rounded-xl bg-cblack-600"
+          >
+            <TabsHeader
+              className="rounded-none border-b border-divider bg-cblack-600 bg-opacity-100 px-4"
+              indicatorProps={{
+                className:
+                  "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
+              }}
+            >
+              {tabs.map(({ label, value }) => (
+                <Tab
+                  key={value}
+                  value={value}
+                  onClick={() => setActiveTab(value)}
+                  className={`${
+                    activeTab === value ? "text-sky-400" : "text-slate-100"
+                  } mr-6 w-auto px-0 py-2 text-sm`}
                 >
-                  <div
-                    style={{ maxWidth: "1100px" }}
-                    className="w-5/6 rounded-sm bg-green-900 p-1"
-                  >
-                    <iframe
-                      className="aspect-video w-full"
-                      src="https://www.youtube.com/embed/jeKBMdYaM3U"
-                    />
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    onClick={closePopup}
-                    className="ml-3 h-9 w-9 hover:cursor-pointer hover:text-blue-600"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-              )}
-            </div>
-
-            <button className="flex items-center gap-2 bg-green-600 text-sm font-bold hover:bg-blue-400 sm:text-sm lg:text-lg xl:text-xl">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5"
-                />
-              </svg>
-              Watch Movie
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1">
-          <img
-            className="mx-auto my-36 hidden h-52 border-2 border-white sm:h-80 xl:h-96 xs:block"
-            src={imageFilmDetail}
-          ></img>
+                  {label}
+                </Tab>
+              ))}
+            </TabsHeader>
+            <TabsBody className="h-full">
+              {tabs.map((tab) => (
+                <TabPanel
+                  key={tab.value}
+                  value={tab.value}
+                  className="h-full rounded-b-xl"
+                >
+                  <TabContent tab={tab} />
+                </TabPanel>
+              ))}
+            </TabsBody>
+          </Tabs>
         </div>
       </div>
-
-      <h1 className="mb-3 font-manrope text-3xl font-bold text-green-600">
-        Recommended Movies
-      </h1>
+      <Typography className="mb-3 mt-12 font-manrope text-3xl font-bold text-slate-200">
+        Ralated Movies
+      </Typography>
       <hr className="full-width-underline mb-5 mt-4" />
 
       <ListMovieResult />
-
-      <hr className="full-width-underline mb-5" />
     </AppContainer>
   );
 };
