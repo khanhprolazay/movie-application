@@ -43,3 +43,36 @@
 main {
   width: 100vw;
 }
+
+.sidebar-appear {
+  left: 0;
+  animation: sappear 0.4s ease-in-out;
+}
+
+.sidebar-disappear {
+  left: -240px;
+  animation: sdisappear 0.4s ease-in-out;
+}
+
+@keyframes sappear {
+  0% {
+    opacity: 0;
+    left: -240px;
+  }
+  100% {
+    opacity: 1;
+    left: 0;
+  }
+}
+
+@keyframes sdisappear {
+  0% {
+    opacity: 1;
+    left: 0px
+  }
+  100% {
+    opacity: 0;
+    left: -240px;
+  }
+}
+

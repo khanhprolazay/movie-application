@@ -1,0 +1,8 @@
+const sidebarConstants = {
+  "TRIGGER_SIDEBAR": "TRIGGER_SIDEBAR",
+  "SET_SIDEBAR_OPEN": "SET_SIDEBAR_OPEN",
+  "SET_SIDEBAR_CLOSE": "SET_SIDEBAR_CLOSE",
+  "SET_SIDEBAR_ABSOLUTE": "SET_SIDEBAR_ABSOLUTE",
+
+}
+export default sidebarConstants;

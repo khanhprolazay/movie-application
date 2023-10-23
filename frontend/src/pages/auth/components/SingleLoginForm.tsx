@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import "./animation.css";
-import React, { FC } from "react";
+import { FC } from "react";
 import { LoginDTO } from "@/type";
 import google from "../../../assets/images/google.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import authenticationActions from "@/actions/authentication.action";
 import { useGoogleLogin } from "@react-oauth/google";
 
-const LoginForm: FC = () => {
+const SingleLoginForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.authentication);
@@ -116,7 +116,7 @@ const LoginForm: FC = () => {
         </div>
 
         <Typography className="inline cursor-pointer text-center font-manrope text-xs font-medium text-slate-300">
-          Does not have account yet?
+          Does not have an account?
           <Link
             to="/auth/register"
             className="inline font-manrope text-xs font-medium text-cyan-400"
@@ -127,7 +127,7 @@ const LoginForm: FC = () => {
 
         <div className="mb-6 mt-8 flex w-full items-center justify-between gap-8">
           <div className="w-full border-b border-slate-400"></div>
-          <Typography className="font-manrope text-sm text-slate-200">
+          <Typography className=" font-manrope font-semibold text-sm w-auto text-slate-200">
             OR
           </Typography>
           <div className="w-full border-b border-slate-400"></div>
@@ -149,4 +149,4 @@ const LoginForm: FC = () => {
   );
 };
 
-export const SingleLoginForm = React.memo(LoginForm, () => true);
+ export default SingleLoginForm;

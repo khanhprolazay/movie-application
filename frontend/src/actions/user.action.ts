@@ -7,10 +7,7 @@ function getUser() {
   return (dispatch: Dispatch) => {
     dispatch(request());
     userApis.getProfile()
-      .then(data => {
-        console.log(data);
-        dispatch(success(data));
-      })
+      .then(data => dispatch(success(data)))
       .catch(err => dispatch(error(err)))
 
     function request(): ReduxAction {

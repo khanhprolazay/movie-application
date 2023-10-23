@@ -8,7 +8,7 @@ import { RegisterDTO } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import authenticationActions from "@/actions/authentication.action";
 
-const RegisterForm: FC = () => {
+const SingleRegisterForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.authentication);
@@ -97,4 +97,4 @@ const RegisterForm: FC = () => {
   );
 };
 
-export const SingleRegisterForm = React.memo(RegisterForm, () => true);
+export default SingleRegisterForm;

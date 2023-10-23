@@ -1,8 +1,8 @@
-import { authentication, genre, user, alert } from "@/reducers";
+import { authentication, genre, user, alert, sidebar } from "@/reducers";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
-  user, genre, authentication, alert
+  user, genre, authentication, alert, sidebar
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

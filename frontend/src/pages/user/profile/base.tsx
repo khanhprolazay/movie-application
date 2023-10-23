@@ -23,9 +23,9 @@ export const FormContainer = (props: FormContainerProps) => {
 
   return (
     <section
-      className={`mx-3 h-fit flex min-h-[384px] max-w-full flex-col ${
+      className={`flex h-fit min-h-[384px] flex-col ${
         loading ? "items-center" : "items-start"
-      } gap-1 rounded-md bg-[#242526] px-8 py-4`}
+      } gap-1 bg-cblack-100 px-8 py-4 rounded`}
     >
       {loading ? (
         <Spinner className="h-8 w-8" />
@@ -43,7 +43,6 @@ export const FormContainer = (props: FormContainerProps) => {
             </Typography>
           </div>
           <hr className="my-2 w-full border-slate-50/[0.06]" />
-
           <div className="w-full pb-6 pt-2">{children}</div>
         </>
       )}

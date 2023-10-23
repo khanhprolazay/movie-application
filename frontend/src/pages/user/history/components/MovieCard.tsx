@@ -1,9 +1,6 @@
 import {
-  Avatar,
   Card,
   CardBody,
-  CardHeader,
-  Rating,
   Typography,
 } from "@material-tailwind/react";
 import { FC } from "react";
