@@ -5,6 +5,7 @@ const AboutUsPage = React.lazy(() => import("./pages/home/about.us.page").then((
 const DetailPage = React.lazy(() => import("./pages/home/detail.page").then(( DetailPage) => DetailPage ));
 const HomePage = React.lazy(() => import("./pages/home/home.page").then(( HomePage ) => HomePage ));
 const SearchPage = React.lazy(() => import("./pages/home/search.page").then(( SearchPage ) => SearchPage ));
+const WatchPage = React.lazy(() => import("./pages/home/watch.page").then(( WatchPage ) => WatchPage ));
 
 const ProfileForm = React.lazy(() => import("./pages/user/profile/profile-form").then(( ProfileForm ) => ProfileForm ));
 const ChangePasswordForm = React.lazy(() => import("./pages/user/profile/change-password-form").then(( ChangePasswordForm ) => ChangePasswordForm ));
@@ -42,50 +43,57 @@ const routes: RouteType[] = [
   },
   {
     path: "/detail",
-    name: "Detail page",
+    name: "Detail",
     login: false,
     element: DetailPage,
+    accessible: ["ALL"],
+  },
+  {
+    path: "/watch/:id",
+    name: "Watch",
+    login: true,
+    element: WatchPage,
     accessible: ["ALL"],
   },
 
   {
     path: "/user/profile",
-    name: "Profile page",
+    name: "Profile",
     element: ProfileForm,
     login: true,
     accessible: ["ALL"],
   },
   {
     path: "/user/change-password",
-    name: "Change password",
+    name: "Password",
     element: ChangePasswordForm,
     login: true,
     accessible: ["ALL"],
   },
   {
     path: "/user/history",
-    name: "History page",
+    name: "History",
     element: HistoryPage,
     login: true,
     accessible: ["ALL"]
   },
   {
     path: "/user/subcription",
-    name: "Subcription page",
+    name: "Subcription",
     element: ProfileForm,
     login: true,
     accessible: ["ALL"]
   },
   {
     path: "/user/favorite",
-    name: "Favorite page",
+    name: "Favorite",
     element: ProfileForm,
     login: true,
     accessible: ["ALL"],
   },
   {
     path: "/user/setting",
-    name: "Setting page",
+    name: "Setting",
     element: ProfileForm,
     login: true,
     accessible: ["ALL"],

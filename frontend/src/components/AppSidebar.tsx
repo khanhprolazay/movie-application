@@ -11,7 +11,6 @@ import {
   InformationCircleIcon,
   PowerIcon,
   UserCircleIcon,
-  XMarkIcon,
 } from "@heroicons/react/20/solid";
 import {
   Card,
@@ -24,16 +23,9 @@ import {
   PopoverHandler,
   Typography,
 } from "@material-tailwind/react";
-import {
-  memo,
-  FC,
-  ReactNode,
-  useState,
-  useLayoutEffect,
-  useRef,
-  useEffect,
-} from "react";
+import { memo, FC, ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "@/assets/images/logo.png";
 
 const icon = "h-5 w-6";
 
@@ -107,7 +99,14 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
   return (
     <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
-      <div className=" mb-2 box-border flex min-h-[60px] items-center border-b border-divider pl-3"></div>
+      <div className=" relative mb-2 box-border flex min-h-[60px] items-center border-b border-divider px-2">
+        <img src={logo} alt="logo" className="ml-3 h-8 w-8" />
+        <div className="absolute my-auto w-56 flex h-9 left-[64px] flex-col justify-end">
+          <Typography variant="h5" className={` ${open ? "block" : "hidden"}  text-slate-200`}>
+            <span className="text-cred">TMT</span> Movie
+          </Typography>
+        </div>
+      </div>
       <List className={` mx-2 !min-w-0 gap-0 px-1 py-0 `}>
         <SidebarItem
           name="Home"
@@ -178,7 +177,6 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
   );
 };
 
-
 const AppSideBar: FC = () => {
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
@@ -214,7 +212,7 @@ const AppSideBar: FC = () => {
             open ? "min-w-[196px] max-w-[196px]" : "min-w-[72px] max-w-[72px]"
           } transition-all`}
         >
-          <Sidebar open={true} dispatch={dispatch} currentMenu={currentMenu} />
+          <Sidebar open={open} dispatch={dispatch} currentMenu={currentMenu} />
         </div>
       )}
     </aside>
