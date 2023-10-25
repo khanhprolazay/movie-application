@@ -86,8 +86,8 @@ const DonationCard: FC<DonationType> = ({ type, amount, contents, main }) => {
       </CardHeader>
       <CardBody className="p-0">
         <ul className="flex flex-col gap-4">
-          {contents.map((content) => (
-            <li className="flex items-center gap-4">
+          {contents.map((content, index) => (
+            <li key={`donation-${index}`} className="flex items-center gap-4">
               <span className="rounded-full">
                 <CheckIcon className="h-5 w-5 text-xl text-teal-500" />
               </span>
@@ -173,17 +173,17 @@ const AboutUsPage: FC = () => {
       </section>
 
       <section className="h-full bg-[url('@/assets/images/services_bg02.jpg')] bg-contain py-36">
-        <AppContainer className="flex items-center justify-between gap-8">
-          <div className="pr-52">
+        <AppContainer className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="lg:pr-24 xl:pr-52">
             <Typography
               variant="h5"
-              className="font-manrope text-base font-extrabold text-cred"
+              className="font-manrope text-sm sm:text-base font-extrabold text-cred"
             >
               Movie Platform
             </Typography>
             <Typography
               variant="h2"
-              className="mb-8 font-manrope font-extrabold text-slate-200"
+              className="mb-6 sm:mb-8 font-manrope text-2xl md:text-3xl font-extrabold text-slate-200"
             >
               Download Your Shows <br />
               Watch Offline.
@@ -191,13 +191,13 @@ const AboutUsPage: FC = () => {
 
             <div>
               <div className="flex gap-4">
-                <IconButton className="rounded-full border border-dashed border-cred bg-transparent p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
-                  <FilmIcon className="h-9 w-9" />
+                <IconButton className="rounded-full border border-dashed border-cred bg-transparent md:p-8 lg:p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
+                  <FilmIcon className="h-6 w-6 lg:h-9 lg:w-9" />
                 </IconButton>
                 <div>
                   <Typography
                     variant="h5"
-                    className="mb-2 font-manrope font-bold text-slate-200"
+                    className="mb-2 md:text-lg lg:text-xl font-manrope font-bold text-slate-200"
                   >
                     Enjoy Your Film
                   </Typography>
@@ -211,13 +211,13 @@ const AboutUsPage: FC = () => {
               <hr className="my-6 border-dashed" />
 
               <div className="flex gap-4">
-                <IconButton className="rounded-full border border-dashed border-cred bg-transparent p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
-                  <VideoCameraIcon className="h-9 w-9" />
+                <IconButton className="rounded-full border border-dashed border-cred bg-transparent md:p-8 lg:p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
+                  <VideoCameraIcon className="h-6 w-6 lg:h-9 lg:w-9" />
                 </IconButton>
                 <div>
                   <Typography
                     variant="h5"
-                    className="mb-2 font-manrope font-bold text-slate-200"
+                    className="mb-2 md:text-lg lg:text-xl font-manrope font-bold text-slate-200"
                   >
                     Watch Everywhere
                   </Typography>
@@ -229,7 +229,7 @@ const AboutUsPage: FC = () => {
               </div>
             </div>
           </div>
-          <img src={service} alt="services_img02" />
+          <img src={service} alt="services_img02" className=" md:w-72 lg:w-96 xl:w-auto xl:h-auto" />
         </AppContainer>
       </section>
 
@@ -241,7 +241,7 @@ const AboutUsPage: FC = () => {
           Support Us
         </Typography>
         <div className="flex justify-evenly">
-          <div className="flex gap-12">
+          <div className="flex flex-wrap lg:flex-nowrap justify-evenly gap-12">
             {donations.map((donate, index) => <DonationCard key={`donation-${index}`} {...donate}/>)}
           </div>
         </div>

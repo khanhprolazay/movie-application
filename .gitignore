@@ -8,6 +8,7 @@ data/*/*.csv
 data/v1/*
 data/*.sql
 
-backend/
+backend/*.sql
+backend/*.zip
 
 image-volumes

@@ -1,18 +1,12 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, useState } from "react";
 import AppContainer from "@/components/AppContainer";
-import {
-  Button,
-  Card,
-  CardBody,
-  Carousel,
-  Typography,
-} from "@material-tailwind/react";
+import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
-const colors: string[] = [
+const items: string[] = [
   "bg-red-100",
   "bg-red-200",
   "bg-red-300",
@@ -32,7 +26,7 @@ const WatchPage: FC = () => {
 
   const handlePrev = () => current !== 0 && setCurrent((cur) => cur - 1);
   const handleNext = () =>
-    current < colors.length - 1 && setCurrent((cur) => cur + 1);
+    current < items.length - 1 && setCurrent((cur) => cur + 1);
 
   return (
     <>
@@ -42,7 +36,7 @@ const WatchPage: FC = () => {
           className: "sticky h-[calc(100vh-60px)] right-0 left-0 top-[60px]",
         }}
       >
-        <div className="h-[636px] w-full bg-[url('@/assets/images/loading.gif')] bg-center bg-no-repeat">
+        <div className="h-[424px] w-full bg-[url('@/assets/images/loading.gif')] bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
           <iframe
             allowFullScreen
             className="z-0 h-full w-full rounded-lg"
@@ -52,16 +46,16 @@ const WatchPage: FC = () => {
       </AppContainer>
       <div className="relative z-10 w-full bg-[url('@/assets/images/pricing_bg.jpg')]">
         <AppContainer className="py-[100px]">
-          <section className="grid grid-cols-[1fr_auto] border-b border-b-divider">
-            <div className="border-r border-r-divider pr-8">
+          <section className="grid grid-cols-1 border-b border-b-divider lg:grid-cols-[1fr_auto]">
+            <div className=" mb-6 border-r-0 border-r-divider lg:mb-4 lg:border-r lg:pl-4 xl:mb-6 xl:pr-8">
               <Typography
                 variant="h1"
                 className="mb-6 font-manrope text-slate-200"
               >
                 Spiderman: Into the spider verse
               </Typography>
-              <div className="mb-8 flex items-center">
-                <div className="mr-3 h-10 w-10">
+              <div className="mb-8 flex flex-wrap items-center gap-y-2">
+                <div className="mr-3 flex h-10 w-10">
                   <CircularProgressbar
                     value={75}
                     text={`${75 / 10}`}
@@ -85,29 +79,36 @@ const WatchPage: FC = () => {
                 <img
                   src="http://digiflex.themezinho.net/wp-content/themes/digiflex/images/imdb-logo.svg"
                   alt="imdb"
-                  className="mr-2 h-5"
+                  className="mr-2 flex h-5"
                 />
-                <Typography className="mr-7 text-lg font-thin text-slate-200">
+                <Typography className="mr-7 inline-flex text-lg font-thin text-slate-200">
                   Score
                 </Typography>
-                <Typography
-                  variant="h4"
-                  className="mr-7 text-lg font-bold text-slate-200"
-                >
-                  2018
-                </Typography>
-                <Typography className="mr-7 text-lg font-thin text-slate-200">
-                  1 hr 24 min
-                </Typography>
 
-                <div className="mr-7 flex h-[24px] items-center rounded-sm bg-slate-100 px-2">
-                  <Typography className="text-xs font-medium text-slate-900">
-                    CC
+                <div className="flex">
+                  <Typography
+                    variant="h4"
+                    className="mr-7 text-lg font-bold text-slate-200"
+                  >
+                    2018
+                  </Typography>
+                  <Typography className="mr-7 text-lg font-thin text-slate-200">
+                    1 hr 24 min
                   </Typography>
                 </div>
-                <Typography className="font-manrope font-medium text-cred">
-                  Action, Adventure, Animation
-                </Typography>
+
+                <div className="flex">
+                  <div className="mr-7 flex h-[24px] items-center rounded-sm bg-slate-100 px-2">
+                    <Typography className="text-xs font-medium text-slate-900">
+                      CC
+                    </Typography>
+                  </div>
+                  <div className="line-clamp-1">
+                    <Typography className="font-manrope font-medium text-cred">
+                      Action, Adventure, Animation
+                    </Typography>
+                  </div>
+                </div>
               </div>
 
               <Typography className="mb-6 font-manrope text-slate-400">
@@ -119,35 +120,35 @@ const WatchPage: FC = () => {
                 nulla pariatur.
               </Typography>
 
-              <div className="mb-2 font-manrope">
+              <div className="mb-2 line-clamp-2 font-manrope">
                 <Typography
                   variant="h5"
-                  className="inline-block w-36 text-lg font-normal tracking-wide text-slate-200"
+                  className="inline-flex w-24 justify-between text-lg font-normal tracking-wide text-slate-200"
                 >
-                  Director
+                  Director <span className="text-slate-400">:&nbsp;&nbsp;</span>
                 </Typography>
-                <Typography className="inline-block text-slate-400">
-                  : Chris Milewski
+                <Typography className="inline text-slate-400">
+                  Chris Milewski
                 </Typography>
               </div>
 
-              <div className="mb-2 font-manrope">
+              <div className="mb-2 line-clamp-2 font-manrope">
                 <Typography
                   variant="h5"
-                  className="inline-block w-36 text-lg font-normal tracking-wide text-slate-200"
+                  className="inline-flex w-24 justify-between text-lg font-normal tracking-wide text-slate-200"
                 >
-                  Casting
+                  Casting <span className="text-slate-400">:&nbsp;&nbsp;</span>
                 </Typography>
-                <Typography className="inline-block text-slate-400">
-                  : Andrea Autullo, Jeffrey Voice, Chiara Pavoni
+                <Typography className="inline text-slate-400">
+                  Andrea Autullo, Jeffrey Voice, Chiara Pavoni
                 </Typography>
               </div>
             </div>
-            <div className="pb-8 pl-8">
+            <div className="pb-6 lg:pb-4 lg:pl-4 xl:pb-8 xl:pl-8">
               <img
                 src="https://musicart.xboxlive.com/7/99f75000-0000-0000-0000-000000000002/504/image.jpg?w=1920&h=1080"
                 alt="film"
-                className="h-[440px] w-[285px]"
+                className="h-[612px] w-full md:h-[696px] lg:h-[440px] lg:w-[272px] xl:w-[285px]"
               />
             </div>
           </section>
@@ -161,16 +162,19 @@ const WatchPage: FC = () => {
           </Button>
         </AppContainer>
       </div>
-      <section className="relative z-10 w-full bg-[url('@/assets/images/services_bg.jpg')] bg-contain pt-[100px] py-[150px]">
+      <section className="relative z-10 w-full bg-[url('@/assets/images/services_bg.jpg')] bg-contain py-[100px] lg:py-[150px] lg:pt-[100px]">
         <AppContainer>
-          <div className="grid h-auto grid-cols-[1fr_275px] items-end gap-8">
+          <div className="grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_275px]">
             <div className="w-full max-w-full overflow-hidden">
               <div
-                className="transition-transform flex gap-4 duration-500 ease-out"
+                className="flex gap-4 transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${current * (165 + 16)}px)` }}
               >
-                {colors.map((color, index) => (
-                  <Card className={`rounded-none bg-transparent`}>
+                {items.map((color, index) => (
+                  <Card
+                    key={`like-${index}`}
+                    className={`rounded-none bg-transparent`}
+                  >
                     <CardBody className="w-[165px] p-0">
                       <img
                         className="h-[251px] w-full"
@@ -194,7 +198,7 @@ const WatchPage: FC = () => {
                 ))}
               </div>
             </div>
-            <div className="before:mb-6 before:block before:h-[1px] before:w-[48px] before:bg-divider after:mt-6 after:block after:h-[1px] after:w-full after:bg-divider">
+            <div className="order-first before:mb-6 before:block before:h-[1px] before:w-[48px] before:bg-divider after:mt-6 after:block after:h-[1px] after:w-full after:bg-divider lg:order-last">
               <Typography
                 variant="h2"
                 className="mb-4 inline-block font-roboto text-4xl capitalize leading-10 tracking-wide text-slate-200"

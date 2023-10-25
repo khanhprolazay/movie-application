@@ -79,7 +79,7 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
           </Typography>
         </ListItem>
       </PopoverHandler>
-      <PopoverContent {...trigger} className="bg-slate-200 py-2">
+      <PopoverContent {...trigger} className="z-10 bg-slate-200 py-2">
         {name}
       </PopoverContent>
     </Popover>
@@ -99,14 +99,19 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
   return (
     <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
-      <div className=" relative mb-2 box-border flex min-h-[60px] items-center border-b border-divider px-2">
-        <img src={logo} alt="logo" className="ml-3 h-8 w-8" />
-        <div className="absolute my-auto w-56 flex h-9 left-[64px] flex-col justify-end">
-          <Typography variant="h5" className={` ${open ? "block" : "hidden"}  text-slate-200`}>
-            <span className="text-cred">TMT</span> Movie
-          </Typography>
+      <Link to="/home">
+        <div className=" relative mb-2 box-border flex min-h-[60px] items-center border-b border-divider px-2">
+          <img src={logo} alt="logo" className="ml-3 h-8 w-8" />
+          <div className="absolute left-[64px] my-auto flex h-9 w-56 flex-col justify-end">
+            <Typography
+              variant="h5"
+              className={` ${open ? "block" : "hidden"}  text-slate-200`}
+            >
+              <span className="text-cred">TMT</span> Movie
+            </Typography>
+          </div>
         </div>
-      </div>
+      </Link>
       <List className={` mx-2 !min-w-0 gap-0 px-1 py-0 `}>
         <SidebarItem
           name="Home"

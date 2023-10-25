@@ -109,8 +109,11 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
       return (
         <div className="flex flex-wrap gap-x-12 gap-y-6">
           {tab.actors &&
-            tab.actors.map((actor) => (
-              <div className="flex min-w-[200px] max-w-[200px] items-center gap-3">
+            tab.actors.map((actor, key) => (
+              <div
+                key={`${actor.name}${key}`}
+                className="flex items-center gap-3 md:min-w-[150px] md:max-w-[150px] lg:min-w-[175px] lg:max-w-[175px]"
+              >
                 <Avatar src={actor.avatar} className="min-w-[48px]" />
                 <div className="font-manrope">
                   <div className="line-clamp-1">
@@ -144,13 +147,16 @@ const DetailPage = () => {
 
   return (
     <AppContainer className="z-10 pt-8">
-      <div className="grid w-full grid-cols-[294px_1fr] gap-4">
+      <div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-[294px_1fr]">
         <Card className="w-auto bg-cblack-600">
-          <CardHeader floated={false}>
+          <CardHeader
+            floated={false}
+            className="flex justify-evenly bg-cblack-600 sm:shadow-none"
+          >
             <img
               src={imageFilmDetail}
               alt="movie-picture"
-              className="h-96 w-full"
+              className="h-96 w-full rounded-lg sm:w-72"
             />
           </CardHeader>
           <CardBody className="p-4 font-manrope">
@@ -193,10 +199,10 @@ const DetailPage = () => {
               <div>
                 <Typography
                   variant="h2"
-                  className="text-[28px] font-bold text-slate-200/90"
+                  className="text-lg sm:text-[28px] font-bold text-slate-200/90"
                 >
                   Openheimmer &nbsp;
-                  <small className="text-lg font-light">2023</small>
+                  <small className="text-base sm:text-lg font-light">2023</small>
                 </Typography>
                 <Typography className="text-xs text-slate-400/80">
                   Action / Adventure / Science Fiction
@@ -232,7 +238,7 @@ const DetailPage = () => {
                 </Tab>
               ))}
             </TabsHeader>
-            <TabsBody className="h-full">
+            <TabsBody className="h-full min-h-[336px]">
               {tabs.map((tab) => (
                 <TabPanel
                   key={tab.value}
