@@ -2,7 +2,7 @@ import { Controller } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { PatternOption } from "@app/shared";
-import { PaginationDTO } from "../dto/movie.dto";
+import { MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
 @Controller()
 export class MovieController{
@@ -15,8 +15,18 @@ export class MovieController{
     return await this.movieService.getById(id);
   }
 
-  @MessagePattern(PatternOption["MOVIE.GET_BY_PAGINATION"])
-  async getMovieByPagination(@Payload() dto: PaginationDTO) {
-    return this.movieService.getByPagination(dto.skip, dto.limit);
+  @MessagePattern(PatternOption["MOVIE.GET_BY_YEAR"])
+  async getByYear(@Payload() dto: MovieByYearDTO) {
+    return this.movieService.getByYear(dto);
+  }
+
+  @MessagePattern(PatternOption["MOVIE.GET_BY_GENRES"])
+  async getByGenre(@Payload() dto: MovieByGenresDTO) {
+    return this.movieService.getByGenres(dto);
+  }
+
+  @MessagePattern(PatternOption["MOVIE.GET_BY_RATING"]) 
+  async getByRating(@Payload() dto: MovieByRatingDTO) {
+    return this.movieService.getByRating(dto);
   }
 }

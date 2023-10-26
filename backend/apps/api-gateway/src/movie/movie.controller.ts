@@ -1,4 +1,4 @@
-import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseIntPipe, Query } from "@nestjs/common";
+import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { Pattern, Service } from "@app/shared";
 import { ClientKafka } from "@nestjs/microservices";
@@ -12,24 +12,44 @@ export class MovieController implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_PAGINATION", "GENRE.GET_ALL"];
+    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES"];
     patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
     await this.movieClient.connect();
   }
 
-  @Get()
-  async getMovieByPagination(
+  @Get("byYear")
+  async getByYear(
+    @Query("year", ParseIntPipe) year: number,
     @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
-    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number) {
-    return await this.movieService.getMovieByPagination(skip, limit);
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
+  ) {
+    return await this.movieService.getByYear(year, skip, limit);
   }
 
-  @Get(":id")
+  @Get("byGenres")
+  async getByGenres(
+    @Query("genres", new ParseArrayPipe({ items: String, separator: ","})) genres: string[],
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
+  ) {
+    return await this.movieService.getByGenres(genres, skip, limit);
+  }
+
+  @Get("byRating")
+  async getByRating(
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
+  ) {
+    return await this.movieService.getByRating(skip, limit);
+  }
+
+
+  @Get("byId/:id")
   async getMovieById(@Param("id", ParseIntPipe) id: number) {
     return await this.movieService.getById(id);
   }
 
-  @Get("genres/get")
+  @Get("genres")
   async getGenres() {
     return await this.movieService.getGenres();
   }

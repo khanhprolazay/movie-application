@@ -11,8 +11,16 @@ export class MovieService extends BaseMessageService<MovieEntity> {
     super(movieClient, "MOVIE");
   }
 
-  async getMovieByPagination(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET_BY_PAGINATION"], { skip,  limit });
+  async getByYear(year: number, skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_YEAR"], { skip, limit, year });
+  }
+
+  async getByRating(skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_RATING"], { skip, limit });
+  }
+
+  async getByGenres(genres: string[], skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_GENRES"], { genres, skip, limit });
   }
 
   async getGenres() {

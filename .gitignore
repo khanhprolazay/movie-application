@@ -10,5 +10,6 @@ data/*.sql
 
 backend/*.sql
 backend/*.zip
+backend/tar
 
 image-volumes

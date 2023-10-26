@@ -19,9 +19,13 @@ export class ExceptionFilter extends BaseRpcExceptionFilter<MicroserviceHttpExce
 
   catch(exception: any, host: ArgumentsHost)
   {
-    const {message, error, statusCode } = exception.response;
-    this.loggerService.error(`${statusCode} ${error}`, message, `Microservice Exception Filter`);
-    return throwError(() => exception);
+    if (exception.response) {
+      const { message, error, statusCode } = exception.response;
+      this.loggerService.error(`${statusCode} ${error}`, message, `Microservice Exception Filter`);
+      return throwError(() => exception);
+    }
+    
+    return throwError(() => Object.getOwnPropertyDescriptors(exception));
   }
   
 }
