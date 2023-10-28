@@ -12,7 +12,7 @@ export class MovieController implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES"];
+    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES", "MOVIES.GET_BY_DAY"];
     patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
     await this.movieClient.connect();
   }
@@ -41,6 +41,14 @@ export class MovieController implements OnModuleInit {
     @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
   ) {
     return await this.movieService.getByRating(skip, limit);
+  }
+
+  @Get("byDay")
+  async getByDay(
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
+  ) {
+    return await this.movieService.getByDay(skip, limit);
   }
 
 

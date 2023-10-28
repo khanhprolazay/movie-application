@@ -20,4 +20,6 @@ export class MovieByGenresDTO extends Pagination {
   genres: string[]
 }
 
+export class MovieByDayDTO extends Pagination {}
+
 export class MovieByRatingDTO extends Pagination {}

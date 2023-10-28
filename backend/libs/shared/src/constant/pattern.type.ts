@@ -18,7 +18,7 @@ export type BasePattern<key extends EntityKeyUnion> = {
 }[BaseAction]
 
 export type GenrePattern = BasePattern<"GENRE"> | "GENRE.GET_ALL"
-export type MoviePattern = BasePattern<"MOVIE"> | "MOVIE.GET_BY_YEAR" | "MOVIE.GET_BY_RATING" | "MOVIE.GET_BY_GENRES";
+export type MoviePattern = BasePattern<"MOVIE"> | "MOVIE.GET_BY_YEAR" | "MOVIE.GET_BY_RATING" | "MOVIE.GET_BY_GENRES" | "MOVIES.GET_BY_DAY";
 export type AuthPattern = "AUTH.LOGIN" | "AUTH.REGISTER" | "AUTH.VALIDATE" | "AUTH.GOOGLE_LOGIN" | "AUTH.REFRESH_TOKEN"
 export type UserPattern = BasePattern<"USER"> | "USER.GET_BY_EMAIL" | "USER.CREATE_GOOGLE" | "USER.CHECK_BY_EMAIL" | "USER.GET_BY_EMAIL_AND_PASSWORD"
 
@@ -44,6 +44,7 @@ export const PatternOption: PatternOptionType = {
   "MOVIE.UPDATE": "MOVIE.UPDATE",
   "MOVIE.DELETE": "MOVIE.DELETE",
   "MOVIE.GET_BY_ID": "MOVIE.GET_BY_ID",
+  "MOVIES.GET_BY_DAY": "MOVIES.GET_BY_DAY",
   "MOVIE.GET_BY_YEAR": "MOVIE.GET_BY_YEAR",
   "MOVIE.GET_BY_GENRES": "MOVIE.GET_BY_GENRES",
   "MOVIE.GET_BY_RATING": "MOVIE.GET_BY_RATING",

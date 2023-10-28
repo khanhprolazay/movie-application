@@ -23,6 +23,10 @@ export class MovieService extends BaseMessageService<MovieEntity> {
     return await this.executeMany(PatternOption["MOVIE.GET_BY_GENRES"], { genres, skip, limit });
   }
 
+  async getByDay(skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIES.GET_BY_DAY"], { skip, limit });
+  }
+
   async getGenres() {
     return await this.executeMany<GenreEntity>(PatternOption["GENRE.GET_ALL"], {});
   }

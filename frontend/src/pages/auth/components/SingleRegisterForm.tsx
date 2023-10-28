@@ -1,12 +1,13 @@
 import { Button, Input, Spinner, Typography } from "@material-tailwind/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import "./animation.css";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { RegisterDTO } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import authenticationActions from "@/actions/authentication.action";
+import AppLogo from "@/components/AppLogo";
 
 const SingleRegisterForm: FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,14 @@ const SingleRegisterForm: FC = () => {
       className="register-animation static right-0 top-0 flex h-full items-center justify-around backdrop-blur-xl lg:absolute"
     >
       <div className="max-w-96 relative mx-8 flex w-full flex-col transition-all sm:mx-16 md:mx-36 lg:mx-40">
+        <Link to="/home">
+          <AppLogo
+            variant="h3"
+            imageProps={{ className: "!w-10 !h-10" }}
+            textProps={{ className: "left-[48px] top-[6px]" }}
+            containerProps={{ className: "mx-auto left-0 -top-16 absolute" }}
+          />
+        </Link>
         <Typography
           variant="h1"
           className="mb-4 font-manrope text-xl font-bold text-slate-200"
@@ -38,7 +47,11 @@ const SingleRegisterForm: FC = () => {
           subcription.
         </Typography>
 
-        <div className={`${loading && "opacity-70"} relative my-2 flex flex-col gap-y-3`}>
+        <div
+          className={`${
+            loading && "opacity-70"
+          } relative my-2 flex flex-col gap-y-3`}
+        >
           <Input
             required
             size="lg"

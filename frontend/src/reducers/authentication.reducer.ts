@@ -32,7 +32,7 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state, 
         loading: false,
-        isLogin: true,
+        isLogin: false,
         error: action.payload?.error,
       }
 

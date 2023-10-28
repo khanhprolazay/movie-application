@@ -22,9 +22,9 @@ const HomePage: FC = () => {
 
   const navigate = useNavigate();
 
-  const handleSearch = () => {
-    navigate("/search");
-  };
+  // const handleSearch = () => {
+  //   navigate("/search");
+  // };
 
   const handleReleaseYear = (year: number) => {
     console.log(year);

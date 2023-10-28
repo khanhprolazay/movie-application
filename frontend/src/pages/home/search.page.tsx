@@ -1,6 +1,4 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import { Option, Select } from "@material-tailwind/react";
 import AppContainer from "@/components/AppContainer";
 import { ListMovieResult } from "./components/ListMovieResult";
 

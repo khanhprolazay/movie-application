@@ -25,7 +25,7 @@ import {
 } from "@material-tailwind/react";
 import { memo, FC, ReactNode, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "@/assets/images/logo.png";
+import AppLogo from "./AppLogo";
 
 const icon = "h-5 w-6";
 
@@ -100,17 +100,15 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
   return (
     <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
       <Link to="/home">
-        <div className=" relative mb-2 box-border flex min-h-[60px] items-center border-b border-divider px-2">
-          <img src={logo} alt="logo" className="ml-3 h-8 w-8" />
-          <div className="absolute left-[64px] my-auto flex h-9 w-56 flex-col justify-end">
-            <Typography
-              variant="h5"
-              className={` ${open ? "block" : "hidden"}  text-slate-200`}
-            >
-              <span className="text-cred">TMT</span> Movie
-            </Typography>
-          </div>
-        </div>
+        <AppLogo
+          hidden={!open}
+          variant="h5"
+          imageProps={{ className: "ml-3 " }}
+          textProps={{ className: "left-[54px] top-[6px]"}}
+          containerProps={{
+            className: "mb-2 box-border border-b border-divider px-2",
+          }}
+        />
       </Link>
       <List className={` mx-2 !min-w-0 gap-0 px-1 py-0 `}>
         <SidebarItem

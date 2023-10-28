@@ -21,6 +21,7 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 type TabValues = "summary" | "cast" | "trailer";
 type Actor = {
@@ -141,6 +142,9 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
   }
 };
 
+// DetailPageSection
+// DetailPageView
+
 // export const DetailPage = (props: DetailsFilmProps) => {
 const DetailPage = () => {
   const [activeTab, setActiveTab] = useState<TabValues>("summary");
@@ -199,19 +203,23 @@ const DetailPage = () => {
               <div>
                 <Typography
                   variant="h2"
-                  className="text-lg sm:text-[28px] font-bold text-slate-200/90"
+                  className="text-lg font-bold text-slate-200/90 sm:text-[28px]"
                 >
                   Openheimmer &nbsp;
-                  <small className="text-base sm:text-lg font-light">2023</small>
+                  <small className="text-base font-light sm:text-lg">
+                    2023
+                  </small>
                 </Typography>
                 <Typography className="text-xs text-slate-400/80">
                   Action / Adventure / Science Fiction
                 </Typography>
               </div>
 
-              <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
-                Watch
-              </Button>
+              <Link to="/watch/test">
+                <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
+                  Watch
+                </Button>
+              </Link>
             </CardBody>
           </Card>
           <Tabs

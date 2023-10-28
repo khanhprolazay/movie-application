@@ -12,4 +12,6 @@ backend/*.sql
 backend/*.zip
 backend/tar
 
+frontend/*.zip
+
 image-volumes

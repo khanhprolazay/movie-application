@@ -4,6 +4,7 @@ import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import imdb from "@/assets/images/imdb-logo.svg";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 const items: string[] = [
@@ -77,7 +78,7 @@ const WatchPage: FC = () => {
                   />
                 </div>
                 <img
-                  src="http://digiflex.themezinho.net/wp-content/themes/digiflex/images/imdb-logo.svg"
+                  src={imdb}
                   alt="imdb"
                   className="mr-2 flex h-5"
                 />
@@ -170,7 +171,7 @@ const WatchPage: FC = () => {
                 className="flex gap-4 transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${current * (165 + 16)}px)` }}
               >
-                {items.map((color, index) => (
+                {items.map((_, index) => (
                   <Card
                     key={`like-${index}`}
                     className={`rounded-none bg-transparent`}

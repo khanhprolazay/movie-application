@@ -15,6 +15,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import authenticationActions from "@/actions/authentication.action";
 import { useGoogleLogin } from "@react-oauth/google";
+import AppLogo from "@/components/AppLogo";
 
 const SingleLoginForm: FC = () => {
   const navigate = useNavigate();
@@ -37,9 +38,17 @@ const SingleLoginForm: FC = () => {
     <form
       autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
-      className=" login-animation static left-0 top-0 flex h-full items-center justify-around backdrop-blur-xl lg:absolute"
+      className=" login-animation relative left-0 top-0 flex h-full items-center justify-around backdrop-blur-xl lg:absolute"
     >
       <div className="max-w-96 relative mx-8 flex w-full flex-col sm:mx-16 md:mx-36 lg:mx-40">
+        <Link to="/home">
+          <AppLogo
+            variant="h3"
+            imageProps={{ className: "!w-10 !h-10" }}
+            textProps={{ className: "left-[48px] top-[6px]" }}
+            containerProps={{ className: "mx-auto left-0 -top-16 absolute" }}
+          />
+        </Link>
         <Typography
           variant="h1"
           className="mb-4 font-manrope text-xl font-bold text-slate-200"
@@ -84,6 +93,7 @@ const SingleLoginForm: FC = () => {
 
           <div className="flex items-center justify-between">
             <Radio
+              color="yellow"
               className="h-5 w-5"
               label={
                 <Typography
@@ -127,7 +137,7 @@ const SingleLoginForm: FC = () => {
 
         <div className="mb-6 mt-8 flex w-full items-center justify-between gap-8">
           <div className="w-full border-b border-slate-400"></div>
-          <Typography className=" font-manrope font-semibold text-sm w-auto text-slate-200">
+          <Typography className=" w-auto font-manrope text-sm font-semibold text-slate-200">
             OR
           </Typography>
           <div className="w-full border-b border-slate-400"></div>
@@ -149,4 +159,4 @@ const SingleLoginForm: FC = () => {
   );
 };
 
- export default SingleLoginForm;
+export default SingleLoginForm;

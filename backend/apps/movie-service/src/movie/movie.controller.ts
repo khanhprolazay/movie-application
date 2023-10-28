@@ -2,7 +2,7 @@ import { Controller } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { PatternOption } from "@app/shared";
-import { MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
+import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
 @Controller()
 export class MovieController{
@@ -28,5 +28,10 @@ export class MovieController{
   @MessagePattern(PatternOption["MOVIE.GET_BY_RATING"]) 
   async getByRating(@Payload() dto: MovieByRatingDTO) {
     return this.movieService.getByRating(dto);
+  }
+
+  @MessagePattern(PatternOption["MOVIES.GET_BY_DAY"])
+  async getByDay(@Payload() dto: MovieByDayDTO) {
+    return this.movieService.getByDay(dto);
   }
 }

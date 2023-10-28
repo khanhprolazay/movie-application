@@ -3,7 +3,7 @@ import { BaseService, LoggerService, MovieEntity } from "@app/shared";
 import { MovieRepository } from "./movie.repository";
 import { Between, In, IsNull, Not } from "typeorm";
 import { startOfYear, endOfYear } from "date-fns";
-import { MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
+import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
 @Injectable()
 export class MovieService extends BaseService<MovieEntity, MovieRepository>{
@@ -68,6 +68,25 @@ export class MovieService extends BaseService<MovieEntity, MovieRepository>{
           name: In(genres),
         },
       },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        imageUrl: true,
+        release: true,
+        banner: true,
+        movieLength: true,
+      }
+    })
+  }
+
+  async getByDay(dto: MovieByDayDTO) {
+    const { skip, limit } = dto;
+
+    return await this.repository.find({
+      order: { release: "DESC" },
+      take: limit,
+      skip: skip,
       select: {
         id: true,
         title: true,

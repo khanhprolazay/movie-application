@@ -123,7 +123,7 @@ const AboutUsPage: FC = () => {
               variant="h2"
               className="mb-3 text-xl font-bold capitalize sm:text-2xl lg:text-2xl"
             >
-              TMT Movies
+              <span className="text-cred">TMT </span>Movies
             </Typography>
             <Typography className="mb-7 text-4xl font-extrabold sm:text-5xl  xl:text-6xl">
               Unlimited <strong className="!text-cred">Movie</strong>, TV Shows,
