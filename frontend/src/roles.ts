@@ -1,0 +1,1 @@
+export type Role = "USER" | "ADMIN" | "ADMIN_SYSTEM" | "ALL";

@@ -1,0 +1,17 @@
+*/node_modules
+*/dist
+dist-ssr
+*/config/env
+*/volumes
+
+data/*/*.csv
+data/v1/*
+data/*.sql
+
+backend/*.sql
+backend/*.zip
+backend/tar
+
+frontend/*.zip
+
+image-volumes

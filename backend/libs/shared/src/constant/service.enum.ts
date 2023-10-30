@@ -1,0 +1,6 @@
+export enum Service {
+  AUTH = "AUTH-SERVICE",
+  USER = "USER-SERVICE",
+  MOVIE = "MOVIE-SERVICE",
+  GENRE = "GENRE-SERVICE,"
+}

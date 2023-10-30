@@ -1,0 +1,27 @@
+.login-animation {
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+.register-animation {
+  animation: fadeInRight 1s ease-in-out;
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
