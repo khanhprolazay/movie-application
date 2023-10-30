@@ -24,7 +24,7 @@ export class MovieService extends BaseMessageService<MovieEntity> {
   }
 
   async getByDay(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIES.GET_BY_DAY"], { skip, limit });
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_DAY"], { skip, limit });
   }
 
   async getGenres() {

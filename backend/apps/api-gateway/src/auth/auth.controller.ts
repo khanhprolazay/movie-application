@@ -2,8 +2,10 @@ import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, OnModule
 import { LoginGoogleRequestDto, LoginRequestDto, Pattern, RefreshTokenDto, RegisterRequestDto, Service} from "@app/shared";
 import { AuthService } from "./auth.service";
 import { ClientKafka } from "@nestjs/microservices";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller('auth')
+@ApiTags("Auth")
 export class AuthController implements OnModuleInit {
   constructor(
     @Inject(Service.AUTH) 

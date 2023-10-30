@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import goolgeUtils from '../utils/googleUtils';
 import { ClientKafka } from '@nestjs/microservices';
 import { Inject, Injectable, ConflictException, ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, UserEntity } from '@app/shared';
+import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, UserEntity, UserLoginType } from '@app/shared';
 
 @Injectable()
 export class AuthService {
@@ -59,6 +59,7 @@ export class AuthService {
           email: response.email,
           avatar: response.picture,
           lastName: response.given_name,
+          loginType: UserLoginType.GOOGLE,
           firstName: response.family_name,
         };
         user = await firstValueFrom(this.userClient.send<UserEntity>(PatternOption['USER.CREATE_GOOGLE'], googleDto));

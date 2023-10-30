@@ -1,10 +1,11 @@
 import { hash } from "argon2";
 import { BaseEntity } from "../base";
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToOne } from "typeorm";
 import { IsEmail, IsEnum, IsOptional, IsPhoneNumber, IsString } from "class-validator";
 import { Exclude } from "class-transformer";
 import { RoleEntity } from "./role.entity";
 import { Sex } from "../constant/sex.enum";
+import { UserLoginType } from "../constant";
 
 @Entity({name: 'user'})
 export class UserEntity extends BaseEntity {
@@ -26,6 +27,10 @@ export class UserEntity extends BaseEntity {
   @Column({ type: "enum", enum: Sex, default: Sex.MALE })
   sex: Sex
 
+  @IsEnum(UserLoginType)
+  @Column({type: "enum", enum: UserLoginType, default: UserLoginType.SYSTEM})
+  loginType: UserLoginType
+
   @IsPhoneNumber()
   @Column({ nullable: true})
   phone?: string
@@ -40,7 +45,6 @@ export class UserEntity extends BaseEntity {
   password: string
 
   @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     this.password = await hash(this.password);
   }

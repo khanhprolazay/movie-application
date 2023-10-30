@@ -30,7 +30,7 @@ export class MovieController{
     return this.movieService.getByRating(dto);
   }
 
-  @MessagePattern(PatternOption["MOVIES.GET_BY_DAY"])
+  @MessagePattern(PatternOption["MOVIE.GET_BY_DAY"])
   async getByDay(@Payload() dto: MovieByDayDTO) {
     return this.movieService.getByDay(dto);
   }

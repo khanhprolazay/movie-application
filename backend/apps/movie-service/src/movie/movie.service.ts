@@ -106,7 +106,7 @@ export class MovieService extends BaseService<MovieEntity, MovieRepository>{
         actors: { actor: true }
       },
       select: {
-        imdbId: false,
+        imdbId: true,
         genres: { name: true },
         actors: {
           role: true,

@@ -1,9 +1,10 @@
 import { v4 } from 'uuid';
-import { verify } from 'argon2';
+import { verify, hash } from 'argon2';
 import { UserRepository } from './user.repository';
 import { RoleService } from '../role/role.service';
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { BaseService, UserEntity, LoggerService, LoginRequestDto, RegisterRequestDto, Role, RegisterGoogleRequestDto } from '@app/shared';
+import { ForbiddenException, Injectable, NotAcceptableException } from '@nestjs/common';
+import { BaseService, UserEntity, LoggerService, LoginRequestDto, RegisterRequestDto, Role, RegisterGoogleRequestDto, UserLoginType } from '@app/shared';
+import { UpdatePasswordDTO } from '@app/shared/dto/user.dto';
 
 @Injectable()
 export class UserService extends BaseService<UserEntity, UserRepository> {
@@ -57,5 +58,25 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
     user.role = role;
     
     return await this.repository.save(user);
+  }
+
+  async updatePassword(dto: { id: number, data: UpdatePasswordDTO }) {
+    const { id, data } = dto;
+    const { oldPassword, newPassword, reNewPassword } = data;
+
+    if (newPassword !== reNewPassword)
+      throw new NotAcceptableException("Two new provided password must be the same !!!");
+
+    const user = await this.repository.findOneBy({ id });
+
+    if (user.loginType === UserLoginType.GOOGLE)
+      throw new NotAcceptableException("Dont accept to change this account password !!!")
+
+    const match = await verify(user.password, oldPassword)
+    if (!match)
+      throw new NotAcceptableException("Old password not correct !!!")
+
+    await this.update(id, { password: await hash(newPassword) });
+    return null;
   }
 }

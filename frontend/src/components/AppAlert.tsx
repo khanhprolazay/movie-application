@@ -57,11 +57,11 @@ const getColor = (type: AlertType) => {
     case "warning":
       return `${alertTheme.warning.borderColor} ${alertTheme.warning.backgroundColor}`;
 
-    case "error":
-      return `${alertTheme.error.borderColor} ${alertTheme.error.backgroundColor}`;
+    case "success":
+      return `${alertTheme.success.borderColor} ${alertTheme.success.backgroundColor}`;
 
     default:
-      return `${alertTheme.success.borderColor} ${alertTheme.success.backgroundColor}`;
+      return `${alertTheme.error.borderColor} ${alertTheme.error.backgroundColor}`;
   }
 };
 
@@ -99,7 +99,7 @@ const AlertItem: FC<AlertItemProps> = (props) => {
       )}`}
     >
       <span className="capitalize">{alert.type}</span>
-      <span className="mt-1 block text-sm">{alert.message}</span>
+      <span className="mt-1 block text-sm">{typeof alert.message === "object" ? JSON.stringify(alert.message) : alert.message}</span>
     </MAlert>
   );
 };

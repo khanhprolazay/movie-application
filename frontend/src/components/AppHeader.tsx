@@ -92,10 +92,10 @@ const AppHeader: FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="flex items-center gap-2 rounded-3xl bg-cblack-600 py-1 pl-2 pr-4">
+            <div className={`flex w-auto items-center rounded-3xl bg-cblack-600 py-1 pl-2 ${data.firstName || data.lastName ? "pr-4 gap-2" : "pr-2 gap-0"}`}>
               <Avatar src={data.avatar} className="h-9 w-9" />
-              <Typography className="font-manrope text-sm font-bold text-slate-200">
-                {data.firstName} &nbsp; {data.lastName}
+              <Typography className="font-manrope text-sm font-medium text-slate-200">
+                {data.firstName} {data.lastName}
               </Typography>
             </div>
           ))}
