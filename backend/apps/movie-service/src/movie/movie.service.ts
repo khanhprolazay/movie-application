@@ -107,7 +107,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       take: limit,
       skip: skip,
       where: {
-        title: Like(search),
+        title: Like(`%${search}%`),
         release: LessThanOrEqual(new Date()),
       },
       select: {
