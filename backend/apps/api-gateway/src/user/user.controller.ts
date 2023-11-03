@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Inject, OnModuleInit, Param, ParseIntPipe, Post, UseGuards } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
-import { Pattern, Service, UserEntity } from "@app/shared";
+import { Pattern, Service, User } from "@app/shared";
 import { UserService } from "./user.service";
 import { JwtGuard } from "../auth/guard";
-import { User } from "../decorator";
+import { GetUser } from "../decorator";
 import { UpdatePasswordDTO, UpdateUserDTO } from "@app/shared/dto/user.dto";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
@@ -26,19 +26,19 @@ export class UserController implements OnModuleInit {
   // Get user for role USER
   @Get()
   @UseGuards(JwtGuard)
-  async getUser(@User() user: UserEntity) {
+  async getUser(@GetUser() user: User) {
     return user;
   } 
 
   @Post()
   @UseGuards(JwtGuard)
-  async updateUser(@Body() dto: UpdateUserDTO, @User('id') id: number) {
+  async updateUser(@Body() dto: UpdateUserDTO, @GetUser('id') id: number) {
     return await this.userService.update(id, dto);
   }
 
   @Post("password")
   @UseGuards(JwtGuard)
-  async updatePassword(@Body() dto: UpdatePasswordDTO, @User('id') id: number) {
+  async updatePassword(@Body() dto: UpdatePasswordDTO, @GetUser('id') id: number) {
     return await this.userService.updatePassword(id, dto);
   }
 

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerModule, ActorEntity, ActorToMovie, AwardEntity, GenreEntity, MovieEntity, QuoteEntity, TrademarkEntity, TriviaEntity, BioEntity } from '@app/shared';
+import { LoggerModule, Actor, ActorToMovie, Genre, Movie, Trailer } from '@app/shared';
 import { MovieModule } from './movie/movie.module';
 import { GenreModule } from './genre/genre.module';
 
@@ -18,7 +18,7 @@ import { GenreModule } from './genre/genre.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: "mysql",
-          entities: [MovieEntity, ActorEntity, ActorToMovie, AwardEntity, GenreEntity, QuoteEntity, TrademarkEntity, TriviaEntity, BioEntity],
+          entities: [Movie, Actor, ActorToMovie, Genre, Trailer],
           host: configService.get('MOVIE_SERVICE_DATABASE_HOST'),
           port: configService.get('MOVIE_SERVICE_DATABASE_PORT'),
           database: configService.get('MOVIE_SERVICE_DATABASE_NAME'),

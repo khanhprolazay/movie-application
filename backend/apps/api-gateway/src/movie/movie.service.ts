@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
-import { GenreEntity, MovieEntity, PatternOption, Service } from "@app/shared";
+import { Genre, Movie, PatternOption, Service } from "@app/shared";
 import { BaseMessageService } from "../base";
 
 @Injectable()
-export class MovieService extends BaseMessageService<MovieEntity> {
+export class MovieService extends BaseMessageService<Movie> {
   constructor(
     @Inject(Service.MOVIE) protected readonly movieClient: ClientKafka,
   ) {
@@ -28,6 +28,15 @@ export class MovieService extends BaseMessageService<MovieEntity> {
   }
 
   async getGenres() {
-    return await this.executeMany<GenreEntity>(PatternOption["GENRE.GET_ALL"], {});
+    return await this.executeMany<Genre>(PatternOption["GENRE.GET_ALL"], {});
   }
+
+  async getByUpcoming(skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_UPCOMING"], { skip, limit })
+  }
+
+  async getBySearch(search: string, skip, limit) {
+    return await this.executeMany(PatternOption["MOVIE.GET_BY_SEARCH"], { search, skip, limit });
+  }
+
 }

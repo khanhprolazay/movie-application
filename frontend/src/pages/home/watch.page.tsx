@@ -38,10 +38,15 @@ const WatchPage: FC = () => {
         }}
       >
         <div className="h-[424px] w-full bg-[url('@/assets/images/loading.gif')] bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
+          {/* <iframe
+            allowFullScreen
+            className="z-0 h-full w-full rounded-lg"
+            src="https://www.2embed.cc/embed/tt9362722"
+          /> */}
           <iframe
             allowFullScreen
             className="z-0 h-full w-full rounded-lg"
-            src="https://www.2embed.cc/embed/tt4633694"
+            src="http://www.imdb.com/video/imdb/vi829277209/imdb/embed?autoplay=false"
           />
         </div>
       </AppContainer>
@@ -77,11 +82,7 @@ const WatchPage: FC = () => {
                     }}
                   />
                 </div>
-                <img
-                  src={imdb}
-                  alt="imdb"
-                  className="mr-2 flex h-5"
-                />
+                <img src={imdb} alt="imdb" className="mr-2 flex h-5" />
                 <Typography className="mr-7 inline-flex text-lg font-thin text-slate-200">
                   Score
                 </Typography>

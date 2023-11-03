@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Inject, OnModuleInit, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Inject, OnModuleInit, Post } from "@nestjs/common";
 import { LoginGoogleRequestDto, LoginRequestDto, Pattern, RefreshTokenDto, RegisterRequestDto, Service} from "@app/shared";
 import { AuthService } from "./auth.service";
 import { ClientKafka } from "@nestjs/microservices";

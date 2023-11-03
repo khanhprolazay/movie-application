@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import goolgeUtils from '../utils/googleUtils';
 import { ClientKafka } from '@nestjs/microservices';
 import { Inject, Injectable, ConflictException, ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, UserEntity, UserLoginType } from '@app/shared';
+import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, User, UserLoginType } from '@app/shared';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +24,7 @@ export class AuthService {
       const verify = this.jwtService.verify<JwtPayload>(token, {secret});
 
       return await firstValueFrom(
-        this.userClient.send<UserEntity>(PatternOption['USER.GET_BY_ID'], verify.sub)
+        this.userClient.send<User>(PatternOption['USER.GET_BY_ID'], verify.sub)
       );
     } catch (err) {
       throw new ForbiddenException("Token expried !!!");
@@ -33,7 +33,7 @@ export class AuthService {
 
   async login(dto: LoginRequestDto): Promise<LoginResonseDto> {
     const user = await firstValueFrom(
-      this.userClient.send<UserEntity>(PatternOption['USER.GET_BY_EMAIL_AND_PASSWORD'], dto)
+      this.userClient.send<User>(PatternOption['USER.GET_BY_EMAIL_AND_PASSWORD'], dto)
     );
     
     const payload: JwtPayload = {sub: user.id, email: user.email};
@@ -52,7 +52,7 @@ export class AuthService {
         this.userClient.send<string>(PatternOption['USER.CHECK_BY_EMAIL'], response.email)
       );
 
-      let user: UserEntity;
+      let user: User;
 
       if (check === "false") {
         const googleDto: RegisterGoogleRequestDto = {
@@ -62,9 +62,9 @@ export class AuthService {
           loginType: UserLoginType.GOOGLE,
           firstName: response.family_name,
         };
-        user = await firstValueFrom(this.userClient.send<UserEntity>(PatternOption['USER.CREATE_GOOGLE'], googleDto));
+        user = await firstValueFrom(this.userClient.send<User>(PatternOption['USER.CREATE_GOOGLE'], googleDto));
       } else {
-        user = await firstValueFrom(this.userClient.send<UserEntity>(PatternOption['USER.GET_BY_EMAIL'], response.email));
+        user = await firstValueFrom(this.userClient.send<User>(PatternOption['USER.GET_BY_EMAIL'], response.email));
       }
       
       const payload: JwtPayload = {sub: user.id, email: user.email};
@@ -92,7 +92,7 @@ export class AuthService {
     }
 
     return await firstValueFrom(
-      this.userClient.send<UserEntity>(PatternOption['USER.CREATE'], dto)
+      this.userClient.send<User>(PatternOption['USER.CREATE'], dto)
     )
   }
 

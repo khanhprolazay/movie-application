@@ -1,8 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { UserEntity } from '@app/shared';
+import { User } from '@app/shared';
 
-export const User = createParamDecorator(
-  (key: Exclude<keyof UserEntity, "hasId" | "password" | "hashPassword">, context: ExecutionContext): UserEntity => {
+export const GetUser = createParamDecorator(
+  (key: Exclude<keyof User, "hasId" | "password" | "hashPassword">, context: ExecutionContext): User => {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
     return key ? user?.[key] : user;

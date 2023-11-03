@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginRequestDto, PatternOption, RegisterGoogleRequestDto, RegisterRequestDto, UserEntity } from '@app/shared';
+import { LoginRequestDto, PatternOption, RegisterGoogleRequestDto, RegisterRequestDto, User } from '@app/shared';
 import { Payload, MessagePattern } from '@nestjs/microservices';
 import { UpdatePasswordDTO } from '@app/shared/dto/user.dto';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -26,7 +26,7 @@ export class UserController {
   }
 
   @MessagePattern(PatternOption['USER.UPDATE'])
-  updateUser(@Payload() dto: { id: number, data: QueryDeepPartialEntity<UserEntity>}) {
+  updateUser(@Payload() dto: { id: number, data: QueryDeepPartialEntity<User>}) {
     return this.userService.update(dto.id, dto.data);
   }
 

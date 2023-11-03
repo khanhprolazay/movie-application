@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { Role, RoleEntity } from "@app/shared";
+import { Role, RoleEnum } from "@app/shared";
 import { Repository, DataSource } from 'typeorm';
 
 @Injectable()
-export class RoleRepository extends Repository<RoleEntity> {
+export class RoleRepository extends Repository<Role> {
   constructor(private dataSource: DataSource ) {
-    super(RoleEntity, dataSource.createEntityManager());
+    super(Role, dataSource.createEntityManager());
   }
 
-  async getByName(name: Role) {
-    return await this.createQueryBuilder().where(`name= :name`, {name: name}).getOne();
+  async getByName(name: RoleEnum) {
+    return await this.createQueryBuilder().where(`name= :name`, { name }).getOne();
   }
 }

@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { UserEntity } from "@app/shared";
+import { User } from "@app/shared";
 import { DataSource, Repository } from "typeorm";
 
 @Injectable()
-export class UserRepository extends Repository<UserEntity> {
+export class UserRepository extends Repository<User> {
   constructor( private readonly dataSource: DataSource ) {
-    super(UserEntity, dataSource.createEntityManager());
+    super(User, dataSource.createEntityManager());
   }
 
-  getByEmail(email: string): Promise<UserEntity | null> {
+  getByEmail(email: string): Promise<User | null> {
     return this.createQueryBuilder().where(`email = :email`, {email: email}).getOne();
   }
 }
