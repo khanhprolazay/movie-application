@@ -145,10 +145,15 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     const results = await this.repository.find({
       relations: {
         genres: true,
-        actors: { actor: true }
+        trailers: true,
+        actors: { actor: true },
       },
       select: {
         imdbId: true,
+        trailers: {
+          type: true,
+          imdbId: true,
+        },
         genres: { name: true },
         actors: {
           role: true,
