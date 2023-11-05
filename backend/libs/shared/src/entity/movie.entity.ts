@@ -15,6 +15,9 @@ export class Movie extends BaseEntity {
   @Column({type: "double", nullable: true})
   rating: number
 
+  @Column({ type: "int", nullable: true})
+  voteCount: number
+
   @Column({ type: "double", nullable: true })
   movieLength: number
 

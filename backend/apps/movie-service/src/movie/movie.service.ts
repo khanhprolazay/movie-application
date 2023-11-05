@@ -39,7 +39,10 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     const { skip, limit } = dto;
   
     return await this.repository.find({
-      order: { rating: "DESC" },
+      order: { 
+        voteCount: "DESC",
+        rating: "DESC" 
+      },
       take: limit,
       skip: skip,
       where: {
