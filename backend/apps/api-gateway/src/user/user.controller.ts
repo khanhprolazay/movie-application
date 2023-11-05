@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, OnModuleInit, Param, ParseIntPipe, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Inject, OnModuleInit, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
 import { Pattern, Service, User } from "@app/shared";
 import { UserService } from "./user.service";
@@ -30,13 +30,13 @@ export class UserController implements OnModuleInit {
     return user;
   } 
 
-  @Post()
+  @Put()
   @UseGuards(JwtGuard)
   async updateUser(@Body() dto: UpdateUserDTO, @GetUser('id') id: number) {
     return await this.userService.update(id, dto);
   }
 
-  @Post("password")
+  @Put("password")
   @UseGuards(JwtGuard)
   async updatePassword(@Body() dto: UpdatePasswordDTO, @GetUser('id') id: number) {
     return await this.userService.updatePassword(id, dto);

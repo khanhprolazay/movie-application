@@ -1,11 +1,13 @@
-import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query } from "@nestjs/common";
+import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { Pattern, Service } from "@app/shared";
 import { ClientKafka } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
+import { CacheInterceptor, CacheKey } from "@nestjs/cache-manager";
 
 @Controller("movies")
 @ApiTags("Movie")
+@UseInterceptors(CacheInterceptor)
 export class MovieController implements OnModuleInit {
   constructor( 
     @Inject(Service.MOVIE) 
