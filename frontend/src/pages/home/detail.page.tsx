@@ -1,12 +1,7 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ListMovieResult } from "@/pages/home/components/ListMovieResult";
-
-import imageFilmDetail from "@/assets/imageMovie/oppenheimer_ver3.jpg";
-
-import actor1 from "@/assets/imageActor/DetailFilm/1.jpg";
-import actor2 from "@/assets/imageActor/DetailFilm/2.jpg";
-import actor3 from "@/assets/imageActor/DetailFilm/3.jpg";
-import actor4 from "@/assets/imageActor/DetailFilm/4.jpg";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import detailsActions from "@/actions/detail.action"
 import AppContainer from "@/components/AppContainer";
 import {
   Avatar,
@@ -21,9 +16,11 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { useNavigation, useParams } from "react-router-dom";
+import AppFallback from "@/components/AppFallback";
+import moviesActions from "@/actions/movie.action";
 
-type TabValues = "summary" | "cast" | "trailer";
+type TabValues = "description" | "cast" | "trailer";
 type Actor = {
   name: string;
   avatar: string;
@@ -38,67 +35,18 @@ type Tab = {
   trailer?: string;
 };
 
-const tabs: Tab[] = [
-  {
-    label: "Summary",
-    value: "summary",
-    desc: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-  },
-  {
-    label: "Casts",
-    value: "cast",
-    actors: [
-      {
-        name: "Cillian Murphy",
-        avatar: actor1,
-        role: "Abc Xyz",
-      },
-      {
-        name: "Cillian Murphy",
-        avatar: actor2,
-        role: "Abc Xyz",
-      },
-      {
-        name: "Cillian Murphy",
-        avatar: actor3,
-        role: "Abc Xyz",
-      },
-      {
-        name: "Cillian Murphyyy Cillian Murphyyy",
-        avatar: actor4,
-        role: "Abc Xyz",
-      },
-      {
-        name: "Cillian Murphy",
-        avatar: actor4,
-        role: "Abc Xyz",
-      },
-      {
-        name: "Cillian Murphy",
-        avatar: actor4,
-        role: "Abc Xyz",
-      },
-    ],
-  },
-  {
-    label: "Trailer",
-    value: "trailer",
-    trailer: "https://www.youtube.com/embed/0UXPIa5cNws?si=T9Q6_Lhhhvqqln6z",
-  },
-];
 
 const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
   switch (tab.value) {
-    case "summary":
+    case "description":
       return (
         <>
           {tab.desc &&
             tab.desc.split("\n").map((content, index) => (
               <Typography
                 key={index}
-                className={`${
-                  index && "mt-4"
-                } inline-block font-manrope text-sm text-slate-400`}
+                className={`${index && "mt-4"
+                  } inline-block font-manrope text-sm text-slate-400`}
               >
                 {content}
               </Typography>
@@ -110,11 +58,8 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
       return (
         <div className="flex flex-wrap gap-x-12 gap-y-6">
           {tab.actors &&
-            tab.actors.map((actor, key) => (
-              <div
-                key={`${actor.name}${key}`}
-                className="flex items-center gap-3 md:min-w-[150px] md:max-w-[150px] lg:min-w-[175px] lg:max-w-[175px]"
-              >
+            tab.actors.map((actor) => (
+              <div className="flex min-w-[200px] max-w-[200px] items-center gap-3">
                 <Avatar src={actor.avatar} className="min-w-[48px]" />
                 <div className="font-manrope">
                   <div className="line-clamp-1">
@@ -142,25 +87,99 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
   }
 };
 
-// DetailPageSection
-// DetailPageView
-
 // export const DetailPage = (props: DetailsFilmProps) => {
 const DetailPage = () => {
-  const [activeTab, setActiveTab] = useState<TabValues>("summary");
+  const [activeTab, setActiveTab] = useState<TabValues>("description");
+
+  const dispatch = useAppDispatch();
+  const movieID = useParams()
+
+  useEffect(() => {
+    if (movieID.id) {
+      const idNumber = parseInt(movieID.id, 10); // Chuyển đổi thành số
+      if (!isNaN(idNumber)) {
+        dispatch(detailsActions.getDetailMovie(idNumber));
+      }
+    }
+  }, []);
+
+  const dataDetail = useAppSelector((state) => state.DetailMovie.data);
+  // console.log(dataDetail?.genres);
+
+
+  // Get Ralated Movies
+  useEffect(() => {
+    if (dataDetail?.genres) {
+      dispatch(moviesActions.getMovieByGenres(dataDetail.genres, 0, 31));
+    }
+  }, [dataDetail]);
+
+
+  const dataRelatedMovie = useAppSelector((state) => state.MovieByGenres.search.data);
+  console.log("dataRelatedMovie", dataRelatedMovie)
+
+  // // Kiểm tra nếu dataRelatedMovie là null 
+  if (dataRelatedMovie === null) {
+    return (
+      <div>
+        <AppFallback />
+      </div>
+    );
+  }
+
+  // Kiểm tra nếu dataDetail là null 
+  if (dataDetail === null) {
+    return (
+      <div>
+        <AppFallback />
+      </div>
+    );
+  }
+
+  for (let i = 0; i < dataRelatedMovie.length; i++) {
+    if (dataRelatedMovie[i].id == dataDetail.id) {
+      dataRelatedMovie.splice(i, 1);
+      break; // Dừng sau khi loại bỏ phần tử đầu tiên
+    }
+  }
+
+  console.log("dataRelatedMovie", dataRelatedMovie)
+
+  const actors = dataDetail.actors.slice(1, 16).map(actorInfo => {
+    return {
+      name: actorInfo.actor.name,
+      avatar: actorInfo.actor.imageUrl,
+      role: actorInfo.role,
+    };
+  });
+
+  const tabs: Tab[] = [
+    {
+      label: "Description",
+      value: "description",
+      desc: dataDetail.description
+    },
+    {
+      label: "Casts",
+      value: "cast",
+      actors: actors
+    },
+    {
+      label: "Trailer",
+      value: "trailer",
+      trailer: dataDetail.trailer
+    },
+  ];
 
   return (
     <AppContainer className="z-10 pt-8">
-      <div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-[294px_1fr]">
+      <div className="grid w-full grid-cols-[294px_1fr] h-[675px] gap-4">
         <Card className="w-auto bg-cblack-600">
-          <CardHeader
-            floated={false}
-            className="flex justify-evenly bg-cblack-600 sm:shadow-none"
-          >
+          <CardHeader floated={false} className="rounded-md">
             <img
-              src={imageFilmDetail}
+              src={dataDetail.imageUrl}
               alt="movie-picture"
-              className="h-96 w-full rounded-lg sm:w-72"
+              className="h-96 w-full"
             />
           </CardHeader>
           <CardBody className="p-4 font-manrope">
@@ -171,29 +190,44 @@ const DetailPage = () => {
               Director
             </Typography>
             <Typography className="mb-2 text-[13.6px] text-slate-400">
-              Jon Watts
+              {dataDetail.actors[0].actor.name}
             </Typography>
 
             <Typography
               variant="h5"
               className="text-base font-bold text-slate-200/90"
             >
-              Cast
+              Release Date
             </Typography>
             <Typography className="mb-2 text-[13.6px] text-slate-400">
-              Tom Holland, Jake Gyllenhaal, Zendaya
+              {dataDetail.release}
             </Typography>
 
             <Typography
               variant="h5"
               className="text-base font-bold text-slate-200/90"
             >
-              Plot
+              Genres
             </Typography>
-            <Typography className="line-clamp-3 text-[13.6px] text-slate-400">
-              Peter Parker and his friends go on a summer trip to Europe.
-              However, they will hardly be able to rest - Peter.
+            <Typography className="mb-2 text-[13.6px] text-slate-400">
+              {dataDetail.genres.map((genre) => genre.name).join(", ")}
             </Typography>
+
+            {dataDetail.plot !== null && (
+              <div>
+                <Typography
+                  variant="h5"
+                  className="text-base font-bold text-slate-200/90"
+                >
+                  Plot
+                </Typography>
+                <Typography className="line-clamp-3 text-[13.6px] text-slate-400">
+                  {dataDetail.plot}
+                </Typography>
+              </div>
+            )}
+
+
           </CardBody>
         </Card>
 
@@ -203,23 +237,17 @@ const DetailPage = () => {
               <div>
                 <Typography
                   variant="h2"
-                  className="text-lg font-bold text-slate-200/90 sm:text-[28px]"
+                  className="text-[28px] font-bold text-slate-200/90"
                 >
-                  Openheimmer &nbsp;
-                  <small className="text-base font-light sm:text-lg">
-                    2023
-                  </small>
-                </Typography>
-                <Typography className="text-xs text-slate-400/80">
-                  Action / Adventure / Science Fiction
+                  {dataDetail.title}
                 </Typography>
               </div>
 
-              <Link to="/watch/test">
-                <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
-                  Watch
-                </Button>
-              </Link>
+              <Button
+                // <Button onClick={() => handleWatch(dataDetail.id)}
+                className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
+                Watch
+              </Button>
             </CardBody>
           </Card>
           <Tabs
@@ -238,15 +266,14 @@ const DetailPage = () => {
                   key={value}
                   value={value}
                   onClick={() => setActiveTab(value)}
-                  className={`${
-                    activeTab === value ? "text-sky-400" : "text-slate-100"
-                  } mr-6 w-auto px-0 py-2 text-sm`}
+                  className={`${activeTab === value ? "text-sky-400" : "text-slate-100"
+                    } mr-6 w-auto px-0 py-2 text-sm`}
                 >
                   {label}
                 </Tab>
               ))}
             </TabsHeader>
-            <TabsBody className="h-full min-h-[336px]">
+            <TabsBody className="h-full">
               {tabs.map((tab) => (
                 <TabPanel
                   key={tab.value}
@@ -260,12 +287,14 @@ const DetailPage = () => {
           </Tabs>
         </div>
       </div>
+
+
       <Typography className="mb-3 mt-12 font-manrope text-3xl font-bold text-slate-200">
         Ralated Movies
       </Typography>
       <hr className="full-width-underline mb-5 mt-4" />
 
-      <ListMovieResult />
+      <ListMovieResult data={dataRelatedMovie} />
     </AppContainer>
   );
 };

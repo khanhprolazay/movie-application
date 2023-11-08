@@ -1,30 +1,37 @@
+import homeApis from "@/apis/homeApis";
 import genreConstants from "@/constants/genre.constant";
-import { ReduxAction } from "@/type";
+import { Genre, ReduxAction } from "@/type";
 import { Dispatch } from "redux";
 
 function getGenres() {
   return (dispatch: Dispatch) => {
     dispatch(request());
     // Fetch genres here
+    homeApis.getGenres()
+      .then(data => dispatch(success(data)))
+      .catch(err => dispatch(error(err)))
+
 
     function request(): ReduxAction {
-      return { 
+      return {
         type: genreConstants.GET_GENRES
       }
     }
 
-    // function success(genres: Genre[]): ReduxAction {
-    //   return {
-    //     type: genreConstants.GET_GENRES_SUCCESS,
-    //     payload: { genres },
-    //   }
-    // }
+    function success(genres: Genre[]): ReduxAction {
+      return {
+        type: genreConstants.GET_GENRES_SUCCESS,
+        payload: { genres },
+      }
+    }
 
-    // function error(): ReduxAction {
-    //   return {
-    //     type: genreConstants.GET_GENRES_ERROR,
-    //   }
-    // }
+    function error(error: string): ReduxAction {
+      return {
+        type: genreConstants.GET_GENRES_ERROR,
+        payload: { error },
+
+      }
+    }
   }
 }
 

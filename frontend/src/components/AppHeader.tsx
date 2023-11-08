@@ -12,18 +12,32 @@ import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { FC, memo } from "react";
+import { FC, memo, useEffect } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import sidebarActions from "@/actions/sidebar.action";
 import AppContainer from "./AppContainer";
+import genreActions from "@/actions/genre.action"
+
 
 const AppHeader: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, data } = useAppSelector((state) => state.user);
   const triggerOpen = () => dispatch(sidebarActions.trigger());
+
+  // Call API get Genres
+  useEffect(() => {
+    dispatch(genreActions.getGenres());
+  }, []);
+  const listGenres = useAppSelector((state) => state.genre.data);
+
+  // const handleGenre = (genre: string) => {
+  //   // console.log("genre", genre)
+  //   navigate(`/search/${genre}`);
+  //   window.location.reload();
+  // }
 
   return (
     <header className="flex items-center justify-between box-border sticky z-40 top-0 right-0 left-0 h-[60px] border-b border-divider bg-cblack-100">
@@ -58,7 +72,10 @@ const AppHeader: FC = () => {
             label="Select genre"
             color="blue-gray"
             containerProps={{
-              className: "!min-w-[124px] !w-[124px] -ml-2",
+              className: "!min-w-[152px] !w-[124px] -ml-2",
+            }}
+            menuProps={{
+              className: "bg-cblack-600 no-scrollbar"
             }}
             labelProps={{
               className: "before:border-none after:border-none",
@@ -66,8 +83,13 @@ const AppHeader: FC = () => {
             arrow={<ChevronDownIcon className="text-cred" />}
             className="border-none !bg-cblack-600 text-slate-400 hover:border-none"
           >
-            <Option>Action</Option>
-            <Option>Fantasy</Option>
+            {listGenres.map((genre, index) => (
+              <Option key={index} className="truncate bg-cblack-600 text-slate-400 px-2 py-1 m-1 rounded"
+              // onClick={() => handleGenre(genre.name)}
+              >
+                {genre.name}
+              </Option>
+            ))}
           </Select>
         </div>
 

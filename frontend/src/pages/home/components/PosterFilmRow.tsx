@@ -27,9 +27,14 @@ const PosterFilmRow = (props: PosterFilmProps) => {
     return text;
   };
 
+  const formattedRating = (item: number) => {
+    return (Number.isInteger(item) ? `${item}.0` : item)
+  }
+
+
   return (
     <div
-      className="group relative my-5 flex h-28 w-auto bg-cblack-300 object-cover cursor-pointer transition duration-300 ease-in-out hover:scale-105"
+      className="group relative my-5 flex h-28 w-auto bg-cblack-300 object-cover cursor-pointer transition duration-300 ease-in-out hover:opacity-50"
       onClick={handleDetail}
     >
       <img src={props.image} alt="image 1" className="flex-2 h-28 border" />
@@ -40,7 +45,7 @@ const PosterFilmRow = (props: PosterFilmProps) => {
         >
           {truncateText(props.name)}
         </Typography>
-        <div className="absolute right-10 top-0 ml-5 mt-3 flex w-12 items-center rounded-md border px-2 py-0.5 text-xs font-semibold text-slate-100">
+        <div className="hidden xl:flex absolute right-7 top-0 mt-3 w-12 items-center rounded-md border px-2 py-0.5 text-xs font-semibold text-slate-100">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -53,7 +58,7 @@ const PosterFilmRow = (props: PosterFilmProps) => {
               clipRule="evenodd"
             />
           </svg>
-          {props.rating}
+          {formattedRating(props.rating)}
         </div>
         <Typography className="ml-5 mt-1 text-xs font-normal text-gray-400">
           Release Date: <span className="text-gray-400/70">{props.date}</span>
