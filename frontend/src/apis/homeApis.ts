@@ -32,9 +32,8 @@ class HomeApis {
     }
 
     async getMovieByGenres(genres: Array<Genre>, skip: number, limit: number): Promise<Movie[]> {
-        const genreQuery = genres.map((genre) => `genres=${encodeURIComponent(genre.name)}`).join('&');
-        // console.log(genreQuery)
-        return await axiosClient.get(`/movies/byGenres?${genreQuery}&skip=${skip}&limit=${limit}`);
+        const genreQuery = genres.reduce((acc, genre, index) => index > 0 ? `${acc},${genre.name}` : genre.name, '');
+        return await axiosClient.get(`/movies/byGenres?genres=${genreQuery}&skip=${skip}&limit=${limit}`);
     }
 
 

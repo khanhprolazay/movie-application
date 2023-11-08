@@ -1,10 +1,10 @@
 import homeApis from "@/apis/homeApis";
 import genreConstants from "@/constants/genre.constant";
+import { TypedDispatch } from "@/redux/store";
 import { Genre, ReduxAction } from "@/type";
-import { Dispatch } from "redux";
 
 function getGenres() {
-  return (dispatch: Dispatch) => {
+  return (dispatch: TypedDispatch) => {
     dispatch(request());
     // Fetch genres here
     homeApis.getGenres()

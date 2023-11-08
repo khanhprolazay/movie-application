@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { BaseService, LoggerService, Movie } from "@app/shared";
 import { MovieRepository } from "./movie.repository";
 import { Between, In, IsNull, LessThanOrEqual, Like, MoreThan, Not } from "typeorm";
-import { startOfYear, endOfYear } from "date-fns";
+import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
 @Injectable()
@@ -20,8 +20,8 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
 
-    const beginDate = startOfYear(currentDate);
-    const endDate = year === currentYear ? currentDate : endOfYear(currentDate);
+    const beginDate = new Date(year, 1, 1);
+    const endDate = year === currentYear ? currentDate : endOfYear(beginDate);
 
     return await this.repository.find({
       order: { release: "DESC"},
@@ -159,6 +159,11 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       },
       select: {
         imdbId: true,
+        imageUrl: true,
+        plot: true,
+        title: true,
+        release: true,
+        description: true,
         trailers: {
           type: true,
           imdbId: true,
@@ -175,14 +180,14 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       },
       where: {
         id,
-        actors: {
-          actor: {
-            imageUrl: Not(IsNull())
-          }
-        }
+        // actors: {
+        //   actor: {
+        //     imageUrl: Not(IsNull())
+        //   }
+        // }
       }
     });
-    return results[0];
+    return results.length === 0 ? null : results[0];
 
   }
 }

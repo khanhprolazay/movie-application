@@ -44,6 +44,7 @@ const WatchPage: FC = () => {
             src="https://www.2embed.cc/embed/tt9362722"
           /> */}
           <iframe
+            loading="lazy"
             allowFullScreen
             className="z-0 h-full w-full rounded-lg"
             src="http://www.imdb.com/video/imdb/vi829277209/imdb/embed?autoplay=false"

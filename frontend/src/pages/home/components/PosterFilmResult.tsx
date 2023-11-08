@@ -1,5 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface PosterFilmProps {
   id: number,
@@ -10,35 +11,19 @@ interface PosterFilmProps {
 
 const PosterFilmResult = (props: PosterFilmProps) => {
   const navigate = useNavigate();
-
-  const handleDetail = (id: number) => {
-    navigate(`/detail/${id}`);
-    window.location.reload();
-  };
-
-
-  const maxCharacters = 15; // Độ dài tối đa trước khi cắt
-
-  // Hàm để kiểm tra và cắt `name` khi cần thiết
-  const truncateText = (text: string) => {
-    if (text.length > maxCharacters) {
-      return text.slice(0, maxCharacters - 2) + "...";
-    }
-    return text;
-  };
-
   const formattedRating = Number.isInteger(props.rating) ? `${props.rating}.0` : props.rating;
-
 
   return (
     <div
       className="relative mb-10 object-cover text-gray-300 transition-colors hover:text-slate-100 mx-auto mt-5"
-      onClick={() => handleDetail(props.id)}
+      onClick={() => navigate(`/detail/${props.id}`)}
     >
-      <img
-        src={props.image}
+      <LazyLoadImage
         alt="image 1"
-        className="h-64 w-40 transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        src={props.image}
+        width={206}
+        height={320}
+        wrapperClassName="transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       />
       <div className="absolute left-28 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
         {formattedRating}
@@ -55,12 +40,14 @@ const PosterFilmResult = (props: PosterFilmProps) => {
           />
         </svg>
       </div>
+      <div className="line-clamp-1 w-full">
       <Typography
         variant="h2"
-        className="text-md font-medium absolute -bottom-7 w-32 overflow-hidden whitespace-nowrap font-manrope hover:text-gray-500 hover:cursor-pointer hover:transition-colors"
+        className="text-md font-medium absolute -bottom-7 max-w-full overflow-hidden whitespace-nowrap font-manrope hover:text-gray-500 hover:cursor-pointer hover:transition-colors"
       >
-        {truncateText(props.name)}
+        {props.name}
       </Typography>
+      </div>
     </div>
   );
 };

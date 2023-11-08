@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import moviesActions from "@/actions/movie.action"
 import AppFallback from "@/components/AppFallback"
 import { useNavigate } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 
@@ -18,7 +19,7 @@ export function PopularMovie() {
         dispatch(moviesActions.getMovieByRating(0, 20));
     }, []);
 
-    const MovieByRating = useAppSelector((state) => state.MovieByRating.rating.data);
+    const MovieByRating = useAppSelector((state) => state.movie.rating.data);
 
     // Kiểm tra nếu listRecentlyMovies là null hoặc rỗng
     if (MovieByRating === null || MovieByRating.length === 0) {
@@ -64,8 +65,8 @@ export function PopularMovie() {
                         >
                             <CardBody
                                 className="w-[125px] p-0 hover:scale-95 hover:cursor-pointer ease-in-out duration-300 transform disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none">
-                                <img
-                                    className="h-[205px] w-full border"
+                                <LazyLoadImage
+                                    wrapperClassName="h-[205px] w-full border"
                                     src={item.imageUrl}
                                 />
                                 <div className="flex items-center absolute text-white text-sm bg-black rounded-lg px-2 py-0.5 right-1 top-1 cursor-pointer">

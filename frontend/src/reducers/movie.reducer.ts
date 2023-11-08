@@ -78,10 +78,10 @@ const initialState: MovieRootState = {
     keyword: '',
     data: [],
     error: null
-  }
+  },
 }
 
-export function MovieByRating(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
+export function movie(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
   switch (action.type) {
     case movieConstants.GET_MOVIE_BY_RATING:
       return {
@@ -112,13 +112,6 @@ export function MovieByRating(state: MovieRootState = initialState, action: Redu
         }
       }
 
-    default:
-      return state;
-  }
-}
-
-export function MovieByDay(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
-  switch (action.type) {
     case movieConstants.GET_MOVIE_BY_DAY:
       return {
         ...state,
@@ -147,14 +140,7 @@ export function MovieByDay(state: MovieRootState = initialState, action: ReduxAc
           error: action.payload?.error,
         }
       }
-
-    default:
-      return state;
-  }
-}
-
-export function MovieByRecommend(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
-  switch (action.type) {
+      
     case movieConstants.GET_MOVIE_BY_RECOMMEND:
       return {
         ...state,
@@ -184,14 +170,6 @@ export function MovieByRecommend(state: MovieRootState = initialState, action: R
         }
       }
 
-    default:
-      return state;
-  }
-}
-
-
-export function MovieByYear(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
-  switch (action.type) {
     case movieConstants.GET_MOVIE_BY_YEAR:
       return {
         ...state,
@@ -221,15 +199,6 @@ export function MovieByYear(state: MovieRootState = initialState, action: ReduxA
         }
       }
 
-    default:
-      return state;
-  }
-}
-
-
-
-export function MovieByRandom(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
-  switch (action.type) {
     case movieConstants.GET_MOVIE_BY_RANDOM:
       return {
         ...state,
@@ -259,13 +228,6 @@ export function MovieByRandom(state: MovieRootState = initialState, action: Redu
         }
       }
 
-    default:
-      return state;
-  }
-}
-
-export function MovieByGenres(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
-  switch (action.type) {
     case movieConstants.GET_MOVIE_BY_GENRES:
       return {
         ...state,

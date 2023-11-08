@@ -35,7 +35,7 @@ const routes: RouteType[] = [
     accessible: ["ALL"],
   },
   {
-    path: "/search/:string",
+    path: "/search",
     name: "Search",
     login: false,
     element: SearchPage,

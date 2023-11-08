@@ -43,7 +43,6 @@ export interface User {
 }
 
 export interface Genre {
-  id: number,
   name: string,
 }
 
@@ -57,6 +56,11 @@ export interface Movie {
   release: string,
 }
 
+export interface Trailer {
+  type: string;
+  imdbId: string;
+}
+
 export interface DetailMovie {
   id: number,
   imdbId: string,
@@ -64,14 +68,15 @@ export interface DetailMovie {
   description: string,
   movieLength?: number,
   rating: number,
-  trailer: string,
+  trailers: Trailer[],
   imageUrl: string,
   release: string,
   plot?: string,
   banner: string,
-  genres: Array[], 
+  genres: Genre[], 
   actors: Array[],
 }
+
 
 
 

@@ -1,13 +1,5 @@
 import PosterFilmRow from "@/pages/home/components/PosterFilmRow"
-import imageFilm from "@/assets/imageMovie/blue_beetle_ver3.jpg";
-import imageFilm1 from "@/assets/imageMovie/puan.jpg";
-import imageFilm2 from "@/assets/imageMovie/strays_ver3.jpg";
-import imageFilmDetail from "@/assets/imageMovie/oppenheimer_ver3.jpg";
 import { useAppSelector } from "@/redux/hooks";
-import AppFallback from "@/components/AppFallback"
-import moviesActions from "@/actions/movie.action"
-
-
 
 export function ListPosterFilmRow() {
 
@@ -15,7 +7,7 @@ export function ListPosterFilmRow() {
     //   dispatch(moviesActions.getMovieByRandom(0, 5));
     // }, []);
 
-    const MovieByYear = useAppSelector((state) => state.MovieByYear.search.data);
+    const MovieByYear = useAppSelector((state) => state.movie.search.data);
     // const MovieByRandom = useAppSelector((state) => state.MovieByRandom.random.data);
 
     // Kiểm tra nếu listRecentlyMovies là null hoặc rỗng
@@ -30,7 +22,7 @@ export function ListPosterFilmRow() {
     // console.log("dataMovie", dataMovie)
 
     return (
-        <div>
+        <div className="flex flex-col gap-2 mt-2">
             {dataMovie.map((movie, index: number) => (
                 <PosterFilmRow
                     key={index}

@@ -44,6 +44,11 @@ main {
   width: 100vw;
 }
 
+.lazy-load-image-loaded img {
+  width: 100%;
+  height: 100% !important;
+}
+
 .sidebar-appear {
   left: 0;
   animation: sappear 0.4s ease-in-out;

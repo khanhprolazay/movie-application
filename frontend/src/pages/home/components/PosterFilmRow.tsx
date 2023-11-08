@@ -1,4 +1,5 @@
 import { Typography } from "@material-tailwind/react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
 
 interface PosterFilmProps {
@@ -34,14 +35,14 @@ const PosterFilmRow = (props: PosterFilmProps) => {
 
   return (
     <div
-      className="group relative my-5 flex h-28 w-auto bg-cblack-300 object-cover cursor-pointer transition duration-300 ease-in-out hover:opacity-50"
+      className="group relative flex h-28 w-auto bg-cblack-300 object-cover cursor-pointer transition duration-300 ease-in-out hover:opacity-50"
       onClick={handleDetail}
     >
-      <img src={props.image} alt="image 1" className="flex-2 h-28 border" />
+      <LazyLoadImage src={props.image} alt="image 1" width={84} height={112} wrapperClassName="flex-2 border" />
       <div className="grow font-manrope">
         <Typography
           variant="h5"
-          className="ml-5  mt-3 text-base font-normal text-gray-300"
+          className="ml-5 mt-3 text-base font-normal text-gray-300"
         >
           {truncateText(props.name)}
         </Typography>

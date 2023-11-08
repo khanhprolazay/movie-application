@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { ListMovieResult } from "@/pages/home/components/ListMovieResult";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import detailsActions from "@/actions/detail.action"
+import detailsActions from "@/actions/detail.action";
 import AppContainer from "@/components/AppContainer";
 import {
   Avatar,
@@ -16,9 +16,13 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
-import { useNavigation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AppFallback from "@/components/AppFallback";
-import moviesActions from "@/actions/movie.action";
+import { Trailer } from "@/type";
+import { cParseInt } from "@/utils/stringUtils";
+
+const defaultAvatar =
+  "https://media.istockphoto.com/id/1300845620/vi/vec-to/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-ph%E1%BA%B3ng-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn-n%E1%BB%81n-tr%E1%BA%AFng-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-minh-h%E1%BB%8Da-vector.jpg?s=612x612&w=0&k=20&c=MyAgwZm-Ct_rQpQGYh0Wb0N7KeAaFsY_WrZJ89EAiIw=";
 
 type TabValues = "description" | "cast" | "trailer";
 type Actor = {
@@ -32,21 +36,23 @@ type Tab = {
   value: TabValues;
   desc?: string;
   actors?: Actor[];
-  trailer?: string;
+  trailers?: Trailer[];
 };
 
-
 const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
-  switch (tab.value) {
+  const { value, desc, actors, trailers } = tab;
+
+  switch (value) {
     case "description":
       return (
         <>
-          {tab.desc &&
-            tab.desc.split("\n").map((content, index) => (
+          {desc &&
+            desc.split("\n").map((content, index) => (
               <Typography
                 key={index}
-                className={`${index && "mt-4"
-                  } inline-block font-manrope text-sm text-slate-400`}
+                className={`${
+                  index && "mt-4"
+                } inline-block font-manrope text-sm text-slate-400`}
               >
                 {content}
               </Typography>
@@ -57,10 +63,10 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
     case "cast":
       return (
         <div className="flex flex-wrap gap-x-12 gap-y-6">
-          {tab.actors &&
-            tab.actors.map((actor) => (
+          {actors &&
+            actors.map((actor) => (
               <div className="flex min-w-[200px] max-w-[200px] items-center gap-3">
-                <Avatar src={actor.avatar} className="min-w-[48px]" />
+                <Avatar src={actor.avatar || defaultAvatar} className="min-w-[48px]" />
                 <div className="font-manrope">
                   <div className="line-clamp-1">
                     <Typography
@@ -80,7 +86,15 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
       );
 
     case "trailer":
-      return <iframe className="h-full w-full rounded-lg" src={tab.trailer} />;
+      if (trailers && trailers?.length !== 0)
+        return (
+          <iframe
+            loading="lazy"
+            allowFullScreen
+            className="h-full w-full rounded-lg"
+            src={`http://www.imdb.com/video/imdb/${trailers[0].imdbId}/imdb/embed?autoplay=false`}
+          />
+        );
 
     default:
       return <></>;
@@ -89,36 +103,21 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
 
 // export const DetailPage = (props: DetailsFilmProps) => {
 const DetailPage = () => {
-  const [activeTab, setActiveTab] = useState<TabValues>("description");
+  const [activeTab, setActiveTab] = useState<TabValues>("trailer");
 
   const dispatch = useAppDispatch();
-  const movieID = useParams()
-
-  useEffect(() => {
-    if (movieID.id) {
-      const idNumber = parseInt(movieID.id, 10); // Chuyển đổi thành số
-      if (!isNaN(idNumber)) {
-        dispatch(detailsActions.getDetailMovie(idNumber));
-      }
-    }
-  }, []);
+  const { id } = useParams();
 
   const dataDetail = useAppSelector((state) => state.DetailMovie.data);
-  // console.log(dataDetail?.genres);
+  const dataRelatedMovie = useAppSelector((state) => state.movie.search.data);
 
-
-  // Get Ralated Movies
   useEffect(() => {
-    if (dataDetail?.genres) {
-      dispatch(moviesActions.getMovieByGenres(dataDetail.genres, 0, 31));
-    }
-  }, [dataDetail]);
+    const idInt = cParseInt(id, 10);
+    if (idInt) dispatch(detailsActions.getDetailMovie(idInt));
+  }, [id]);
 
 
-  const dataRelatedMovie = useAppSelector((state) => state.MovieByGenres.search.data);
-  console.log("dataRelatedMovie", dataRelatedMovie)
-
-  // // Kiểm tra nếu dataRelatedMovie là null 
+  // // Kiểm tra nếu dataRelatedMovie là null
   if (dataRelatedMovie === null) {
     return (
       <div>
@@ -127,7 +126,7 @@ const DetailPage = () => {
     );
   }
 
-  // Kiểm tra nếu dataDetail là null 
+  // Kiểm tra nếu dataDetail là null
   if (dataDetail === null) {
     return (
       <div>
@@ -143,9 +142,7 @@ const DetailPage = () => {
     }
   }
 
-  console.log("dataRelatedMovie", dataRelatedMovie)
-
-  const actors = dataDetail.actors.slice(1, 16).map(actorInfo => {
+  const actors = dataDetail.actors.slice(1, 16).map((actorInfo) => {
     return {
       name: actorInfo.actor.name,
       avatar: actorInfo.actor.imageUrl,
@@ -155,25 +152,27 @@ const DetailPage = () => {
 
   const tabs: Tab[] = [
     {
-      label: "Description",
-      value: "description",
-      desc: dataDetail.description
+      label: "Trailer",
+      value: "trailer",
+      trailers: dataDetail.trailers,
     },
     {
       label: "Casts",
       value: "cast",
-      actors: actors
+      actors: actors,
     },
     {
-      label: "Trailer",
-      value: "trailer",
-      trailer: dataDetail.trailer
+      label: "Description",
+      value: "description",
+      desc: dataDetail.description,
     },
   ];
 
+
+
   return (
     <AppContainer className="z-10 pt-8">
-      <div className="grid w-full grid-cols-[294px_1fr] h-[675px] gap-4">
+      <div className="grid h-[675px] w-full grid-cols-[294px_1fr] gap-4">
         <Card className="w-auto bg-cblack-600">
           <CardHeader floated={false} className="rounded-md">
             <img
@@ -183,15 +182,19 @@ const DetailPage = () => {
             />
           </CardHeader>
           <CardBody className="p-4 font-manrope">
-            <Typography
-              variant="h5"
-              className="text-base font-bold text-slate-200/90"
-            >
-              Director
-            </Typography>
-            <Typography className="mb-2 text-[13.6px] text-slate-400">
-              {dataDetail.actors[0].actor.name}
-            </Typography>
+            {dataDetail.actors.length > 0 && (
+              <>
+                <Typography
+                  variant="h5"
+                  className="text-base font-bold text-slate-200/90"
+                >
+                  Director
+                </Typography>
+                <Typography className="mb-2 text-[13.6px] text-slate-400">
+                  {dataDetail.actors[0].actor.name}
+                </Typography>{" "}
+              </>
+            )}
 
             <Typography
               variant="h5"
@@ -213,7 +216,7 @@ const DetailPage = () => {
               {dataDetail.genres.map((genre) => genre.name).join(", ")}
             </Typography>
 
-            {dataDetail.plot !== null && (
+            {dataDetail.plot && (
               <div>
                 <Typography
                   variant="h5"
@@ -221,13 +224,13 @@ const DetailPage = () => {
                 >
                   Plot
                 </Typography>
-                <Typography className="line-clamp-3 text-[13.6px] text-slate-400">
-                  {dataDetail.plot}
-                </Typography>
+                <div className="line-clamp-5">
+                  <Typography className=" text-[13.6px] text-slate-400">
+                    {dataDetail.plot}
+                  </Typography>
+                </div>
               </div>
             )}
-
-
           </CardBody>
         </Card>
 
@@ -245,7 +248,8 @@ const DetailPage = () => {
 
               <Button
                 // <Button onClick={() => handleWatch(dataDetail.id)}
-                className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
+                className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80"
+              >
                 Watch
               </Button>
             </CardBody>
@@ -266,8 +270,9 @@ const DetailPage = () => {
                   key={value}
                   value={value}
                   onClick={() => setActiveTab(value)}
-                  className={`${activeTab === value ? "text-sky-400" : "text-slate-100"
-                    } mr-6 w-auto px-0 py-2 text-sm`}
+                  className={`${
+                    activeTab === value ? "text-sky-400" : "text-slate-100"
+                  } mr-6 w-auto px-0 py-2 text-sm`}
                 >
                   {label}
                 </Tab>
@@ -288,9 +293,8 @@ const DetailPage = () => {
         </div>
       </div>
 
-
       <Typography className="mb-3 mt-12 font-manrope text-3xl font-bold text-slate-200">
-        Ralated Movies
+        More like this
       </Typography>
       <hr className="full-width-underline mb-5 mt-4" />
 

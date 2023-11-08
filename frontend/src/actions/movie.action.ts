@@ -1,11 +1,11 @@
 import homeApis from "@/apis/homeApis";
 import moviesConstants from "@/constants/movie.constants";
+import { TypedDispatch } from "@/redux/store";
 import { Genre, Movie, ReduxAction } from "@/type";
-import { Dispatch } from "redux";
 
 function getMovieByRating(skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByRating(skip, limit)
@@ -40,7 +40,7 @@ function getMovieByRating(skip: number, limit: number) {
 
 function getMovieByDay(skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByDay(skip, limit)
@@ -73,7 +73,7 @@ function getMovieByDay(skip: number, limit: number) {
 
 function getMovieByRecommend(skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByRecommend(skip, limit)
@@ -107,7 +107,7 @@ function getMovieByRecommend(skip: number, limit: number) {
 
 function getMovieByYear(year: number, skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByYear(year, skip, limit)
@@ -122,7 +122,6 @@ function getMovieByYear(year: number, skip: number, limit: number) {
         }
 
         function success(movies: Movie[]): ReduxAction {
-
             return {
                 type: moviesConstants.GET_MOVIE_BY_YEAR_SUCCESS,
                 payload: { movies },
@@ -141,7 +140,7 @@ function getMovieByYear(year: number, skip: number, limit: number) {
 
 function getMovieByRandom(skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByRandom(skip, limit)
@@ -175,7 +174,7 @@ function getMovieByRandom(skip: number, limit: number) {
 
 function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: TypedDispatch) => {
         dispatch(request());
         // Fetch genres here
         homeApis.getMovieByGenres(genres, skip, limit)

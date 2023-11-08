@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import moviesActions from "@/actions/movie.action"
 import AppFallback from "@/components/AppFallback"
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export function RecomendationsMovie() {
 
@@ -20,7 +21,7 @@ export function RecomendationsMovie() {
         dispatch(moviesActions.getMovieByYear(2015, 0, 20));
     }, []);
 
-    const MovieByYear = useAppSelector((state) => state.MovieByYear.search.data);
+    const MovieByYear = useAppSelector((state) => state.movie.search.data);
     // const MovieByRecommend = useAppSelector((state) => state.MovieByRecommend.recommend.data);
 
     // Kiểm tra nếu listRecentlyMovies là null hoặc rỗng
@@ -60,8 +61,8 @@ export function RecomendationsMovie() {
                             className={`rounded-none bg-transparent`}
                         >
                             <CardBody className="w-[125px] p-0 hover:scale-95 hover:cursor-pointer ease-in-out duration-300 transform disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none">
-                                <img
-                                    className="h-[205px] w-full border"
+                                <LazyLoadImage    
+                                    wrapperClassName="h-[205px] w-full border"
                                     src={item.imageUrl}
                                 />
                                 <div className="flex items-center absolute text-white text-sm bg-black rounded-lg px-2 py-0.5 right-1 top-1 cursor-pointer">
