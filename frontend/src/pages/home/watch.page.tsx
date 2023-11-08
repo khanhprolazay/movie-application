@@ -169,7 +169,7 @@ const WatchPage: FC = () => {
             <div className="w-full max-w-full overflow-hidden">
               <div
                 className="flex gap-4 transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${current * (165 + 16)}px)` }}
+                style={{ transform: `translateX(-${current * (165 + 16)}px)`}}
               >
                 {items.map((_, index) => (
                   <Card

@@ -1,5 +1,5 @@
 import AppContainer from "@/components/AppContainer";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
   IconButton,
   Menu,
@@ -14,21 +14,19 @@ import { PopularMovie } from "./components/PopularMovie";
 import { RecentlyMovie } from "./components/RecentlyMovie";
 import { RecomendationsMovie } from "./components/RecomendationsMovie";
 import { ListPosterFilmRow } from "./components/ListPosterFilmRow";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+
 
 const HomePage: FC = () => {
-  // const dispatch = useAppDispatch();
-
-  // dispatch(genreActions.getGenres())
 
   const navigate = useNavigate();
 
-  // const handleSearch = () => {
-  //   navigate("/search");
-  // };
+  const dispatch = useAppDispatch();
 
   const handleReleaseYear = (year: number) => {
-    console.log(year);
-    navigate("/search");
+    // console.log(year);
+    navigate(`/search/${year}`);
+    window.location.reload();
   };
 
   return (
@@ -36,7 +34,7 @@ const HomePage: FC = () => {
       {/* --------------------------------Body----------------------------------- */}
       <div className="grid grid-cols-3 bg-cblack-100">
         {/* Content  */}
-        <div className="col-span-2 border-r border-r-divider px-4 pb-5">
+        <div className="col-span-full lg:col-span-2 border-r border-r-divider px-4 pb-5">
           <Typography
             variant="h1"
             className="mb-3 mt-5 font-manrope text-xl font-extrabold text-slate-200"
@@ -77,7 +75,7 @@ const HomePage: FC = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="relative col-span-1 bg-cblack-100  px-4">
+        <div className="relative col-span-1 bg-cblack-100 px-4 lg:block hidden">
           <Typography
             variant="h1"
             className="mb-3 mt-5 font-manrope text-lg font-semibold text-slate-300"
@@ -90,7 +88,7 @@ const HomePage: FC = () => {
                 variant="text"
                 color="white"
                 size="md"
-                className="!absolute top-9 mx-44 -translate-y-2/4 border-none hover:text-cred "
+                className="!absolute top-9 mx-28 -translate-y-2/4 border-none hover:text-cred "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +105,7 @@ const HomePage: FC = () => {
               </IconButton>
             </MenuHandler>
             <MenuList className="no-scrollbar grid max-h-[200px] grid-cols-3 gap-1 overflow-y-auto bg-cblack-100">
-              {Array.from({ length: 17 }, (_, i) => {
+              {Array.from({ length: 123 }, (_, i) => {
                 const year = 2023 - i;
                 return (
                   <MenuItem
@@ -121,8 +119,7 @@ const HomePage: FC = () => {
               })}
             </MenuList>
           </Menu>
-
-          <ul className="grid grid-cols-3 gap-1">
+          <ul className="grid grid-cols-3 gap-1 mb-10">
             {Array.from({ length: 12 }, (_, i) => {
               const year = 2023 - i;
               return (
@@ -137,19 +134,21 @@ const HomePage: FC = () => {
             })}
           </ul>
 
-          <div className="relative mt-10 h-44 w-auto transform object-cover duration-300 ease-in-out hover:scale-105 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+          <a
+            // href="https://phimmoiyyy.net/phim-le/qua-nhanh-qua-nguy-hiem-7"
+            className="relative h-auto w-auto transform object-cover duration-300 ease-in-out hover:opacity-50 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             <img
-              src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+              src="https://image.tmdb.org/t/p/w500/cHkhb5A4gQRK6zs6Pv7zorHs8Nk.jpg"
               alt="image 2"
               className="h-44 w-full rounded"
             />
             <text className="absolute bottom-6 left-3 font-manrope text-xl font-semibold text-slate-200 hover:cursor-pointer">
-              Tên Phim
+              Quá Nhanh Quá Nguy Hiểm 7
             </text>
             <text className="absolute bottom-1 left-3 font-manrope text-sm font-semibold text-slate-300 hover:cursor-pointer">
-              Năm sản xuất
+              2015
             </text>
-          </div>
+          </a>
 
           <ListPosterFilmRow />
         </div>

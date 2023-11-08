@@ -47,6 +47,35 @@ export interface Genre {
   name: string,
 }
 
+
+export interface Movie {
+  id: number,
+  title: string,
+  movieLength?: number,
+  rating: number,
+  imageUrl: string,
+  release: string,
+}
+
+export interface DetailMovie {
+  id: number,
+  imdbId: string,
+  title: string,
+  description: string,
+  movieLength?: number,
+  rating: number,
+  trailer: string,
+  imageUrl: string,
+  release: string,
+  plot?: string,
+  banner: string,
+  genres: Array[], 
+  actors: Array[],
+}
+
+
+
+
 // Other
 export type AlertType = "success" | "warning" | "error";
 export interface Alert {
