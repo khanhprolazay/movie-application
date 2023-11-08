@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { ExceptionFilter, LoggerService, Service } from '@app/shared';
+import { ExceptionFilter, LoggerService } from '@app/shared';
 import { ValidationPipe } from '@nestjs/common';
 
 dotenv.config({
@@ -18,7 +18,7 @@ async function bootstrap() {
           brokers: [process.env.BROKER_HOST],
         },
         consumer: {
-          groupId: `${Service.MOVIE}`
+          groupId: `movie-consumer`
         }
       }
     });

@@ -1,8 +1,13 @@
+import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionSerializer } from './interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+dotenv.config({
+  path: `config/env/${process.env.NODE_ENV}.env`
+});
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +28,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(5000);
+  await app.listen(process.env.PORT || 5000);
 }
 bootstrap();

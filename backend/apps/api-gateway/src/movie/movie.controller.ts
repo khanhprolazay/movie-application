@@ -3,7 +3,7 @@ import { MovieService } from "./movie.service";
 import { Pattern, Service } from "@app/shared";
 import { ClientKafka } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
-import { CacheInterceptor, CacheKey } from "@nestjs/cache-manager";
+import { CacheInterceptor } from "@nestjs/cache-manager";
 
 @Controller("movies")
 @ApiTags("Movie")

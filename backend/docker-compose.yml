@@ -11,7 +11,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
-    # volumes:
+      # volumes:
     #   - ./volumes/zookeeper/data:/var/lib/zookeeper/data
     #   - ./volumes/zookeeper/log:/var/lib/zookeeper/log
 
@@ -42,19 +42,19 @@ services:
         interval: 5s
         timeout: 10s
         retries: 20
-
-  # kafka_ui:
-  #   container_name: kafka-ui
-  #   image: provectuslabs/kafka-ui:latest
-  #   networks:
-  #     - backend
-  #   ports:
-  #     - 8080:8080
-  #   depends_on:
-  #     - kafka
-  #   environment:
-  #     KAFKA_CLUSTERS_0_NAME: local
-  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+  
+  kafka_ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
 
   mysql:
     container_name: mysql
@@ -69,7 +69,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: user
       MYSQL_PASSWORD: user
-
+  
   # api-gateway:
   #   container_name: api-gateway
   #   image: api-gateway:version1
@@ -82,7 +82,7 @@ services:
   #       condition: service_healthy
   #   links:
   #     - kafka
-
+  
   # auth-service:
   #   container_name: auth-service
   #   image: auth-service:version1
@@ -93,7 +93,7 @@ services:
   #       condition: service_healthy
   #   links:
   #     - kafka
-
+  
   # user-service:
   #   container_name: user-service
   #   image: user-service:version1
@@ -104,7 +104,7 @@ services:
   #       condition: service_healthy
   #   links:
   #     - kafka
-
+  
   # movie-service:
   #   container_name: movie-service
   #   image: movie-service:version1
@@ -115,7 +115,7 @@ services:
   #       condition: service_healthy
   #   links:
   #     - kafka
-
+  
 networks:
   backend:
     driver: bridge

@@ -16,13 +16,19 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
 
   async getByYear(dto: MovieByYearDTO) {
     const { year, skip, limit } = dto;
-    const formatYear = new Date(year, 1, 1);
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    const beginDate = startOfYear(currentDate);
+    const endDate = year === currentYear ? currentDate : endOfYear(currentDate);
+
     return await this.repository.find({
       order: { release: "DESC"},
       take: limit,
       skip: skip,
       where: {
-        release: Between(startOfYear(formatYear), endOfYear(formatYear))
+        release: Between(beginDate, endDate),
       },
       select: {
         id: true,

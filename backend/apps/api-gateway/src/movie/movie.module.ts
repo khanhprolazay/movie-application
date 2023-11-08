@@ -10,6 +10,7 @@ import { MovieService } from "./movie.service";
   imports: [
     ClientsModule.registerAsync([{
       name: Service.MOVIE,
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => (
         {
           transport: Transport.KAFKA,
@@ -21,7 +22,7 @@ import { MovieService } from "./movie.service";
               groupId: `movie-from-api-gateway-${v4()}`,
             }
           }
-        }), inject: [ConfigService]
+        })
     }])
   ],
   controllers: [MovieController],

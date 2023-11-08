@@ -5,3 +5,4 @@ export * from './actor.entity';
 export * from './genre.entity';
 export * from './movie.entity';
 export * from './trailer.entity';
+export * from './kafka-group.entity';

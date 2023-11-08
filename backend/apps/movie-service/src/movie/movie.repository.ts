@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { Movie } from "@app/shared";
+import { Movie, Service } from "@app/shared";
 import { DataSource, Repository } from "typeorm";
+import { InjectDataSource } from "@nestjs/typeorm";
 
 @Injectable()
 export class MovieRepository extends Repository<Movie> {
-  constructor( private readonly dataSource: DataSource ) {
+  constructor( 
+    @InjectDataSource(Service.MOVIE) 
+    private readonly dataSource: DataSource ) 
+  {
     super(Movie, dataSource.createEntityManager());
   }
-
-  // getById(id: number) {
-  //   this.createQueryBuilder().
-  // }
 }

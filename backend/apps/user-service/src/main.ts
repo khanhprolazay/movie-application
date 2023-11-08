@@ -19,7 +19,7 @@ async function bootstrap() {
           brokers: [process.env.BROKER_HOST],
         },
         consumer: {
-          groupId: `${Service.USER}`
+          groupId: 'user-consumer'
         }
       }
     }
