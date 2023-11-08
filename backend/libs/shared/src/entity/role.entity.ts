@@ -1,20 +1,20 @@
 import { BaseEntity } from "../base";
 import { Column, Entity, OneToMany } from "typeorm";
 import { IsString } from "class-validator";
-import { UserEntity } from "./user.entity";
-import { Role } from "../constant";
+import { User } from "./user.entity";
+import { RoleEnum } from "../constant";
 
 @Entity({name: 'role'})
-export class RoleEntity extends BaseEntity {
+export class Role extends BaseEntity {
   @IsString()
   @Column({
     type: 'enum',
-    enum: Role,
+    enum: RoleEnum,
     unique: true,
-    default: Role.USER,
+    default: RoleEnum.USER,
   })
-  name: Role
+  name: RoleEnum
 
-  @OneToMany(() => UserEntity, (user) => user.role)
-  users: UserEntity[]
+  @OneToMany(() => User, (user) => user.role)
+  users: User[]
 }

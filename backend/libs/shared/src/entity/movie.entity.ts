@@ -1,30 +1,27 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
-import { GenreEntity } from "./genre.entity";
+import { Genre } from "./genre.entity";
 import { ActorToMovie } from "./actor-to-movie.entity";
 import { BaseEntity } from "../base";
-import { AwardEntity } from "./award.entity";
+import { Trailer } from "./trailer.entity";
 
 @Entity({name: "movie"})
-export class MovieEntity extends BaseEntity {
+export class Movie extends BaseEntity {
   @Column({ unique: true, length: '20' })
   imdbId: string
 
   @Column({ length: 100 })
   title: string
 
-  @Column('text')
-  description: string
-
-  @Column('double')
-  movieLength: number
-
-  @Column('double')
+  @Column({type: "double", nullable: true})
   rating: number
 
-  @Column({ nullable: true })
-  trailer: string
+  @Column({ type: "int", nullable: true})
+  voteCount: number
 
-  @Column({ nullable: true })
+  @Column({ type: "double", nullable: true })
+  movieLength: number
+
+  @Column({ type: "text", nullable: true })
   imageUrl: string
 
   @Column({type: 'date', nullable: true})
@@ -33,17 +30,16 @@ export class MovieEntity extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   plot: string
 
-  @Column({ nullable: true })
-  banner: string
+  @Column({type: 'text', nullable: true})
+  description: string
 
-  @ManyToMany(() => GenreEntity)
+  @ManyToMany(() => Genre)
   @JoinTable()
-  genres: GenreEntity[]
+  genres: Genre[]
 
   @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.movie)
   actors: ActorToMovie[]
 
-  @OneToMany(() => AwardEntity, award => award.movie)
-  awards: AwardEntity[]
-
+  @OneToMany(() => Trailer, trailer => trailer.movie)
+  trailers: Trailer[]
 }

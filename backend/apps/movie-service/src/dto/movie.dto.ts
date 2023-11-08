@@ -20,6 +20,11 @@ export class MovieByGenresDTO extends Pagination {
   genres: string[]
 }
 
-export class MovieByDayDTO extends Pagination {}
+export class MovieBySeachDTO extends Pagination {
+  @IsString()
+  search: string
+}
 
+export class MovieByDayDTO extends Pagination {}
 export class MovieByRatingDTO extends Pagination {}
+export class MovieByUpcomingDTO extends Pagination {}

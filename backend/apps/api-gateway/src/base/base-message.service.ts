@@ -10,11 +10,6 @@ export class BaseMessageService<E extends BaseEntity> implements IBaseService<E>
     protected readonly key: EntityKeyUnion,
   ) {}
 
-  private async execute(pattern: BasePattern<EntityKeyUnion>, payload: any) {
-    return await firstValueFrom(
-      this.client.send<E>(pattern, payload)
-    )
-  }
 
   protected async executeMany<T = E>(pattern: Pattern, payload: any) {
     return await firstValueFrom(
@@ -22,21 +17,31 @@ export class BaseMessageService<E extends BaseEntity> implements IBaseService<E>
     )
   }
 
-  getById(id: number) {
-    return this.execute(`${this.key}.${BaseAction.GET_BY_ID}`, id);
+  protected async execute<T = E>(pattenrn: Pattern, payload: any) {
+    return await firstValueFrom(
+      this.client.send<T>(pattenrn, payload)
+    )
   }
 
-  create(data: DeepPartial<E>) {
-    return this.execute(`${this.key}.${BaseAction.CREATE}`, data);
+  protected async excuteEmpty(pattern: Pattern, payload: any) {
+    return await firstValueFrom(
+      this.client.send<null>(pattern, payload)
+    )
   }
 
-  update(id: number, data: QueryDeepPartialEntity<E>) {
-    return this.execute(`${this.key}.${BaseAction.UPDATE}`, data);
+  async getById(id: number) {
+    return await this.execute(`${this.key}.${BaseAction.GET_BY_ID}`, id);
+  }
+
+  async create(data: DeepPartial<E>) {
+    return await this.execute(`${this.key}.${BaseAction.CREATE}`, data);
+  }
+
+  async update(id: number, data: QueryDeepPartialEntity<E>) {
+    return await this.execute(`${this.key}.${BaseAction.UPDATE}`, { id, data });
   }
 
   async delete(id: number) {
-    return await firstValueFrom(
-      this.client.send<DeleteResult>(`${this.key}.${BaseAction.DELETE}`, id)
-    )
+    return await this.execute<DeleteResult>(`${this.key}.${BaseAction.DELETE}`, id)
   }
 }

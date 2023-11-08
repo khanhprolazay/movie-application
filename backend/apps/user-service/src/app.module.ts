@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerModule, RoleEntity, UserEntity } from '@app/shared';
+import { LoggerModule, Role, User } from '@app/shared';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RoleModule } from './role/role.module';
 
@@ -19,7 +19,7 @@ import { RoleModule } from './role/role.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'mysql',
-          entities: [UserEntity, RoleEntity],
+          entities: [User, Role],
           host: configService.get('USER_SERVICE_DATABASE_HOST'),
           port: configService.get('USER_SERVICE_DATABASE_PORT'),
           database: configService.get('USER_SERVICE_DATABASE_NAME'),

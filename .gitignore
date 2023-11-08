@@ -6,6 +6,7 @@ dist-ssr
 
 data/*/*.csv
 data/v1/*
+data/v2/*
 data/*.sql
 
 backend/*.sql
@@ -14,4 +15,6 @@ backend/tar
 
 frontend/*.zip
 
-image-volumes
+images
+
+note.txt

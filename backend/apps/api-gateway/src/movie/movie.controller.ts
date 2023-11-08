@@ -2,8 +2,10 @@ import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseAr
 import { MovieService } from "./movie.service";
 import { Pattern, Service } from "@app/shared";
 import { ClientKafka } from "@nestjs/microservices";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller("movies")
+@ApiTags("Movie")
 export class MovieController implements OnModuleInit {
   constructor( 
     @Inject(Service.MOVIE) 
@@ -12,7 +14,7 @@ export class MovieController implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES", "MOVIES.GET_BY_DAY"];
+    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES", "MOVIE.GET_BY_DAY", "MOVIE.GET_BY_SEARCH", "MOVIE.GET_BY_UPCOMING"];
     patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
     await this.movieClient.connect();
   }
@@ -51,6 +53,22 @@ export class MovieController implements OnModuleInit {
     return await this.movieService.getByDay(skip, limit);
   }
 
+  @Get("bySearch")
+  async getBySearch(
+    @Query("search") search: string,
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    return this.movieService.getBySearch(search,  skip, limit);
+  }
+
+  @Get("byUpcoming")
+  async getUpcoming(
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    return this.movieService.getByUpcoming(skip, limit);
+  }
 
   @Get("byId/:id")
   async getMovieById(@Param("id", ParseIntPipe) id: number) {

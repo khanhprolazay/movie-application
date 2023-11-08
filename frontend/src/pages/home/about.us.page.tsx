@@ -22,6 +22,7 @@ import {
 } from "@heroicons/react/24/outline";
 import slider from "@/assets/images/slider_img02.jpg";
 import service from "@/assets/images/services_img.jpg";
+import { Link } from "react-router-dom";
 
 interface DonationType {
   type: string;
@@ -60,7 +61,9 @@ const DonationCard: FC<DonationType> = ({ type, amount, contents, main }) => {
   return (
     <Card
       variant="gradient"
-      className={`${main && "ring ring-coral"} w-full max-w-[20rem] bg-cblack-300 p-8 hover:ring hover:ring-coral`}
+      className={`${
+        main && "ring ring-coral"
+      } w-full max-w-[20rem] bg-cblack-300 p-8 hover:ring hover:ring-coral`}
     >
       <CardHeader
         floated={false}
@@ -102,8 +105,8 @@ const DonationCard: FC<DonationType> = ({ type, amount, contents, main }) => {
         <Button
           size="lg"
           variant="outlined"
-          className="rounded-3xl border-2 border-coral text-slate-300 hover:scale-[1.02] hover:border-coral focus:scale-[1.02] active:scale-100"
           ripple={false}
+          className="rounded-3xl border-2 border-coral text-slate-300 hover:scale-[1.02] hover:border-coral focus:scale-[1.02] active:scale-100"
           fullWidth={true}
         >
           Donate
@@ -117,7 +120,7 @@ const AboutUsPage: FC = () => {
   return (
     <>
       <section className=" h-auto bg-[url('@/assets/images/banner.jpg')]">
-        <AppContainer className="flex flex-col-reverse items-center justify-between py-36 gap-8 lg:flex-row">
+        <AppContainer className="flex flex-col-reverse items-center justify-between gap-8 py-36 lg:flex-row">
           <div className="font-manrope text-slate-200 lg:w-1/2">
             <Typography
               variant="h2"
@@ -157,13 +160,15 @@ const AboutUsPage: FC = () => {
               </div>
             </div>
 
-            <Button
-              variant="outlined"
-              className="text-slate hover:border-cred flex items-center gap-3 border-2 border-cred text-sm font-bold text-slate-200 xl:text-base"
-            >
-              <PlayIcon className="h-5 w-5 text-cred" />
-              WATCH NOW
-            </Button>
+            <Link to="/home">
+              <Button
+                variant="outlined"
+                className="text-slate flex items-center gap-3 border-2 border-cred text-sm font-bold text-slate-200 hover:border-cred xl:text-base"
+              >
+                <PlayIcon className="h-5 w-5 text-cred" />
+                WATCH NOW
+              </Button>
+            </Link>
           </div>
           <img
             src={slider}
@@ -173,17 +178,17 @@ const AboutUsPage: FC = () => {
       </section>
 
       <section className="h-full bg-[url('@/assets/images/services_bg02.jpg')] bg-contain py-36">
-        <AppContainer className="flex flex-col md:flex-row items-center justify-between gap-8">
+        <AppContainer className="flex flex-col items-center justify-between gap-8 md:flex-row">
           <div className="lg:pr-24 xl:pr-52">
             <Typography
               variant="h5"
-              className="font-manrope text-sm sm:text-base font-extrabold text-cred"
+              className="font-manrope text-sm font-extrabold text-cred sm:text-base"
             >
               Movie Platform
             </Typography>
             <Typography
               variant="h2"
-              className="mb-6 sm:mb-8 font-manrope text-2xl md:text-3xl font-extrabold text-slate-200"
+              className="mb-6 font-manrope text-2xl font-extrabold text-slate-200 sm:mb-8 md:text-3xl"
             >
               Download Your Shows <br />
               Watch Offline.
@@ -191,13 +196,13 @@ const AboutUsPage: FC = () => {
 
             <div>
               <div className="flex gap-4">
-                <IconButton className="rounded-full border border-dashed border-cred bg-transparent md:p-8 lg:p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
+                <IconButton className="rounded-full border border-dashed border-cred bg-transparent transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred md:p-8 lg:p-12">
                   <FilmIcon className="h-6 w-6 lg:h-9 lg:w-9" />
                 </IconButton>
                 <div>
                   <Typography
                     variant="h5"
-                    className="mb-2 md:text-lg lg:text-xl font-manrope font-bold text-slate-200"
+                    className="mb-2 font-manrope font-bold text-slate-200 md:text-lg lg:text-xl"
                   >
                     Enjoy Your Film
                   </Typography>
@@ -211,13 +216,13 @@ const AboutUsPage: FC = () => {
               <hr className="my-6 border-dashed" />
 
               <div className="flex gap-4">
-                <IconButton className="rounded-full border border-dashed border-cred bg-transparent md:p-8 lg:p-12 transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred">
+                <IconButton className="rounded-full border border-dashed border-cred bg-transparent transition-colors duration-300 ease-in-out hover:border-cred hover:bg-cred md:p-8 lg:p-12">
                   <VideoCameraIcon className="h-6 w-6 lg:h-9 lg:w-9" />
                 </IconButton>
                 <div>
                   <Typography
                     variant="h5"
-                    className="mb-2 md:text-lg lg:text-xl font-manrope font-bold text-slate-200"
+                    className="mb-2 font-manrope font-bold text-slate-200 md:text-lg lg:text-xl"
                   >
                     Watch Everywhere
                   </Typography>
@@ -229,7 +234,11 @@ const AboutUsPage: FC = () => {
               </div>
             </div>
           </div>
-          <img src={service} alt="services_img02" className=" md:w-72 lg:w-96 xl:w-auto xl:h-auto" />
+          <img
+            src={service}
+            alt="services_img02"
+            className=" md:w-72 lg:w-96 xl:h-auto xl:w-auto"
+          />
         </AppContainer>
       </section>
 
@@ -241,8 +250,10 @@ const AboutUsPage: FC = () => {
           Support Us
         </Typography>
         <div className="flex justify-evenly">
-          <div className="flex flex-wrap lg:flex-nowrap justify-evenly gap-12">
-            {donations.map((donate, index) => <DonationCard key={`donation-${index}`} {...donate}/>)}
+          <div className="flex flex-wrap justify-evenly gap-12 lg:flex-nowrap">
+            {donations.map((donate, index) => (
+              <DonationCard key={`donation-${index}`} {...donate} />
+            ))}
           </div>
         </div>
       </section>
