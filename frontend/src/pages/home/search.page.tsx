@@ -13,7 +13,7 @@ const SearchPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const movies = useAppSelector((state) => state.movie.search.data);
+  const { data, loading } = useAppSelector((state) => state.movie.search);
 
   const year = cParseInt(searchParams.get("year"), 10);
   const keyword = searchParams.get("keyword");
@@ -65,9 +65,9 @@ const SearchPage: FC = () => {
           </div>
 
           <div className="relative h-auto w-full items-end lg:grid-cols-[1fr_5px]">
-            {movies && movies.length > 0 ? (
+            {!loading && data && data.length > 0 ? (
               <div className="grid w-full max-w-full grid-cols-3 gap-x-0 gap-y-8 overflow-hidden sm:grid-cols-4 xl:grid-cols-5">
-                {movies.map((item: any, index: number) => (
+                {data.map((item: any, index: number) => (
                   <Card
                     key={`like-${index}`}
                     className={`items-center shadow-none rounded-none bg-transparent`}
@@ -75,7 +75,7 @@ const SearchPage: FC = () => {
                   >
                     <CardBody className="w-[105px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none md:w-[125px]">
                       <LazyLoadImage
-                        loading="lazy"
+                        effect="blur"
                         src={item.imageUrl}
                         wrapperClassName="h-[170px] w-full border md:h-[200px]"
                       />

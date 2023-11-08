@@ -71,6 +71,7 @@ const MovieAside = () => {
         <LazyLoadImage
           src="https://image.tmdb.org/t/p/w500/cHkhb5A4gQRK6zs6Pv7zorHs8Nk.jpg"
           alt="image 2"
+          effect="blur"
           wrapperClassName="h-44 w-full rounded"
         />
         <Typography className="absolute bottom-6 left-3 font-manrope text-xl font-semibold text-slate-200 hover:cursor-pointer">

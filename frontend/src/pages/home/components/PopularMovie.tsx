@@ -66,6 +66,7 @@ export function PopularMovie() {
                             <CardBody
                                 className="w-[125px] p-0 hover:scale-95 hover:cursor-pointer ease-in-out duration-300 transform disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none">
                                 <LazyLoadImage
+                                    effect="blur"
                                     wrapperClassName="h-[205px] w-full border"
                                     src={item.imageUrl}
                                 />

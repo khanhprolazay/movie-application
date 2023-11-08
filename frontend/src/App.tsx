@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import authenticationActions from "./actions/authentication.action";
 import AuthLayout from "./pages/auth/AuthLayout";
 import AppAlert from "./components/AppAlert";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const LoginPage = React.lazy(() =>
   import("./pages/auth/components/SingleLoginForm").then(

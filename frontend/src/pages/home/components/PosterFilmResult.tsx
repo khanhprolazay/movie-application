@@ -20,6 +20,7 @@ const PosterFilmResult = (props: PosterFilmProps) => {
     >
       <LazyLoadImage
         alt="image 1"
+        effect="blur"
         src={props.image}
         width={206}
         height={320}

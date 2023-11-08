@@ -19,10 +19,6 @@ import MovieAside from "./components/MovieAside";
 
 const HomePage: FC = () => {
 
-  const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
-
   return (
     <AppContainer>
       {/* --------------------------------Body----------------------------------- */}
