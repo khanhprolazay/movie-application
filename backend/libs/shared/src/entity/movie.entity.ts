@@ -1,8 +1,14 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { Genre } from "./genre.entity";
-import { ActorToMovie } from "./actor-to-movie.entity";
 import { BaseEntity } from "../base";
 import { Trailer } from "./trailer.entity";
+import { WriterToMovie } from "./writer-to-movie.entity";
+import { CastToMovie } from "./cast-to-movie.entity";
+import { DirectorToMovie } from "./director-to-movie.entity";
+import { ProductionBudget } from "./production-budget.entity";
+import { LifetimeGross } from "./lifetime-gross.entity";
+import { OpeningWeekendGross } from "./opening-weekend-gross.entity";
+import { WorldwideGross } from "./worldwide-gross.entity";
 
 @Entity({name: "movie"})
 export class Movie extends BaseEntity {
@@ -27,6 +33,15 @@ export class Movie extends BaseEntity {
   @Column({type: 'date', nullable: true})
   release: Date
 
+  @Column({nullable: true})
+  tagline: string
+
+  @Column({nullable: true})
+  posterPath: string
+
+  @Column({nullable: true}) 
+  backdropPath: string
+
   @Column({ type: 'text', nullable: true })
   plot: string
 
@@ -37,9 +52,31 @@ export class Movie extends BaseEntity {
   @JoinTable()
   genres: Genre[]
 
-  @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.movie)
-  actors: ActorToMovie[]
+  @OneToMany(() => CastToMovie, castToMovie => castToMovie.movie)
+  casts: CastToMovie[]
+
+  @OneToMany(() => WriterToMovie, writerToMovie => writerToMovie.movie)
+  writers: WriterToMovie[]
+
+  @OneToMany(() => DirectorToMovie, directorToMovie => directorToMovie.movie)
+  directors: DirectorToMovie[]
 
   @OneToMany(() => Trailer, trailer => trailer.movie)
   trailers: Trailer[]
+
+  @OneToOne(() => ProductionBudget, { nullable: true })
+  @JoinColumn()
+  productionBudget: ProductionBudget
+
+  @OneToOne(() => LifetimeGross, { nullable: true })
+  @JoinColumn()
+  lifetimeGross: LifetimeGross  
+
+  @OneToOne(() => OpeningWeekendGross, { nullable: true })
+  @JoinColumn()
+  openingWeekendGross: OpeningWeekendGross
+
+  @OneToOne(() => WorldwideGross, { nullable: true })
+  @JoinColumn()
+  worldwideGross: WorldwideGross
 }

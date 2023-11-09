@@ -21,6 +21,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+}
+
 * {
   margin: 0;
   padding: 0;

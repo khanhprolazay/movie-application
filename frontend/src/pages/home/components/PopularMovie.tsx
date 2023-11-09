@@ -6,6 +6,7 @@ import moviesActions from "@/actions/movie.action"
 import AppFallback from "@/components/AppFallback"
 import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import urlUtils from "@/utils/urlUtils";
 
 
 
@@ -68,7 +69,7 @@ export function PopularMovie() {
                                 <LazyLoadImage
                                     effect="blur"
                                     wrapperClassName="h-[205px] w-full border"
-                                    src={item.imageUrl}
+                                    src={urlUtils.getImageUrl(item)}
                                 />
                                 <div className="flex items-center absolute text-white text-sm bg-black rounded-lg px-2 py-0.5 right-1 top-1 cursor-pointer">
                                     {formattedRating(item.rating)}

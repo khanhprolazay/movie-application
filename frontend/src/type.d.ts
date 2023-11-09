@@ -54,6 +54,8 @@ export interface Movie {
   rating: number,
   imageUrl: string,
   release: string,
+  posterPath?: string,
+  backdropPath?: string,
 }
 
 export interface Trailer {
@@ -73,13 +75,11 @@ export interface DetailMovie {
   release: string,
   plot?: string,
   banner: string,
+  posterPath?: string,
+  backdropPath?: string,
   genres: Genre[], 
-  actors: Array[],
+  casts: Array[],
 }
-
-
-
-
 
 // Other
 export type AlertType = "success" | "warning" | "error";

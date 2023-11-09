@@ -8,6 +8,8 @@ import moviesActions from "@/actions/movie.action";
 import MovieAside from "./components/MovieAside";
 import { cParseInt } from "@/utils/stringUtils";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Movie } from "@/type";
+import urlUtils from "@/utils/urlUtils";
 
 const SearchPage: FC = () => {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ const SearchPage: FC = () => {
           <div className="relative h-auto w-full items-end lg:grid-cols-[1fr_5px]">
             {!loading && data && data.length > 0 ? (
               <div className="grid w-full max-w-full grid-cols-3 gap-x-0 gap-y-8 overflow-hidden sm:grid-cols-4 xl:grid-cols-5">
-                {data.map((item: any, index: number) => (
+                {data.map((item, index) => (
                   <Card
                     key={`like-${index}`}
                     className={`items-center shadow-none rounded-none bg-transparent`}
@@ -76,7 +78,8 @@ const SearchPage: FC = () => {
                     <CardBody className="w-[105px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none md:w-[125px]">
                       <LazyLoadImage
                         effect="blur"
-                        src={item.imageUrl}
+                        //src="http://image.tmdb.org/t/p/w500/eD4bGQNfmqExIAzKdvX5gDHhI2.jpg"
+                        src={urlUtils.getImageUrl(item)}
                         wrapperClassName="h-[170px] w-full border md:h-[200px]"
                       />
                       <div className="absolute right-1 top-1 flex cursor-pointer items-center rounded-lg bg-black px-2 py-0.5 text-sm text-white">

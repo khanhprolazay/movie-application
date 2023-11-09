@@ -3,8 +3,8 @@ import { Actor } from "./actor.entity";
 import { Movie } from "./movie.entity";
 import { BaseEntity } from "../base";
 
-@Entity({name: "actor_to_movie"})
-export class ActorToMovie extends BaseEntity {
+@Entity({name: "cast_to_movie"})
+export class CastToMovie extends BaseEntity {
   @Column()
   actorId: number
 
@@ -14,11 +14,9 @@ export class ActorToMovie extends BaseEntity {
   @Column()
   role: string
 
-  @ManyToOne(() => Actor, (actor) => actor.movies)
+  @ManyToOne(() => Actor, (actor) => actor.castingMovies)
   actor: Actor
 
-  // @ManyToOne(() => Movie, (movie) => movie.actorToMovies)
-  // movie: Movie
-  @ManyToOne(() => Movie, (movie) => movie.actors)
+  @ManyToOne(() => Movie, (movie) => movie.casts)
   movie: Movie
 }

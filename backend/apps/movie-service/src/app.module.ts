@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerModule, Actor, ActorToMovie, Genre, Movie, Trailer, KafkaGroup, Service } from '@app/shared';
+import { LoggerModule, Actor, Genre, Movie, Trailer, Service, CastToMovie, DirectorToMovie, WriterToMovie, ProductionBudget, LifetimeGross, OpeningWeekendGross, WorldwideGross } from '@app/shared';
 import { MovieModule } from './movie/movie.module';
 import { GenreModule } from './genre/genre.module';
 
@@ -22,7 +22,7 @@ import { GenreModule } from './genre/genre.module';
         return {
           name: 'movie',
           type: "mysql",
-          entities: [Movie, Actor, ActorToMovie, Genre, Trailer],
+          entities: [Movie, Actor, Genre, Trailer, CastToMovie, DirectorToMovie, WriterToMovie, LifetimeGross, OpeningWeekendGross, ProductionBudget, WorldwideGross],
           host: configService.get('MOVIE_DATABASE_HOST'),
           port: configService.get('MOVIE_DATABASE_PORT'),
           database: configService.get('MOVIE_DATABASE_NAME'),

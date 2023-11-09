@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { BaseService, LoggerService, Movie } from "@app/shared";
 import { MovieRepository } from "./movie.repository";
-import { Between, In, IsNull, LessThanOrEqual, Like, MoreThan, Not } from "typeorm";
+import { Between, In, LessThanOrEqual, Like, MoreThan } from "typeorm";
 import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
@@ -34,8 +34,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       }
     })
@@ -58,8 +59,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       }
     })
@@ -82,8 +84,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       }
     })
@@ -102,8 +105,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       }
     })
@@ -123,8 +127,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       },
     })
@@ -143,8 +148,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
       },
     })
@@ -155,7 +161,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       relations: {
         genres: true,
         trailers: true,
-        actors: { actor: true },
+        casts: { actor: true },
       },
       select: {
         imdbId: true,
@@ -169,7 +175,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
           imdbId: true,
         },
         genres: { name: true },
-        actors: {
+        casts: {
           role: true,
           actor: {
             id: true,

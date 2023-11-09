@@ -1,6 +1,8 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { ActorToMovie } from "./actor-to-movie.entity";
+import { CastToMovie } from "./cast-to-movie.entity";
 import { BaseEntity } from "../base";
+import { WriterToMovie } from "./writer-to-movie.entity";
+import { DirectorToMovie } from "./director-to-movie.entity";
 
 @Entity({name: "actor"})
 export class Actor extends BaseEntity {
@@ -25,6 +27,12 @@ export class Actor extends BaseEntity {
   @Column({nullable: true})
   height: string
 
-  @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.actor)
-  movies: ActorToMovie[]
+  @OneToMany(() => CastToMovie, castToMovie => castToMovie.actor)
+  castingMovies: CastToMovie[]
+
+  @OneToMany(() => WriterToMovie, writerToMovie => writerToMovie.actor)
+  writingMovies: WriterToMovie[]
+
+  @OneToMany(() => DirectorToMovie, directorToMovie => directorToMovie.actor)
+  directingMovies: DirectorToMovie[]
 }

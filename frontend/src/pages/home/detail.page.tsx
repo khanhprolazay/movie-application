@@ -20,6 +20,11 @@ import { useParams } from "react-router-dom";
 import AppFallback from "@/components/AppFallback";
 import { Trailer } from "@/type";
 import { cParseInt } from "@/utils/stringUtils";
+import {
+  LazyLoadComponent,
+  LazyLoadImage,
+} from "react-lazy-load-image-component";
+import urlUtils from "@/utils/urlUtils";
 
 const defaultAvatar =
   "https://media.istockphoto.com/id/1300845620/vi/vec-to/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-ph%E1%BA%B3ng-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn-n%E1%BB%81n-tr%E1%BA%AFng-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-minh-h%E1%BB%8Da-vector.jpg?s=612x612&w=0&k=20&c=MyAgwZm-Ct_rQpQGYh0Wb0N7KeAaFsY_WrZJ89EAiIw=";
@@ -35,12 +40,12 @@ type Tab = {
   label: string;
   value: TabValues;
   desc?: string;
-  actors?: Actor[];
+  casts?: Actor[];
   trailers?: Trailer[];
 };
 
 const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
-  const { value, desc, actors, trailers } = tab;
+  const { value, desc, casts, trailers } = tab;
 
   switch (value) {
     case "description":
@@ -49,7 +54,7 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
           {desc &&
             desc.split("\n").map((content, index) => (
               <Typography
-                key={index}
+                key={`desc-${index}`}
                 className={`${
                   index && "mt-4"
                 } inline-block font-manrope text-sm text-slate-400`}
@@ -63,10 +68,18 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
     case "cast":
       return (
         <div className="flex flex-wrap gap-x-12 gap-y-6">
-          {actors &&
-            actors.map((actor) => (
-              <div className="flex min-w-[200px] max-w-[200px] items-center gap-3">
-                <Avatar src={actor.avatar || defaultAvatar} className="min-w-[48px]" />
+          {casts &&
+            casts.map((actor) => (
+              <div
+                key={actor.name}
+                className="flex min-w-[200px] max-w-[200px] items-center gap-3"
+              >
+                <LazyLoadComponent>
+                  <Avatar
+                    src={actor.avatar || defaultAvatar}
+                    className="min-w-[48px]"
+                  />
+                </LazyLoadComponent>
                 <div className="font-manrope">
                   <div className="line-clamp-1">
                     <Typography
@@ -86,15 +99,16 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
       );
 
     case "trailer":
-      if (trailers && trailers?.length !== 0)
-        return (
-          <iframe
-            loading="lazy"
-            allowFullScreen
-            className="h-full w-full rounded-lg"
-            src={`http://www.imdb.com/video/imdb/${trailers[0].imdbId}/imdb/embed?autoplay=false`}
-          />
-        );
+      return !trailers || trailers?.length === 0 ? (
+        <></>
+      ) : (
+        <iframe
+          loading="lazy"
+          allowFullScreen
+          className="h-full w-full rounded-lg"
+          src={`http://www.imdb.com/video/imdb/${trailers[0].imdbId}/imdb/embed?autoplay=false`}
+        />
+      );
 
     default:
       return <></>;
@@ -108,7 +122,7 @@ const DetailPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
 
-  const dataDetail = useAppSelector((state) => state.DetailMovie.data);
+  const { data, loading } = useAppSelector((state) => state.DetailMovie);
   const dataRelatedMovie = useAppSelector((state) => state.movie.search.data);
 
   useEffect(() => {
@@ -126,8 +140,8 @@ const DetailPage = () => {
     );
   }
 
-  // Kiểm tra nếu dataDetail là null
-  if (dataDetail === null) {
+  // Kiểm tra nếu data là null
+  if (data === null) {
     return (
       <div>
         <AppFallback />
@@ -136,13 +150,13 @@ const DetailPage = () => {
   }
 
   for (let i = 0; i < dataRelatedMovie.length; i++) {
-    if (dataRelatedMovie[i].id == dataDetail.id) {
+    if (dataRelatedMovie[i].id == data.id) {
       dataRelatedMovie.splice(i, 1);
       break; // Dừng sau khi loại bỏ phần tử đầu tiên
     }
   }
 
-  const actors = dataDetail.actors.slice(1, 16).map((actorInfo) => {
+  const casts = data.casts.slice(1, 16).map((actorInfo) => {
     return {
       name: actorInfo.actor.name,
       avatar: actorInfo.actor.imageUrl,
@@ -154,143 +168,145 @@ const DetailPage = () => {
     {
       label: "Trailer",
       value: "trailer",
-      trailers: dataDetail.trailers,
+      trailers: data.trailers,
     },
     {
       label: "Casts",
       value: "cast",
-      actors: actors,
+      casts: casts,
     },
     {
       label: "Description",
       value: "description",
-      desc: dataDetail.description,
+      desc: data.description,
     },
   ];
-
-
 
   return (
     <AppContainer className="z-10 pt-8">
       <div className="grid h-[675px] w-full grid-cols-[294px_1fr] gap-4">
-        <Card className="w-auto bg-cblack-600">
-          <CardHeader floated={false} className="rounded-md">
-            <img
-              src={dataDetail.imageUrl}
-              alt="movie-picture"
-              className="h-96 w-full"
-            />
-          </CardHeader>
-          <CardBody className="p-4 font-manrope">
-            {dataDetail.actors.length > 0 && (
-              <>
+        {!loading && (
+          <>
+            <Card className="w-auto bg-cblack-600">
+              <CardHeader floated={false} className="rounded-md">
+                <img
+                  src={urlUtils.getImageUrl(data, "DESC")}
+                  alt="movie-picture"
+                  className="h-96 w-full"
+                />
+              </CardHeader>
+              <CardBody className="p-4 font-manrope">
+                {data.casts.length > 0 && (
+                  <>
+                    <Typography
+                      variant="h5"
+                      className="text-base font-bold text-slate-200/90"
+                    >
+                      Director
+                    </Typography>
+                    <Typography className="mb-2 text-[13.6px] text-slate-400">
+                      {data.casts[0].actor.name}
+                    </Typography>{" "}
+                  </>
+                )}
+
                 <Typography
                   variant="h5"
                   className="text-base font-bold text-slate-200/90"
                 >
-                  Director
+                  Release Date
                 </Typography>
                 <Typography className="mb-2 text-[13.6px] text-slate-400">
-                  {dataDetail.actors[0].actor.name}
-                </Typography>{" "}
-              </>
-            )}
+                  {data.release}
+                </Typography>
 
-            <Typography
-              variant="h5"
-              className="text-base font-bold text-slate-200/90"
-            >
-              Release Date
-            </Typography>
-            <Typography className="mb-2 text-[13.6px] text-slate-400">
-              {dataDetail.release}
-            </Typography>
-
-            <Typography
-              variant="h5"
-              className="text-base font-bold text-slate-200/90"
-            >
-              Genres
-            </Typography>
-            <Typography className="mb-2 text-[13.6px] text-slate-400">
-              {dataDetail.genres.map((genre) => genre.name).join(", ")}
-            </Typography>
-
-            {dataDetail.plot && (
-              <div>
                 <Typography
                   variant="h5"
                   className="text-base font-bold text-slate-200/90"
                 >
-                  Plot
+                  Genres
                 </Typography>
-                <div className="line-clamp-5">
-                  <Typography className=" text-[13.6px] text-slate-400">
-                    {dataDetail.plot}
-                  </Typography>
-                </div>
-              </div>
-            )}
-          </CardBody>
-        </Card>
-
-        <div className="grid w-full grid-rows-[auto_1fr] gap-4">
-          <Card className="bg-cblack-600">
-            <CardBody className="flex items-center justify-between p-4 font-manrope">
-              <div>
-                <Typography
-                  variant="h2"
-                  className="text-[28px] font-bold text-slate-200/90"
-                >
-                  {dataDetail.title}
+                <Typography className="mb-2 text-[13.6px] text-slate-400">
+                  {data.genres.map((genre) => genre.name).join(", ")}
                 </Typography>
-              </div>
 
-              <Button
-                // <Button onClick={() => handleWatch(dataDetail.id)}
-                className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80"
+                {data.plot && (
+                  <div>
+                    <Typography
+                      variant="h5"
+                      className="text-base font-bold text-slate-200/90"
+                    >
+                      Plot
+                    </Typography>
+                    <div className="line-clamp-5">
+                      <Typography className=" text-[13.6px] text-slate-400">
+                        {data.plot}
+                      </Typography>
+                    </div>
+                  </div>
+                )}
+              </CardBody>
+            </Card>
+
+            <div className="grid w-full grid-rows-[auto_1fr] gap-4">
+              <Card className="bg-cblack-600">
+                <CardBody className="flex items-center justify-between p-4 font-manrope">
+                  <div>
+                    <Typography
+                      variant="h2"
+                      className="text-[28px] font-bold text-slate-200/90"
+                    >
+                      {data.title}
+                    </Typography>
+                  </div>
+
+                  <Button
+                    // <Button onClick={() => handleWatch(data.id)}
+                    className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80"
+                  >
+                    Watch
+                  </Button>
+                </CardBody>
+              </Card>
+              <Tabs
+                value={activeTab}
+                className="flex h-full flex-col rounded-xl bg-cblack-600"
               >
-                Watch
-              </Button>
-            </CardBody>
-          </Card>
-          <Tabs
-            value={activeTab}
-            className="flex h-full flex-col rounded-xl bg-cblack-600"
-          >
-            <TabsHeader
-              className="rounded-none border-b border-divider bg-cblack-600 bg-opacity-100 px-4"
-              indicatorProps={{
-                className:
-                  "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
-              }}
-            >
-              {tabs.map(({ label, value }) => (
-                <Tab
-                  key={value}
-                  value={value}
-                  onClick={() => setActiveTab(value)}
-                  className={`${
-                    activeTab === value ? "text-sky-400" : "text-slate-100"
-                  } mr-6 w-auto px-0 py-2 text-sm`}
+                <TabsHeader
+                  className="rounded-none border-b border-divider bg-cblack-600 bg-opacity-100 px-4"
+                  indicatorProps={{
+                    className:
+                      "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
+                  }}
                 >
-                  {label}
-                </Tab>
-              ))}
-            </TabsHeader>
-            <TabsBody className="h-full">
-              {tabs.map((tab) => (
-                <TabPanel
-                  key={tab.value}
-                  value={tab.value}
-                  className="h-full rounded-b-xl"
-                >
-                  <TabContent tab={tab} />
-                </TabPanel>
-              ))}
-            </TabsBody>
-          </Tabs>
-        </div>
+                  {tabs.map(({ label, value }) => (
+                    <Tab
+                      key={`tab-${value}`}
+                      value={value}
+                      onClick={() => setActiveTab(value)}
+                      className={`${
+                        activeTab === value ? "text-sky-400" : "text-slate-100"
+                      } mr-6 w-auto px-0 py-2 text-sm`}
+                    >
+                      {label}
+                    </Tab>
+                  ))}
+                </TabsHeader>
+                <TabsBody className="h-full">
+                  {tabs.map((tab) => (
+                    <TabPanel
+                      key={tab.value}
+                      value={tab.value}
+                      className="h-full rounded-b-xl"
+                    >
+                      <TabContent tab={tab} />
+                    </TabPanel>
+                  ))}
+                </TabsBody>
+              </Tabs>
+            </div>
+          </>
+        )}
       </div>
 
       <Typography className="mb-3 mt-12 font-manrope text-3xl font-bold text-slate-200">
