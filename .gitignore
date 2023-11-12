@@ -1,20 +1,23 @@
 */node_modules
-*/config/env
+*/config/env/production.env
 */volumes
 */dist
 
 data/*/*.csv
-data/v1/*
-data/v2/*
+data/*/*.json
+data/*/__pycache__
+
 data/*.sql
 
 backend/*.sql
 backend/*.zip
 backend/tar
 
-
 frontend/*.zip
 
 images
+
+spark/.ipynb_checkpoints
+spark/checkpoint_dir
 
 note.txt

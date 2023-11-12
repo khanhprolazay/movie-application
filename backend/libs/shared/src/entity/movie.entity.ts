@@ -9,6 +9,7 @@ import { ProductionBudget } from "./production-budget.entity";
 import { LifetimeGross } from "./lifetime-gross.entity";
 import { OpeningWeekendGross } from "./opening-weekend-gross.entity";
 import { WorldwideGross } from "./worldwide-gross.entity";
+import { MovieToGenre } from "./movie-to-genre.entity";
 
 @Entity({name: "movie"})
 export class Movie extends BaseEntity {
@@ -48,9 +49,8 @@ export class Movie extends BaseEntity {
   @Column({type: 'text', nullable: true})
   description: string
 
-  @ManyToMany(() => Genre)
-  @JoinTable()
-  genres: Genre[]
+  @OneToMany(() => MovieToGenre, movieToGenre => movieToGenre.movie)
+  genres: MovieToGenre[]
 
   @OneToMany(() => CastToMovie, castToMovie => castToMovie.movie)
   casts: CastToMovie[]

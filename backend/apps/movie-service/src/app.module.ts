@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule, Actor, Genre, Movie, Trailer, Service, CastToMovie, DirectorToMovie, WriterToMovie, ProductionBudget, LifetimeGross, OpeningWeekendGross, WorldwideGross } from '@app/shared';
 import { MovieModule } from './movie/movie.module';
 import { GenreModule } from './genre/genre.module';
+import { MovieToGenre } from '@app/shared/entity/movie-to-genre.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { GenreModule } from './genre/genre.module';
         return {
           name: 'movie',
           type: "mysql",
-          entities: [Movie, Actor, Genre, Trailer, CastToMovie, DirectorToMovie, WriterToMovie, LifetimeGross, OpeningWeekendGross, ProductionBudget, WorldwideGross],
+          entities: [Movie, Actor, Genre, Trailer, CastToMovie, MovieToGenre, DirectorToMovie, WriterToMovie, LifetimeGross, OpeningWeekendGross, ProductionBudget, WorldwideGross],
           host: configService.get('MOVIE_DATABASE_HOST'),
           port: configService.get('MOVIE_DATABASE_PORT'),
           database: configService.get('MOVIE_DATABASE_NAME'),

@@ -1,27 +1,24 @@
 import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Movie } from "@/type";
+import urlUtils from "@/utils/urlUtils";
 
-interface PosterFilmProps {
-  id: number,
-  image: string;
-  name: string;
-  rating: number;
-}
 
-const PosterFilmResult = (props: PosterFilmProps) => {
+const PosterFilmResult = (props: { movie: Movie }) => {
+  const { movie } = props;
   const navigate = useNavigate();
-  const formattedRating = Number.isInteger(props.rating) ? `${props.rating}.0` : props.rating;
+  const formattedRating = Number.isInteger(movie.rating) ? `${movie.rating}.0` : movie.rating;
 
   return (
     <div
       className="relative mb-10 object-cover text-gray-300 transition-colors hover:text-slate-100 mx-auto mt-5"
-      onClick={() => navigate(`/detail/${props.id}`)}
+      onClick={() => navigate(`/detail/${movie.id}`)}
     >
       <LazyLoadImage
         alt="image 1"
         effect="blur"
-        src={props.image}
+        src={urlUtils.getImageUrl(movie)}
         width={206}
         height={320}
         wrapperClassName="transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -46,7 +43,7 @@ const PosterFilmResult = (props: PosterFilmProps) => {
         variant="h2"
         className="text-md font-medium absolute -bottom-7 max-w-full overflow-hidden whitespace-nowrap font-manrope hover:text-gray-500 hover:cursor-pointer hover:transition-colors"
       >
-        {props.name}
+        {movie.title}
       </Typography>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import movieConstants from "@/constants/movie.constants";
-import { ReduxAction, Movie, Genre } from "@/type";
+import { ReduxAction, Movie, Genre, DetailMovie } from "@/type";
 
 export interface MovieRootState {
   rating: {
@@ -39,6 +39,14 @@ export interface MovieRootState {
     data: Movie[],
     error: string | null
   },
+
+  current: {
+    loading: boolean,
+    data: DetailMovie | null,
+    error: string | null,
+    related: Movie[],
+    relatedLoading: boolean,
+  }
 }
 
 const initialState: MovieRootState = {
@@ -79,6 +87,13 @@ const initialState: MovieRootState = {
     data: [],
     error: null
   },
+  current: {
+    loading: false,
+    relatedLoading: false,
+    data: null,
+    error: null,
+    related: []
+  }
 }
 
 export function movie(state: MovieRootState = initialState, action: ReduxAction): MovieRootState {
@@ -253,6 +268,65 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
+          error: action.payload?.error,
+        }
+      }
+
+    case movieConstants.GET_DETAIL_MOVIE:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          loading: true,
+        }
+      }
+
+    case movieConstants.GET_DETAIL_MOVIE_SUCCESS:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          loading: false,
+          data: action.payload?.movie,
+        }
+      }
+
+    case movieConstants.GET_DETAIL_MOVIE_ERROR:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          loading: false,
+          error: action.payload?.error,
+        }
+      }
+
+    case movieConstants.GET_RELATED_MOVIE:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          related: [],
+          relatedLoading: true,
+        }
+      }
+
+    case movieConstants.GET_RELATED_MOVIE_SUCCESS:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          relatedLoading: false,
+          related: action.payload?.movies,
+        }
+      }
+
+    case movieConstants.GET_RELATED_MOVIE_ERROR:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          relatedLoading: false,
           error: action.payload?.error,
         }
       }

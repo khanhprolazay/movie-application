@@ -6,10 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import moviesActions from "@/actions/movie.action";
 import MovieAside from "./components/MovieAside";
-import { cParseInt } from "@/utils/stringUtils";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Movie } from "@/type";
 import urlUtils from "@/utils/urlUtils";
+import stringUtils from "@/utils/stringUtils";
 
 const SearchPage: FC = () => {
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ const SearchPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, loading } = useAppSelector((state) => state.movie.search);
 
-  const year = cParseInt(searchParams.get("year"), 10);
+  const year = stringUtils.cParseInt(searchParams.get("year"), 10);
   const keyword = searchParams.get("keyword");
   const genres = searchParams.get("genres");
 
@@ -78,7 +77,6 @@ const SearchPage: FC = () => {
                     <CardBody className="w-[105px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none md:w-[125px]">
                       <LazyLoadImage
                         effect="blur"
-                        //src="http://image.tmdb.org/t/p/w500/eD4bGQNfmqExIAzKdvX5gDHhI2.jpg"
                         src={urlUtils.getImageUrl(item)}
                         wrapperClassName="h-[170px] w-full border md:h-[200px]"
                       />

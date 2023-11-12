@@ -1,7 +1,7 @@
 import homeApis from "@/apis/homeApis";
 import moviesConstants from "@/constants/movie.constants";
 import { TypedDispatch } from "@/redux/store";
-import { Genre, Movie, ReduxAction } from "@/type";
+import { DetailMovie, Genre, Movie, ReduxAction } from "@/type";
 
 function getMovieByRating(skip: number, limit: number) {
 
@@ -205,7 +205,71 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
     }
 }
 
+function getMovieDetail(id: number) {
 
+    return (dispatch: TypedDispatch) => {
+        dispatch(request());
+        homeApis.getDetailMovie(id)
+            .then(data => {
+                dispatch(success(data));
+                dispatch(getRelatedMovie(data.genres.map(genre => genre.genre)));
+            })
+            .catch(err => dispatch(error(err)))
 
-const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByGenres };
+        function request(): ReduxAction {
+            return {
+                type: moviesConstants.GET_DETAIL_MOVIE
+            }
+        }
+
+        function success(movie: DetailMovie): ReduxAction {
+
+            return {
+                type: moviesConstants.GET_DETAIL_MOVIE_SUCCESS,
+                payload: { movie },
+            }
+        }
+
+        function error(error: string): ReduxAction {
+            return {
+                type: moviesConstants.GET_DETAIL_MOVIE_ERROR,
+                payload: { error },
+
+            }
+        }
+    }
+}
+
+function getRelatedMovie(genres: Genre[]) {
+
+    return (dispatch: TypedDispatch) => { 
+        dispatch(request());
+        homeApis.getMovieByGenres(genres, 0, 10)
+            .then(data => dispatch(success(data)))
+            .catch(err => dispatch(error(err)))
+     }
+    
+    function request(): ReduxAction {
+        return {
+            type: moviesConstants.GET_RELATED_MOVIE
+        }
+    }
+
+    function success(movies: Movie[]): ReduxAction {
+        return {
+            type: moviesConstants.GET_RELATED_MOVIE_SUCCESS,
+            payload: { movies },
+        }
+    }
+
+    function error(error: string): ReduxAction {
+        return {
+            type: moviesConstants.GET_RELATED_MOVIE_ERROR,
+            payload: { error },
+
+        }
+     }
+}
+
+const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByGenres, getMovieDetail, getRelatedMovie };
 export default moviesActions;

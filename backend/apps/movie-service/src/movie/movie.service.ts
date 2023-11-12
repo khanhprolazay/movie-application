@@ -4,12 +4,14 @@ import { MovieRepository } from "./movie.repository";
 import { Between, In, LessThanOrEqual, Like, MoreThan } from "typeorm";
 import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
+import { GenreService } from "../genre/genre.service";
+import { groupBy } from "rxjs";
 
 @Injectable()
 export class MovieService extends BaseService<Movie, MovieRepository>{
   constructor(
     protected readonly loggerService: LoggerService,
-    protected readonly repository: MovieRepository,
+    protected readonly repository: MovieRepository
   ) {
     super(repository, loggerService);
   }
@@ -68,16 +70,13 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
   }
 
   async getByGenres(dto: MovieByGenresDTO) {
-    const { genres, skip, limit } = dto;
-  
+    const relatedMovieIds = await this.repository.getByGenres(dto);
     return await this.repository.find({
-      order: { release: "DESC"},
-      take: limit,
-      skip: skip,
+      order: { release: "DESC" },
+      take: dto.limit,
+      skip: dto.skip,
       where: {
-        genres: {
-          name: In(genres),
-        },
+        id: In(relatedMovieIds),
         release: LessThanOrEqual(new Date()),
       },
       select: {
@@ -159,22 +158,30 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
   override async getById(id: number){
     const results = await this.repository.find({
       relations: {
-        genres: true,
+        genres: { genre: true },
         trailers: true,
         casts: { actor: true },
       },
       select: {
+        id: true,
         imdbId: true,
         imageUrl: true,
         plot: true,
         title: true,
+        rating: true,
         release: true,
         description: true,
+        genres: {
+          id: true,
+          genre: {
+            id: true,
+            name: true,
+          }
+        },
         trailers: {
           type: true,
           imdbId: true,
         },
-        genres: { name: true },
         casts: {
           role: true,
           actor: {
@@ -184,14 +191,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
           }
         }
       },
-      where: {
-        id,
-        // actors: {
-        //   actor: {
-        //     imageUrl: Not(IsNull())
-        //   }
-        // }
-      }
+      where: { id }
     });
     return results.length === 0 ? null : results[0];
 

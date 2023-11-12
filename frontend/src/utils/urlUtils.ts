@@ -13,5 +13,8 @@ const getImageUrl = (movie: Movie | DetailMovie, order: "ASC" | "DESC" = "ASC") 
   }
 }
 
-const urlUtils = { getImageUrl };
+const getDetailUrl = (id: number) => `/detail/${id}`;
+const getWatchUrl = (id: number) => `/watch/${id}`;
+
+const urlUtils = { getImageUrl, getDetailUrl, getWatchUrl };
 export default urlUtils;
