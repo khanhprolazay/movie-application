@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import AppContainer from "@/components/AppContainer";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { CircularProgressbar } from "react-circular-progressbar";
@@ -117,7 +117,7 @@ const WatchPage: FC = () => {
                       <Typography className="font-manrope font-medium text-cred">
                         {data.genres.reduce(
                           (acc, genre, index) =>
-                            index > 0 ? `${acc}, ${genre.name}` : genre.name,
+                            index > 0 ? `${acc}, ${genre.genre.name}` : genre.genre.name,
                           "",
                         )}
                       </Typography>

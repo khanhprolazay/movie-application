@@ -1,14 +1,15 @@
-import { Column, Entity } from "typeorm";
-import { BaseEntity } from "../base";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Budget } from "./budget.entity";
 
 @Entity() 
-export class OpeningWeekendGross extends BaseEntity {
-  @Column()
-  amount: number
+export class OpeningWeekendGross {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToOne(() => Budget)
+  @JoinColumn()
+  budget: Budget;
 
   @Column()
-  currency: string
-
-  @Column()
-  weekendEndDate: Date
+  weekendEndDate: Date;
 }

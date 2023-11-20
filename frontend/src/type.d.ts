@@ -43,7 +43,6 @@ export interface User {
 }
 
 export interface Genre {
-  id: number,
   name: string,
 }
 
@@ -53,7 +52,7 @@ export interface Movie {
   title: string,
   rating: number,
   imageUrl: string,
-  release?: string,
+  release: string,
   posterPath?: string,
   movieLength?: number,
   backdropPath?: string,
@@ -90,7 +89,7 @@ export interface DetailMovie {
   banner: string,
   posterPath?: string,
   backdropPath?: string,
-  genres: { genre: Genre }[], 
+  genres: { id: number, genre: Genre }[], 
   casts: Cast[],
 }
 

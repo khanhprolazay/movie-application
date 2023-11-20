@@ -1,5 +1,4 @@
-import { v4 } from 'uuid';
-import { Service } from '@app/shared';
+import { QUEUE, Service } from '@app/shared';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -12,17 +11,23 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ClientsModule.registerAsync([{
       name: Service.USER,
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        transport: Transport.KAFKA,
-        options: {
-          client: { 
-            brokers: [configService.get<string>('BROKER_HOST')] 
-          },
-          consumer: { 
-            groupId: `user-from-auth-service-${v4()}`,
-          },
-        },
-      })
+      useFactory: (configService: ConfigService) => {
+        const brokerHost = configService.get<string>('BROKER_HOST') ;
+        const brokerPort = configService.get<string>('BROKER_PORT');
+        const brokerUsername = configService.get<string>('BROKER_USERNAME');
+        const brokerPassword = configService.get<string>('BROKER_PASSWORD');
+
+        return {
+          transport: Transport.RMQ,
+          options: {
+            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}`],
+            queue: QUEUE.USER,
+            queueOptions: {
+              durable: false,
+            },
+          }
+      }
+      }
     }]),
 
     JwtModule.register({}),

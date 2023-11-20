@@ -4,8 +4,6 @@ import { MovieRepository } from "./movie.repository";
 import { Between, In, LessThanOrEqual, Like, MoreThan } from "typeorm";
 import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
-import { GenreService } from "../genre/genre.service";
-import { groupBy } from "rxjs";
 
 @Injectable()
 export class MovieService extends BaseService<Movie, MovieRepository>{
@@ -172,9 +170,8 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         release: true,
         description: true,
         genres: {
-          id: true,
+          genreId: true,
           genre: {
-            id: true,
             name: true,
           }
         },

@@ -1,13 +1,13 @@
 import { firstValueFrom } from 'rxjs';
 import { DeepPartial, DeleteResult } from 'typeorm';
-import { ClientKafka } from "@nestjs/microservices";
+import { ClientProxy } from "@nestjs/microservices";
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { BaseEntity, BasePattern, IBaseService, BaseAction, EntityKeyUnion, Pattern } from "@app/shared";
+import { BaseEntity, IBaseService, BaseAction, EntityKeyUnion, Pattern } from "@app/shared";
 
 export class BaseMessageService<E extends BaseEntity> implements IBaseService<E> {
   constructor( 
-    protected readonly client: ClientKafka,
-    protected readonly key: EntityKeyUnion,
+    private readonly client: ClientProxy,
+    private readonly key: EntityKeyUnion,
   ) {}
 
 
@@ -30,7 +30,7 @@ export class BaseMessageService<E extends BaseEntity> implements IBaseService<E>
   }
 
   async getById(id: number) {
-    return await this.execute(`${this.key}.${BaseAction.GET_BY_ID}`, id);
+    return await this.execute(`${this.key}.${BaseAction['GET.BY_ID']}`, id);
   }
 
   async create(data: DeepPartial<E>) {

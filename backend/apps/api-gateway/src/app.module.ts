@@ -7,8 +7,7 @@ import { JwtGuard } from './auth/guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import type { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { KafkaGroup } from '@app/shared';
+
 @Module({
   imports: [
     UserModule,
@@ -22,32 +21,22 @@ import { KafkaGroup } from '@app/shared';
     CacheModule.registerAsync<RedisClientOptions>({
       isGlobal: true,
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        store: await redisStore({
-          socket: {
-            host: configService.get("REDIS_HOST"),
-            port: configService.get("REDIS_PORT"),
-          },
-          password: configService.get("REDIS_PASSWORD"),
-          ttl: 24 * 60 * 60 * 1000,
-        })
-      })
-    }),
+      useFactory: async (configService: ConfigService) => {
+        const redisHost = configService.get("REDIS_HOST");
+        const redisPort = configService.get("REDIS_PORT");
+        const redisPassword = configService.get("REDIS_PASSWORD");
 
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     name: 'manager',
-    //     type: 'mysql',
-    //     host: configService.get('MANAGER_DATABASE_HOST'),
-    //     port: configService.get('MANAGER_DATABASE_PORT'),
-    //     username: configService.get('MANAGER_DATABASE_USERNAME'),
-    //     password: configService.get('MANAGER_DATABASE_PASSWORD'),
-    //     database: configService.get('MANAGER_DATABASE_NAME'),
-    //     entities: [KafkaGroup],
-    //     synchronize: true,
-    //   })
-    // })
+        return {
+          store: await redisStore({
+            socket: {
+              host: redisHost,
+              port: redisPort,
+            },
+            password: redisPassword,
+            ttl: 24 * 60 * 60 * 1000,
+          })
+        }}
+    }),
   ],
   providers: [JwtGuard]
 })

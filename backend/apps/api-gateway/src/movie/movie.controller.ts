@@ -7,18 +7,14 @@ import { CacheInterceptor } from "@nestjs/cache-manager";
 
 @Controller("movies")
 @ApiTags("Movie")
-export class MovieController implements OnModuleInit {
-  constructor( 
-    @Inject(Service.MOVIE) 
-    private readonly movieClient: ClientKafka, 
-    private readonly movieService: MovieService,
-  ) {}
+export class MovieController {
+  constructor( private readonly movieService: MovieService ) {}
 
-  async onModuleInit() {
-    const patterns: Pattern[] = ["MOVIE.GET_BY_ID", "MOVIE.GET_BY_YEAR", "GENRE.GET_ALL", "MOVIE.GET_BY_RATING", "MOVIE.GET_BY_GENRES", "MOVIE.GET_BY_DAY", "MOVIE.GET_BY_SEARCH", "MOVIE.GET_BY_UPCOMING"];
-    patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
-    await this.movieClient.connect();
-  }
+  // async onModuleInit() {
+  //   const patterns: Pattern[] = ["MOVIE.GET.BY_ID", "MOVIE.GET.BY_YEAR", "GENRE.GET.ALL", "MOVIE.GET.BY_RATING", "MOVIE.GET.BY_GENRES", "MOVIE.GET.BY_DAY", "MOVIE.GET.BY_SEARCH", "MOVIE.GET.BY_UPCOMING"];
+  //   patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
+  //   await this.movieClient.connect();
+  // }
 
   @Get("byYear")
   @UseInterceptors(CacheInterceptor)

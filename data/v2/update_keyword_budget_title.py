@@ -3,11 +3,13 @@ from connection import *
 from selectv import *
 from get import *
 from savev import *
+import math
 
 
 def main(movies: any, begin: int, end: int):
   current = 0
   conn = create_connection()
+  length = len(movies)
   try:
     # for imdbIdDict in imdbIds:
     for i in range(begin, end):
@@ -17,14 +19,15 @@ def main(movies: any, begin: int, end: int):
       imdbId = movies[i][1]
       # voteCount = movies[i][2]
 
-      result = get_movie_v2(imdbId)   
-      print(result.backdropPath, result.posterPath, result.tagline)   
-      # if result is None:
-      #   cprint(f'{current}. MOVIE {imdbId} NOT FOUND')
+      keywords = get_keywords(imdbId)
 
-      # else:
-      #   update_tagline_image(conn, id, result)
-      #   cprint(f'{current}. UPDATE VOTE COUNT {imdbId} SUCCESSFULLY')
+      for keyword in keywords:
+        keywordId = select_keyword(conn, keyword)
+        if keywordId is not None:
+          save_movie_keyword(conn, id, keywordId)
+      
+      conn.commit()
+      cprint(f'{i}/{length} INSERT {imdbId} SUCCESSFULLY')
 
   except Exception as error:
     print(error)
@@ -33,10 +36,10 @@ def main(movies: any, begin: int, end: int):
 
 
 if __name__ == "__main__":
-  workCount = 2000
+  workCount = 20000
 
   conn = create_connection()
-  movies = select_null_poster_movies(conn)
+  movies = select_movies(conn)
   length = len(movies)
 
   segmentLength = int(length / workCount)
@@ -44,16 +47,11 @@ if __name__ == "__main__":
 
   conn.close()
 
-  segments = []
-  for i in range(0, segmentLength):
-    segments.append(workCount * (i + 1))
-  segments.append(last)
-
   procs = []
-  for segment in segments:
-    begin = segment - workCount if segment % workCount == 0 else len(segments) * workCount 
-    # begin = 0
-    end = segment if segment % workCount == 0 else begin + segment
+  ceil = math.ceil(length / workCount)
+  for i in range(0, ceil):
+    begin = workCount * i
+    end = workCount * (i + 1) if i < ceil - 1 else length
     proc = Process(target=main, args=(movies, begin, end))
     procs.append(proc)
     proc.start()

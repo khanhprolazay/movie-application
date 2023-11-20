@@ -18,7 +18,6 @@ import { DataSource } from 'typeorm';
     
     TypeOrmModule.forRootAsync({
       inject: [ConfigService], 
-      name: Service.USER,
       useFactory: (configService: ConfigService) => ({
         name: 'user',
         type: 'mysql',
@@ -31,21 +30,6 @@ import { DataSource } from 'typeorm';
         synchronize: true
       }), 
     }),
-
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     name: 'manager',
-    //     type: 'mysql',
-    //     host: configService.get('MANAGER_DATABASE_HOST'),
-    //     port: configService.get('MANAGER_DATABASE_PORT'),
-    //     username: configService.get('MANAGER_DATABASE_USERNAME'),
-    //     password: configService.get('MANAGER_DATABASE_PASSWORD'),
-    //     database: configService.get('MANAGER_DATABASE_NAME'),
-    //     entities: [KafkaGroup],
-    //     synchronize: true,
-    //   })
-    // })
   ],
 })
 export class AppModule {}

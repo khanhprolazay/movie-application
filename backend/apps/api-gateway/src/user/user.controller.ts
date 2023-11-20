@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Inject, OnModuleInit, Param, ParseIntPipe, Post, Put, UseGuards } from "@nestjs/common";
-import { ClientKafka } from "@nestjs/microservices";
-import { Pattern, Service, User } from "@app/shared";
+import { Body, Controller, Get, Inject, Param, ParseIntPipe, Put, UseGuards } from "@nestjs/common";
+import { Service, User } from "@app/shared";
 import { UserService } from "./user.service";
 import { JwtGuard } from "../auth/guard";
 import { GetUser } from "../decorator";
@@ -10,18 +9,8 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 @Controller("user")
 @ApiTags("User")
 @ApiBearerAuth()
-export class UserController implements OnModuleInit {
-  constructor(
-    @Inject(Service.USER)
-    private readonly userClient: ClientKafka,
-    private readonly userService: UserService,
-  ) {}
-
-  async onModuleInit() {
-    const patterns: Pattern[] = ["USER.GET_BY_ID", "USER.UPDATE", "USER.UPDATE_PASSWORD"];
-    patterns.forEach(pattern => this.userClient.subscribeToResponseOf(pattern))
-    await this.userClient.connect();
-  }
+export class UserController {
+  constructor( private readonly userService: UserService ) {}
 
   // Get user for role USER
   @Get()

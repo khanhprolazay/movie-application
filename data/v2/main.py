@@ -8,13 +8,13 @@ import mysql.connector
 
 
 
-file = pd.read_csv('./movies_clean.csv', usecols=["id"])
+# file = pd.read_csv('./movies_clean.csv', usecols=["id"])
 current = 0
 attemp = 0
 limit = 100
 flag = False
 
-ids = ["tt19175696"]
+ids = ["tt27857392"]
 
 conn = create_connection()
 def main():

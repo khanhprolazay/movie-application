@@ -1,15 +1,15 @@
-import { Body, Controller, HttpCode, HttpStatus, Inject, OnModuleInit, Post } from "@nestjs/common";
-import { LoginGoogleRequestDto, LoginRequestDto, Pattern, RefreshTokenDto, RegisterRequestDto, Service} from "@app/shared";
+import { Body, Controller, HttpCode, HttpStatus, Inject, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { ClientKafka } from "@nestjs/microservices";
+import { ClientProxy } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
+import { LoginGoogleRequestDto, LoginRequestDto, RefreshTokenDto, RegisterRequestDto, Service} from "@app/shared";
 
 @Controller('auth')
-@ApiTags("Auth")
-export class AuthController implements OnModuleInit {
+@ApiTags('Auth')
+export class AuthController {
   constructor(
     @Inject(Service.AUTH) 
-    private readonly authClient: ClientKafka,
+    private readonly authClient: ClientProxy,
     private readonly authService: AuthService
   ) {}
 
@@ -33,11 +33,5 @@ export class AuthController implements OnModuleInit {
   @Post('refreshToken')
   refreshToken(@Body() dto: RefreshTokenDto) {
     return this.authService.refreshToken(dto);
-  }
-
-  async onModuleInit() {
-    const patterns: Pattern[] = ["AUTH.LOGIN", "AUTH.REGISTER", "AUTH.VALIDATE",  "AUTH.REFRESH_TOKEN", "AUTH.GOOGLE_LOGIN"];
-    patterns.forEach(pattern => this.authClient.subscribeToResponseOf(pattern));
-    await this.authClient.connect();
   }
 }

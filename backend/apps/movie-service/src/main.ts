@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { ExceptionFilter, LoggerService } from '@app/shared';
+import { ExceptionFilter, LoggerService, QUEUE } from '@app/shared';
 import { ValidationPipe } from '@nestjs/common';
 
 dotenv.config({
@@ -10,18 +10,23 @@ dotenv.config({
 });
 
 async function bootstrap() {
+  const brokerHost = process.env.BROKER_HOST;
+  const brokerPort = process.env.BROKER_PORT;
+  const brokerUsername = process.env.BROKER_USERNAME;
+  const brokerPassword = process.env.BROKER_PASSWORD;
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, 
-    {
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          brokers: [process.env.BROKER_HOST],
-        },
-        consumer: {
-          groupId: `movie-consumer`
+      {
+        transport: Transport.RMQ,
+        options: {
+          urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}`],
+          queue: QUEUE.MOVIE,
+          queueOptions: {
+            durable: false,
+          },
         }
       }
-    });
+    );
 
     app.useGlobalPipes(new ValidationPipe({
       whitelist: true,

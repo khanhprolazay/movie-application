@@ -7,7 +7,7 @@ import { Service, User } from '@app/shared';
 import { RoleModule } from '../role/role.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User], Service.USER), RoleModule],
+  imports: [TypeOrmModule.forFeature([User]), RoleModule],
   controllers: [UserController],
   providers: [UserService, UserRepository],
 })

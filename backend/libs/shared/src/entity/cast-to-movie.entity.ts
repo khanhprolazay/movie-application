@@ -1,14 +1,15 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Actor } from "./actor.entity";
 import { Movie } from "./movie.entity";
-import { BaseEntity } from "../base";
 
 @Entity({name: "cast_to_movie"})
-export class CastToMovie extends BaseEntity {
+export class CastToMovie {
   @Column()
+  @PrimaryColumn()
   actorId: number
 
   @Column()
+  @PrimaryColumn()
   movieId: number
 
   @Column()

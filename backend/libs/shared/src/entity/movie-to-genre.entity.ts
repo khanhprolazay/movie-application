@@ -1,14 +1,15 @@
-import { Column, Entity, ManyToOne } from "typeorm";
-import { BaseEntity } from "../base";
+import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Movie } from "./movie.entity";
 import { Genre } from "./genre.entity";
 
 @Entity({name: "movie_to_genre"})
-export class MovieToGenre extends BaseEntity {
+export class MovieToGenre {
   @Column()
+  @PrimaryColumn()
   movieId: number
 
   @Column()
+  @PrimaryColumn()
   genreId: number
 
   @ManyToOne(() => Movie, movie => movie.genres)

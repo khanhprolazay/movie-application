@@ -1,9 +1,11 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Movie } from "./movie.entity";
-import { BaseEntity } from "../base";
 
 @Entity({name: "trailer"})
-export class Trailer extends BaseEntity {
+export class Trailer {
+  @PrimaryGeneratedColumn()
+  id: number
+
   @Column()
   imdbId: string
 

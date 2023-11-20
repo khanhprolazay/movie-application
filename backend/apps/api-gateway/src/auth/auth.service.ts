@@ -1,13 +1,13 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ClientKafka } from "@nestjs/microservices";
-import { first, firstValueFrom } from "rxjs";
+import { ClientProxy } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
 import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterRequestDto, Service, User } from "@app/shared";
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(Service.AUTH) 
-    private readonly authClient: ClientKafka
+    private readonly authClient: ClientProxy
   ) {}
 
   async validate(token: string) {

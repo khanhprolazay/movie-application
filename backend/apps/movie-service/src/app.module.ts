@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerModule, Actor, Genre, Movie, Trailer, Service, CastToMovie, DirectorToMovie, WriterToMovie, ProductionBudget, LifetimeGross, OpeningWeekendGross, WorldwideGross } from '@app/shared';
 import { MovieModule } from './movie/movie.module';
 import { GenreModule } from './genre/genre.module';
-import { MovieToGenre } from '@app/shared/entity/movie-to-genre.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule, Actor, Genre, Movie, Trailer, Service, CastToMovie, DirectorToMovie, WriterToMovie, Budget, OpeningWeekendGross, MovieToGenre, Currency, Keyword, MovieToKeyword } from '@app/shared';
 
 @Module({
   imports: [
@@ -19,35 +18,18 @@ import { MovieToGenre } from '@app/shared/entity/movie-to-genre.entity';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       name: Service.MOVIE,
-      useFactory: (configService: ConfigService) => {
-        return {
-          name: 'movie',
+      useFactory: (configService: ConfigService) => ({   
+          name: "movie-connection",
           type: "mysql",
-          entities: [Movie, Actor, Genre, Trailer, CastToMovie, MovieToGenre, DirectorToMovie, WriterToMovie, LifetimeGross, OpeningWeekendGross, ProductionBudget, WorldwideGross],
+          entities: [Movie, Actor, Genre, Trailer, Currency, Budget, Keyword, MovieToKeyword, CastToMovie, MovieToGenre, DirectorToMovie, WriterToMovie,  OpeningWeekendGross],
           host: configService.get('MOVIE_DATABASE_HOST'),
           port: configService.get('MOVIE_DATABASE_PORT'),
           database: configService.get('MOVIE_DATABASE_NAME'),
           username: configService.get('MOVIE_DATABASE_USER_USERNAME'),
           password: configService.get('MOVIE_DATABASE_USER_PASSWORD'),
           synchronize: true
-        }
-      }
+      })
     }),
-
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     name: 'manager',
-    //     type: 'mysql',
-    //     host: configService.get('MANAGER_DATABASE_HOST'),
-    //     port: configService.get('MANAGER_DATABASE_PORT'),
-    //     username: configService.get('MANAGER_DATABASE_USERNAME'),
-    //     password: configService.get('MANAGER_DATABASE_PASSWORD'),
-    //     database: configService.get('MANAGER_DATABASE_NAME'),
-    //     entities: [KafkaGroup],
-    //     synchronize: true,
-    //   })
-    // })
   ],
 })
 export class AppModule {}

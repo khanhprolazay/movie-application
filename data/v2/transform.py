@@ -1,4 +1,5 @@
-from entity import *
+from entity import Movie, Cast, Video, Budget, OpeningWeekendGross
+from datetime import datetime
 
 def format_date(date: any):
   try:
@@ -46,7 +47,7 @@ def transform_movie(imdbId: str, information: any):
 
     return Movie(imdbId, name, imageUrl, releaseDate, movieLength, plot, rating, genres, voteCount)
   except Exception as error:
-    print(f'Error when trasform {imdbId}: {error}')
+    print(f'Error when trasform {imdbId}: {error}', flush=True)
     return None
   
 
@@ -128,5 +129,50 @@ def transform_genres(genres: any) -> list[str]:
     for genre in genres:
       result.append(genre["text"])
     return result
+  except Exception as error:
+    return []
+  
+def transfromProductionBudget(data: any):
+  try:
+    budget = data["productionBudget"]["budget"]
+    return Budget(budget["amount"], budget["currency"])
+  except Exception as error:
+    return None
+  
+def transfromLifetimeGross(data: any):
+  try:
+    total = data["lifetimeGross"]["total"]
+    return Budget(total["amount"], total["currency"])
+  except Exception as error:
+    return None
+  
+def transformOpeningWeekendGross(data: any):
+  try:
+    total = data["openingWeekendGross"]["gross"]["total"]
+    weekendEndDate = datetime.strptime(data["openingWeekendGross"]["weekendEndDate"], '%Y-%m-%d')
+    return OpeningWeekendGross(total["amount"], total["currency"], weekendEndDate)
+  except Exception as error:
+    print(error, flush=True)
+    return None
+  
+def transfromWorldwideGross(data: any):
+  try:
+    total = data["worldwideGross"]["total"]
+    return Budget(total["amount"], total["currency"])
+  except Exception as error:
+    return None
+  
+
+def transformDirectors(data: any) -> list[Cast]:
+  try:
+    creadits = data["directors"][0]["credits"]
+    return list(map(lambda director: Cast(director["name"]["id"], director["name"]["nameText"]["text"], None, None), creadits))
+  except Exception as error:
+    return []
+
+def transformWriters(data: any) -> list[Cast]:
+  try:
+    creadits = data["writers"][0]["credits"]
+    return list(map(lambda writer: Cast(writer["name"]["id"], writer["name"]["nameText"]["text"], None, None), creadits))
   except Exception as error:
     return []

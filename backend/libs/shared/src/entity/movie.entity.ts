@@ -1,15 +1,13 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
-import { Genre } from "./genre.entity";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { BaseEntity } from "../base";
 import { Trailer } from "./trailer.entity";
 import { WriterToMovie } from "./writer-to-movie.entity";
 import { CastToMovie } from "./cast-to-movie.entity";
 import { DirectorToMovie } from "./director-to-movie.entity";
-import { ProductionBudget } from "./production-budget.entity";
-import { LifetimeGross } from "./lifetime-gross.entity";
 import { OpeningWeekendGross } from "./opening-weekend-gross.entity";
-import { WorldwideGross } from "./worldwide-gross.entity";
 import { MovieToGenre } from "./movie-to-genre.entity";
+import { Budget } from "./budget.entity";
+import { MovieToKeyword } from "./movie-to-keyword.entity";
 
 @Entity({name: "movie"})
 export class Movie extends BaseEntity {
@@ -52,6 +50,9 @@ export class Movie extends BaseEntity {
   @OneToMany(() => MovieToGenre, movieToGenre => movieToGenre.movie)
   genres: MovieToGenre[]
 
+  @OneToMany(() => MovieToKeyword, movieToKeyword => movieToKeyword.movie)
+  keywords: MovieToKeyword[]
+
   @OneToMany(() => CastToMovie, castToMovie => castToMovie.movie)
   casts: CastToMovie[]
 
@@ -64,19 +65,19 @@ export class Movie extends BaseEntity {
   @OneToMany(() => Trailer, trailer => trailer.movie)
   trailers: Trailer[]
 
-  @OneToOne(() => ProductionBudget, { nullable: true })
+  @OneToOne(() => Budget, { nullable: true })
   @JoinColumn()
-  productionBudget: ProductionBudget
+  productionBudget: Budget
 
-  @OneToOne(() => LifetimeGross, { nullable: true })
+  @OneToOne(() => Budget, { nullable: true })
   @JoinColumn()
-  lifetimeGross: LifetimeGross  
+  lifetimeGross: Budget  
 
   @OneToOne(() => OpeningWeekendGross, { nullable: true })
   @JoinColumn()
   openingWeekendGross: OpeningWeekendGross
 
-  @OneToOne(() => WorldwideGross, { nullable: true })
+  @OneToOne(() => Budget, { nullable: true })
   @JoinColumn()
-  worldwideGross: WorldwideGross
+  worldwideGross: Budget
 }
