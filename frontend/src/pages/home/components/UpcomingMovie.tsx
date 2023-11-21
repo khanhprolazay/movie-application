@@ -9,34 +9,36 @@ import urlUtils from "@/utils/urlUtils";
 
 
 
-export function RecentlyMovie() {
+export function UpcomingMovie() {
 
     const [current, setCurrent] = useState<number>(0);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(moviesActions.getMovieByDay(0, 20));
+        dispatch(moviesActions.getMovieByComing(0, 20));
     }, []);
 
 
-    const MovieByDay = useAppSelector((state) => state.movie.day.data);
+    const MovieByComing = useAppSelector((state) => state.movie.coming.data);
+
+    // console.log("MovieByComing", MovieByComing)
 
     // Kiểm tra nếu listRecentlyMovies là null hoặc rỗng
-    if (MovieByDay === null || MovieByDay.length === 0) {
+    if (MovieByComing === null || MovieByComing.length === 0) {
         return (
             <AppFallback />
         );
     }
 
     const disablePrev = current == 0;
-    const disableNext = current == (MovieByDay.length - 1) - 4;
+    const disableNext = current == (MovieByComing.length - 1) - 4;
 
     const handlePrev = () => {
         current !== 0 && setCurrent((cur) => cur - 1)
     };
     const handleNext = () => {
-        current < MovieByDay.length - 1 && setCurrent((cur) => cur + 1)
+        current < MovieByComing.length - 1 && setCurrent((cur) => cur + 1)
     };
 
     const formattedRating = (item: number) => {
@@ -51,7 +53,7 @@ export function RecentlyMovie() {
                     className="flex gap-5 transition-transform duration-500 ease-out"
                     style={{ transform: `translateX(-${current * (125 + 19.5)}px)` }}
                 >
-                    {MovieByDay.map((item, index) => (
+                    {MovieByComing.map((item, index) => (
                         <Card
                             key={`like-${index}`}
                             className={`rounded-none bg-transparent`}

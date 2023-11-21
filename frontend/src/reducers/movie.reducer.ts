@@ -30,6 +30,13 @@ export interface MovieRootState {
     data: Movie[],
     error: string | null
   },
+  coming: {
+    loading: boolean,
+    skip: number,
+    limit: number,
+    data: Movie[],
+    error: string | null
+  },
 
   search: {
     loading: boolean,
@@ -73,6 +80,13 @@ const initialState: MovieRootState = {
     error: null
   },
   random: {
+    loading: false,
+    skip: 0,
+    limit: 20,
+    data: [],
+    error: null
+  },
+  coming: {
     loading: false,
     skip: 0,
     limit: 20,
@@ -155,7 +169,7 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
           error: action.payload?.error,
         }
       }
-      
+
     case movieConstants.GET_MOVIE_BY_RECOMMEND:
       return {
         ...state,
@@ -243,6 +257,35 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         }
       }
 
+    case movieConstants.GET_MOVIE_BY_COMING:
+      return {
+        ...state,
+        coming: {
+          ...state.coming,
+          loading: true,
+        }
+      }
+
+    case movieConstants.GET_MOVIE_BY_COMING_SUCCESS:
+      return {
+        ...state,
+        coming: {
+          ...state.coming,
+          loading: false,
+          data: action.payload?.movies
+        }
+      }
+
+    case movieConstants.GET_MOVIE_BY_COMING_ERROR:
+      return {
+        ...state,
+        coming: {
+          ...state.coming,
+          loading: false,
+          error: action.payload?.error,
+        }
+      }
+
     case movieConstants.GET_MOVIE_BY_GENRES:
       return {
         ...state,
@@ -263,6 +306,35 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
       }
 
     case movieConstants.GET_MOVIE_BY_GENRES_ERROR:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          loading: false,
+          error: action.payload?.error,
+        }
+      }
+
+    case movieConstants.GET_MOVIE_BY_KEYWORD:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          loading: true,
+        }
+      }
+
+    case movieConstants.GET_MOVIE_BY_KEYWORD_SUCCESS:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          loading: false,
+          data: action.payload?.movies
+        }
+      }
+
+    case movieConstants.GET_MOVIE_BY_KEYWORD_ERROR:
       return {
         ...state,
         search: {

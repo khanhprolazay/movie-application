@@ -47,9 +47,8 @@ const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
             desc.split("\n").map((content, index) => (
               <Typography
                 key={`desc-${index}`}
-                className={`${
-                  index && "mt-4"
-                } inline-block font-manrope text-sm text-slate-400`}
+                className={`${index && "mt-4"
+                  } inline-block font-manrope text-sm text-slate-400`}
               >
                 {content}
               </Typography>
@@ -112,7 +111,17 @@ const DetailPage = () => {
   const { loading, data, related } = useMovie();
   const [activeTab, setActiveTab] = useState<TabValues>("trailer");
 
-  const casts = data?.casts.slice(1, 16);
+
+
+  console.log("data", data)
+  // console.log("1111", data?.genres.map(genre => console.log(genre.name)))
+
+  // let casts = data?.casts.slice(1, 16);
+  let casts = data?.casts
+  if (casts !== undefined) {
+    casts = data?.casts.slice(1, 16);
+
+  }
 
   const tabs: Tab[] = [
     {
@@ -147,7 +156,7 @@ const DetailPage = () => {
                   />
                 </CardHeader>
                 <CardBody className="p-4 font-manrope">
-                  {data.casts.length > 0 && (
+                  {data.casts !== undefined && data.casts.length !== 0 && (
                     <>
                       <Typography
                         variant="h5"
@@ -178,7 +187,7 @@ const DetailPage = () => {
                     Genres
                   </Typography>
                   <Typography className="mb-2 text-[13.6px] text-slate-400">
-                    {data.genres.map((genre) => genre.genre.name).join(", ")}
+                    {data.genres.map((genre) => genre.name).join(", ")}
                   </Typography>
 
                   {data.plot && (
@@ -234,11 +243,10 @@ const DetailPage = () => {
                         key={`tab-${value}`}
                         value={value}
                         onClick={() => setActiveTab(value)}
-                        className={`${
-                          activeTab === value
-                            ? "text-sky-400"
-                            : "text-slate-100"
-                        } mr-6 w-auto px-0 py-2 text-sm`}
+                        className={`${activeTab === value
+                          ? "text-sky-400"
+                          : "text-slate-100"
+                          } mr-6 w-auto px-0 py-2 text-sm`}
                       >
                         {label}
                       </Tab>

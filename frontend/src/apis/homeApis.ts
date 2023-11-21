@@ -32,10 +32,19 @@ class HomeApis {
     }
 
     async getMovieByGenres(genres: Array<Genre>, skip: number, limit: number): Promise<Movie[]> {
+        // console.log(genres)
         const genreQuery = genres.reduce((acc, genre, index) => index > 0 ? `${acc},${genre.name}` : genre.name, '');
         return await axiosClient.get(`/movies/byGenres?genres=${genreQuery}&skip=${skip}&limit=${limit}`);
     }
 
+    async getMovieByKeyword(keyword: string, skip: number, limit: number): Promise<Movie[]> {
+        // console.log("keyword", keyword)
+        return await axiosClient.get(`/movies/bySearch?search=${keyword}&skip=${skip}&limit=${limit}`)
+    }
+
+    async getMovieByComing(skip: number, limit: number): Promise<Movie[]> {
+        return await axiosClient.get(`/movies/byUpcoming?skip=${skip}&limit=${limit}`)
+    }
 
 
 }

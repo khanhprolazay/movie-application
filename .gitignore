@@ -21,3 +21,4 @@ spark/.ipynb_checkpoints
 spark/checkpoint_dir
 
 note.txt
+node_modules
