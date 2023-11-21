@@ -1,53 +1,42 @@
+import { Movie } from "@/type";
+import stringUtils from "@/utils/stringUtils";
+import urlUtils from "@/utils/urlUtils";
+import { FC } from "react";
 import { Typography } from "@material-tailwind/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
 
-interface PosterFilmProps {
-  image: string;
-  name: string;
-  rating: number;
-  date: string;
-  duration: number;
-  genres: string;
+interface PosterFilmmovie {
+  movie: Movie;
 }
 
-const PosterFilmRow = (props: PosterFilmProps) => {
+const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
   const navigate = useNavigate();
-
-  const handleDetail = () => {
-    navigate("/detail");
-  };
-
-  const maxCharacters = 18; // Độ dài tối đa trước khi cắt
-
-  // Hàm để kiểm tra và cắt `name` khi cần thiết
-  const truncateText = (text: string) => {
-    if (text.length > maxCharacters) {
-      return text.slice(0, maxCharacters - 2) + "...";
-    }
-    return text;
-  };
-
-  const formattedRating = (item: number) => {
-    return (Number.isInteger(item) ? `${item}.0` : item)
-  }
-
+  console.log(movie)
 
   return (
     <div
-      className="group relative flex h-28 w-auto bg-cblack-300 object-cover cursor-pointer transition duration-300 ease-in-out hover:opacity-50"
-      onClick={handleDetail}
+      className="group relative flex h-28 w-auto cursor-pointer bg-cblack-300 object-cover transition duration-300 ease-in-out hover:opacity-50"
+      onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
     >
-      <LazyLoadImage src={props.image} alt="image 1" width={84} height={112} wrapperClassName="flex-2 border" />
+      <LazyLoadImage
+        src={urlUtils.getImageUrl(movie)}
+        alt="image 1"
+        width={84}
+        height={112}
+        wrapperClassName="flex-2 border"
+      />
       <div className="grow font-manrope">
-        <Typography
-          variant="h5"
-          className="ml-5 mt-3 text-base font-normal text-gray-300"
-        >
-          {truncateText(props.name)}
-        </Typography>
-        {props.rating !== null && (
-          <div className="hidden xl:flex absolute right-7 top-0 mt-3 w-12 items-center rounded-md border px-2 py-0.5 text-xs font-semibold text-slate-100">
+        <div className="ml-5 mt-3 line-clamp-1 pr-20">
+          <Typography
+            variant="h5"
+            className="text-base font-normal text-gray-300"
+          >
+            {movie.title}
+          </Typography>
+        </div>
+        {movie.rating !== null && (
+          <div className="absolute right-7 top-0 mt-3 hidden w-12 items-center rounded-md border px-2 py-0.5 text-xs font-semibold text-slate-100 xl:flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -60,16 +49,23 @@ const PosterFilmRow = (props: PosterFilmProps) => {
                 clipRule="evenodd"
               />
             </svg>
-            {formattedRating(props.rating)}
+            {stringUtils.formatRating(movie.rating)}
           </div>
         )}
         <Typography className="ml-5 mt-1 text-xs font-normal text-gray-400">
-          Release Date: <span className="text-gray-400/70">{props.date}</span>
+          Release Date:{" "}
+          <span className="text-gray-400/70">{movie.release}</span>
         </Typography>
         <Typography className="ml-5 mt-1 text-xs font-normal text-slate-400">
-          Duration: <span className="text-gray-400/70">{props.duration} minutes</span>
+          Duration:{" "}
+          <span className="text-gray-400/70">{movie.movieLength} minutes</span>
         </Typography>
-        <Typography className="ml-5 mt-1 text-xs font-normal text-slate-400">Genres: <span className="text-gray-400/70">{props.genres}</span></Typography>
+        <Typography className="ml-5 mt-1 text-xs font-normal text-slate-400">
+          Genres:{" "}
+          <span className="text-gray-400/70">
+            {movie.genres?.map((genre) => genre.genre.name).join(',')}
+          </span>
+        </Typography>
       </div>
     </div>
   );

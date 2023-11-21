@@ -1,19 +1,18 @@
 import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Movie } from "@/type";
 import urlUtils from "@/utils/urlUtils";
-
+import stringUtils from "@/utils/stringUtils";
 
 const PosterFilmResult = (props: { movie: Movie }) => {
   const { movie } = props;
   const navigate = useNavigate();
-  const formattedRating = Number.isInteger(movie.rating) ? `${movie.rating}.0` : movie.rating;
 
-  return (
+  return  (
     <div
-      className="relative mb-10 object-cover text-gray-300 transition-colors hover:text-slate-100 mx-auto mt-5"
-      onClick={() => navigate(`/detail/${movie.id}`)}
+      className="relative mx-auto mb-10 mt-5 object-cover text-gray-300 transition-colors hover:text-slate-100"
+      onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
     >
       <LazyLoadImage
         alt="image 1"
@@ -24,7 +23,7 @@ const PosterFilmResult = (props: { movie: Movie }) => {
         wrapperClassName="transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       />
       <div className="absolute left-28 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
-        {formattedRating}
+        {stringUtils.formatRating(movie.rating)}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -39,12 +38,12 @@ const PosterFilmResult = (props: { movie: Movie }) => {
         </svg>
       </div>
       <div className="line-clamp-1 w-full">
-      <Typography
-        variant="h2"
-        className="text-md font-medium absolute -bottom-7 max-w-full overflow-hidden whitespace-nowrap font-manrope hover:text-gray-500 hover:cursor-pointer hover:transition-colors"
-      >
-        {movie.title}
-      </Typography>
+        <Typography
+          variant="h2"
+          className="text-md absolute -bottom-7 max-w-full overflow-hidden whitespace-nowrap font-manrope font-medium hover:cursor-pointer hover:text-gray-500 hover:transition-colors"
+        >
+          {movie.title}
+        </Typography>
       </div>
     </div>
   );

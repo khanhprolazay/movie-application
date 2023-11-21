@@ -5,5 +5,8 @@ export const useSlider = (total: number) => {
   const handlePrev = () => current !== 0 && setCurrent((cur) => cur - 1);
   const handleNext = () => current < total - 1 && setCurrent((cur) => cur + 1);
 
-  return { current, handlePrev, handleNext }; 
+  const disablePrev = current === 0;
+  const disableNext = current === total - 1 - 4
+
+  return { current, handlePrev, handleNext, disablePrev, disableNext }; 
 }

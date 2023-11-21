@@ -30,6 +30,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       where: {
         release: Between(beginDate, endDate),
       },
+      relations: {
+        genres: { genre: true },
+      },
       select: {
         id: true,
         title: true,
@@ -38,6 +41,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
@@ -50,6 +59,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         voteCount: "DESC",
         rating: "DESC" 
       },
+      relations: {
+        genres: { genre: true },
+      },
       take: limit,
       skip: skip,
       where: {
@@ -59,10 +71,17 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: true,
         title: true,
         rating: true,
+        voteCount: true,
         release: true,
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
@@ -77,6 +96,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         id: In(relatedMovieIds),
         release: LessThanOrEqual(new Date()),
       },
+      relations: { 
+        genres: { genre: true },
+       },
       select: {
         id: true,
         title: true,
@@ -85,6 +107,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
@@ -98,6 +126,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       where: {
         release: LessThanOrEqual(new Date()),
       },
+      relations: { 
+        genres: { genre: true },
+       },
       select: {
         id: true,
         title: true,
@@ -106,6 +137,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
@@ -120,6 +157,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         title: Like(`%${search}%`),
         release: LessThanOrEqual(new Date()),
       },
+      relations: { 
+        genres: { genre: true },
+       },
       select: {
         id: true,
         title: true,
@@ -128,6 +168,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       },
     })
   }
@@ -141,6 +187,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       where: {
         release: MoreThan(new Date()),
       },
+      relations: { genres: { genre: true } },
       select: {
         id: true,
         title: true,
@@ -149,6 +196,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       },
     })
   }

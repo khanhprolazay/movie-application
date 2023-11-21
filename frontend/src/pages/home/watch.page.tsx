@@ -11,6 +11,8 @@ import { useSlider } from "@/hooks/use-slider.hook";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import urlUtils from "@/utils/urlUtils";
 import timeUtils from "@/utils/timeUtils";
+import SkeletonCard from "@/components/SkeletonCard";
+import { useNavigate } from "react-router-dom";
 
 const items: string[] = [
   "bg-red-100",
@@ -28,7 +30,8 @@ const items: string[] = [
 ];
 
 const WatchPage: FC = () => {
-  const { loading, relatedLoading, data, related } = useMovie();
+  const navigate = useNavigate();
+  const { loading, data, related, relatedLoading } = useMovie();
   const { current, handlePrev, handleNext } = useSlider(items.length);
 
   return (
@@ -117,7 +120,9 @@ const WatchPage: FC = () => {
                       <Typography className="font-manrope font-medium text-cred">
                         {data.genres.reduce(
                           (acc, genre, index) =>
-                            index > 0 ? `${acc}, ${genre.genre.name}` : genre.genre.name,
+                            index > 0
+                              ? `${acc}, ${genre.genre.name}`
+                              : genre.genre.name,
                           "",
                         )}
                       </Typography>
@@ -156,13 +161,15 @@ const WatchPage: FC = () => {
                       <span className="text-slate-400">:&nbsp;&nbsp;</span>
                     </Typography>
                     <Typography className="inline text-slate-400">
-                      {data.casts.slice(1, 5).reduce(
-                        (acc, cast, index) =>
-                          index > 0
-                            ? `${acc}, ${cast.actor.name}`
-                            : cast.actor.name,
-                        "",
-                      )}
+                      {data.casts
+                        .slice(1, 5)
+                        .reduce(
+                          (acc, cast, index) =>
+                            index > 0
+                              ? `${acc}, ${cast.actor.name}`
+                              : cast.actor.name,
+                          "",
+                        )}
                     </Typography>
                   </div>
                 )}
@@ -196,33 +203,43 @@ const WatchPage: FC = () => {
                     transform: `translateX(-${current * (165 + 16)}px)`,
                   }}
                 >
-
-                  {related.map((movie, index) => (
-                     <Card
-                     key={`like-${index}`}
-                     className={`rounded-none bg-transparent`}
-                   >
-                     <CardBody className="w-[165px] p-0">
-                       <LazyLoadImage
-                         wrapperClassName="h-[251px] w-full"
-                         src={urlUtils.getImageUrl(movie)}
-                       />
-                       <div className="mt-1 line-clamp-1">
-                         <Typography className="font-manrope text-xs capitalize text-slate-300/70">
-                           {movie?.genres?.reduce((acc, genre, index) => index > 0 ? `${acc}, ${genre.name}` : genre.name, "")}
-                         </Typography>
-                       </div>
-                       <div className="line-clamp-1">
-                         <Typography
-                           variant="h5"
-                           className="font-manrope text-sm font-extrabold capitalize text-slate-200"
-                         >
-                           {movie.title}
-                         </Typography>
-                       </div>
-                     </CardBody>
-                   </Card>
-                  ))}
+                  {relatedLoading
+                    ? Array.from<number>({ length: 7 }).map((index) => (
+                        <SkeletonCard
+                          bodyClassname="!w-auto"
+                          imageClassname="!w-[165px] !h-[251px]"
+                          key={index}
+                        />
+                      ))
+                    : related.map((movie, index) => (
+                        <Card
+                          key={`like-${index}`}
+                          onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
+                          className='rounded-none bg-transparent cursor-pointer'
+                        >
+                          <CardBody className="w-[165px] p-0">
+                            <LazyLoadImage
+                              wrapperClassName="h-[251px] w-full"
+                              src={urlUtils.getImageUrl(movie)}
+                            />
+                            <div className="mt-1 line-clamp-1">
+                              <Typography className="font-manrope text-xs capitalize text-slate-300/70">
+                                {movie.genres
+                                  .map((genre) => genre.genre.name)
+                                  .join(", ")}
+                              </Typography>
+                            </div>
+                            <div className="line-clamp-1">
+                              <Typography
+                                variant="h5"
+                                className="font-manrope text-sm font-extrabold capitalize text-slate-200"
+                              >
+                                {movie.title}
+                              </Typography>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      ))}
                 </div>
               </div>
               <div className="order-first before:mb-6 before:block before:h-[1px] before:w-[48px] before:bg-divider after:mt-6 after:block after:h-[1px] after:w-full after:bg-divider lg:order-last">

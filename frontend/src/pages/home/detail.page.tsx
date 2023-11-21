@@ -1,8 +1,6 @@
-import { FC, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useState } from "react";
 import AppContainer from "@/components/AppContainer";
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -14,116 +12,18 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
-import { Link, useParams } from "react-router-dom";
-import { Cast, Trailer } from "@/type";
-import strintUtils from "@/utils/stringUtils";
-import { LazyLoadComponent } from "react-lazy-load-image-component";
+import { Link } from "react-router-dom";
 import urlUtils from "@/utils/urlUtils";
-import moviesActions from "@/actions/movie.action";
 import PosterFilmResult from "./components/PosterFilmResult";
 import { useMovie } from "@/hooks/use-movie.hook";
-
-const defaultAvatar =
-  "https://media.istockphoto.com/id/1300845620/vi/vec-to/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-ph%E1%BA%B3ng-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn-n%E1%BB%81n-tr%E1%BA%AFng-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-ng%C6%B0%E1%BB%9Di-d%C3%B9ng-minh-h%E1%BB%8Da-vector.jpg?s=612x612&w=0&k=20&c=MyAgwZm-Ct_rQpQGYh0Wb0N7KeAaFsY_WrZJ89EAiIw=";
-
-type TabValues = "description" | "cast" | "trailer";
-
-type Tab = {
-  label: string;
-  value: TabValues;
-  desc?: string;
-  casts?: Cast[];
-  trailers?: Trailer[];
-};
-
-const TabContent: FC<{ tab: Tab }> = ({ tab }) => {
-  const { value, desc, casts, trailers } = tab;
-
-  switch (value) {
-    case "description":
-      return (
-        <>
-          {desc &&
-            desc.split("\n").map((content, index) => (
-              <Typography
-                key={`desc-${index}`}
-                className={`${index && "mt-4"
-                  } inline-block font-manrope text-sm text-slate-400`}
-              >
-                {content}
-              </Typography>
-            ))}
-        </>
-      );
-
-    case "cast":
-      return (
-        <div className="flex flex-wrap gap-x-12 gap-y-6">
-          {casts &&
-            casts.map((cast) => (
-              <div
-                key={cast.actor.id}
-                className="flex min-w-[200px] max-w-[200px] items-center gap-3"
-              >
-                <LazyLoadComponent>
-                  <Avatar
-                    src={cast.actor.imageUrl || defaultAvatar}
-                    className="min-w-[48px]"
-                  />
-                </LazyLoadComponent>
-                <div className="font-manrope">
-                  <div className="line-clamp-1">
-                    <Typography
-                      variant="h6"
-                      className="text-sm font-medium text-slate-400"
-                    >
-                      {cast.actor.name}
-                    </Typography>
-                  </div>
-                  <Typography className="text-xs font-normal text-slate-400/70">
-                    {cast.role}
-                  </Typography>
-                </div>
-              </div>
-            ))}
-        </div>
-      );
-
-    case "trailer":
-      return (
-        trailers &&
-        trailers?.length > 0 && (
-          <iframe
-            loading="lazy"
-            allowFullScreen
-            className="h-full w-full rounded-lg"
-            src={`http://www.imdb.com/video/imdb/${trailers[0].imdbId}/imdb/embed?autoplay=false`}
-          />
-        )
-      );
-
-    default:
-      return <></>;
-  }
-};
+import TabContent, { TabType, TabValues } from "./components/Tab";
+import SkeletonCard from "@/components/SkeletonCard";
 
 const DetailPage = () => {
-  const { loading, data, related } = useMovie();
+  const { loading, data, related, relatedLoading } = useMovie();
   const [activeTab, setActiveTab] = useState<TabValues>("trailer");
 
-
-
-  console.log("data", data)
-  // console.log("1111", data?.genres.map(genre => console.log(genre.name)))
-
-  // let casts = data?.casts.slice(1, 16);
-  let casts = data?.casts
-  if (casts !== undefined) {
-    casts = data?.casts.slice(1, 16);
-
-  }
-
-  const tabs: Tab[] = [
+  const tabs: TabType[] = [
     {
       label: "Trailer",
       value: "trailer",
@@ -132,7 +32,7 @@ const DetailPage = () => {
     {
       label: "Casts",
       value: "cast",
-      casts: casts,
+      casts: data?.casts ? data.casts.slice(1, 16) : [],
     },
     {
       label: "Description",
@@ -187,7 +87,7 @@ const DetailPage = () => {
                     Genres
                   </Typography>
                   <Typography className="mb-2 text-[13.6px] text-slate-400">
-                    {data.genres.map((genre) => genre.name).join(", ")}
+                    {data.genres.map((genre) => genre.genre.name).join(", ")}
                   </Typography>
 
                   {data.plot && (
@@ -243,10 +143,11 @@ const DetailPage = () => {
                         key={`tab-${value}`}
                         value={value}
                         onClick={() => setActiveTab(value)}
-                        className={`${activeTab === value
-                          ? "text-sky-400"
-                          : "text-slate-100"
-                          } mr-6 w-auto px-0 py-2 text-sm`}
+                        className={`${
+                          activeTab === value
+                            ? "text-sky-400"
+                            : "text-slate-100"
+                        } mr-6 w-auto px-0 py-2 text-sm`}
                       >
                         {label}
                       </Tab>
@@ -275,9 +176,20 @@ const DetailPage = () => {
         <hr className="full-width-underline mb-5 mt-4" />
 
         <div className="no-scrollbar mx-5 mb-10 flex gap-4 overflow-x-scroll">
-          {related.map((movie, index: number) => (
-            <PosterFilmResult key={index} movie={movie} />
-          ))}
+          {relatedLoading
+            ? Array.from<number>({ length: 7 }).map((index) => (
+                <SkeletonCard
+                  bodyClassname="!w-auto"
+                  imageClassname="!w-[204px] !h-[318px]"
+                  key={index}
+                />
+              ))
+            : related.map((movie, index: number) => (
+                <PosterFilmResult
+                  key={index}
+                  movie={movie}
+                />
+              ))}
         </div>
       </AppContainer>
     )

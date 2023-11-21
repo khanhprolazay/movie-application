@@ -56,7 +56,7 @@ export interface Movie {
   posterPath?: string,
   movieLength?: number,
   backdropPath?: string,
-  genres?: Genre[],
+  genres: { id: number, genre: Genre }[], 
 }
 
 export interface Trailer {
