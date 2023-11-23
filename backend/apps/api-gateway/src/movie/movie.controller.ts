@@ -1,7 +1,5 @@
 import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 import { MovieService } from "./movie.service";
-import { Pattern, Service } from "@app/shared";
-import { ClientKafka } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
 import { CacheInterceptor } from "@nestjs/cache-manager";
 
@@ -9,12 +7,6 @@ import { CacheInterceptor } from "@nestjs/cache-manager";
 @ApiTags("Movie")
 export class MovieController {
   constructor( private readonly movieService: MovieService ) {}
-
-  // async onModuleInit() {
-  //   const patterns: Pattern[] = ["MOVIE.GET.BY_ID", "MOVIE.GET.BY_YEAR", "GENRE.GET.ALL", "MOVIE.GET.BY_RATING", "MOVIE.GET.BY_GENRES", "MOVIE.GET.BY_DAY", "MOVIE.GET.BY_SEARCH", "MOVIE.GET.BY_UPCOMING"];
-  //   patterns.forEach(pattenrn => this.movieClient.subscribeToResponseOf(pattenrn));
-  //   await this.movieClient.connect();
-  // }
 
   @Get("byYear")
   @UseInterceptors(CacheInterceptor)

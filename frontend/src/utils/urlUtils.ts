@@ -27,8 +27,9 @@ const getActorImage = (actor: Actor) => {
   return imageUrl;
 }
 
-const getDetailUrl = (id: number) => `/detail/${id}`;
+const getYoutubeEmbedUrl = (key: string) => `https://www.youtube.com/embed/${key}`;
+const getDetailUrl = (id: number) => `/movie/${id}`;
 const getWatchUrl = (id: number) => `/watch/${id}`;
 
-const urlUtils = { getImageUrl, getDetailUrl, getWatchUrl, getActorImage };
+const urlUtils = { getImageUrl, getDetailUrl, getWatchUrl, getActorImage, getYoutubeEmbedUrl };
 export default urlUtils;

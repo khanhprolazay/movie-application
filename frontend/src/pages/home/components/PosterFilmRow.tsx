@@ -12,7 +12,6 @@ interface PosterFilmmovie {
 
 const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
   const navigate = useNavigate();
-  console.log(movie)
 
   return (
     <div

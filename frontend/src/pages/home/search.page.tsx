@@ -58,7 +58,7 @@ const SearchPage: FC = () => {
           <Card
             key={`like-${index}`}
             className={`items-center rounded-none bg-transparent shadow-none`}
-            onClick={() => navigate(`/detail/${item.id}`)}
+            onClick={() => navigate(urlUtils.getDetailUrl(item.id))}
           >
             <CardBody className="w-[105px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none md:w-[125px]">
               <LazyLoadImage

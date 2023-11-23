@@ -1,21 +1,22 @@
-import { Cast, Trailer } from "@/type";
+import Empty from "@/components/Empty";
+import { Cast, Video } from "@/type";
 import urlUtils from "@/utils/urlUtils";
-import { Avatar, Typography } from "@material-tailwind/react";
+import { Avatar, Carousel, Typography } from "@material-tailwind/react";
 import { FC } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 
-export type TabValues = "description" | "cast" | "trailer";
+export type TabValues = "description" | "cast" | "video";
 
 export type TabType = {
   label: string;
   value: TabValues;
   desc?: string;
   casts?: Cast[];
-  trailers?: Trailer[];
+  videos?: Video[];
 };
 
 const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
-  const { value, desc, casts, trailers } = tab;
+  const { value, desc, casts, videos } = tab;
 
   switch (value) {
     case "description":
@@ -25,8 +26,9 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
             desc.split("\n").map((content, index) => (
               <Typography
                 key={`desc-${index}`}
-                className={`${index && "mt-4"
-                  } inline-block font-manrope text-sm text-slate-400`}
+                className={`${
+                  index && "mt-4"
+                } inline-block font-manrope text-sm text-slate-400`}
               >
                 {content}
               </Typography>
@@ -47,6 +49,7 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
                   <Avatar
                     src={urlUtils.getActorImage(cast.actor)}
                     className="min-w-[48px]"
+                    loading="lazy"
                   />
                 </LazyLoadComponent>
                 <div className="font-manrope">
@@ -67,17 +70,31 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
         </div>
       );
 
-    case "trailer":
+    case "video":
       return (
-        trailers &&
-        trailers?.length > 0 && (
-          <iframe
-            loading="lazy"
-            allowFullScreen
-            className="h-full w-full rounded-lg"
-            src={`http://www.imdb.com/video/imdb/${trailers[0].imdbId}/imdb/embed?autoplay=false`}
-          />
-        )
+        <Carousel navigation={() => <></>} loop>
+          {videos?.length === 0 ? <Empty /> :
+            videos?.sort((a, b) => {
+              const aType = a.type;
+              const bType = b.type;
+              const aOfficial = a.official;
+              const bOfficial = b.official;
+
+              if (aType === "Trailer" && bType !== "Trailer") return -1;
+              if (aType !== "Trailer" && bType === "Trailer") return 1;
+              if (aOfficial && !bOfficial) return -1;
+              if (!aOfficial && bOfficial) return 1;
+              return 0;
+            }).map((video) => (
+              <iframe
+                key={video.key}
+                loading="lazy"
+                allowFullScreen
+                className="h-full w-full rounded-lg"
+                src={urlUtils.getYoutubeEmbedUrl(video.key)}
+              />
+            ))}
+        </Carousel>
       );
 
     default:

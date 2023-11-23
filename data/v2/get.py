@@ -233,3 +233,20 @@ def get_keywords(imdbId: str) -> list[str]:
   except Exception as error:
     print(f'Error when getting keywords {imdbId} {error}', flush=True)
     return []
+  
+def get_videos(imdbId: str) -> list[Video]:
+  try:
+    result = get_v2(f'/3/movie/{imdbId}/videos?language=en-US')
+
+    videos = result.get("results")
+    if videos is None:
+      return []
+
+    results = []
+    for video in videos:
+      results.append(Video(video.get("name"), video.get("key"), video.get("site"), video.get("size"), video.get("type"), video.get("official")))
+
+    return results
+  except Exception as error:
+    print(f'Error when getting videos {imdbId} {error}', flush=True)
+    return []

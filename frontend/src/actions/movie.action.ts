@@ -7,7 +7,6 @@ function getMovieByRating(skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByRating(skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -42,7 +41,6 @@ function getMovieByDay(skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByDay(skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -75,7 +73,6 @@ function getMovieByRecommend(skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByRecommend(skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -109,7 +106,6 @@ function getMovieByYear(year: number, skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByYear(year, skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -142,7 +138,6 @@ function getMovieByRandom(skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByRandom(skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -175,7 +170,6 @@ function getMovieByRandom(skip: number, limit: number) {
 function getMovieByComing(skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByComing(skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -208,7 +202,6 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByGenres(genres, skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
@@ -242,7 +235,6 @@ function getMovieByKeyword(keyword: string, skip: number, limit: number) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        // Fetch genres here
         homeApis.getMovieByKeyword(keyword, skip, limit)
             .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))

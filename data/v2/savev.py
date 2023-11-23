@@ -226,3 +226,12 @@ def update_movie_title(connection: mysql.connector.MySQLConnection, movieId: int
     print(error, flush=True)
   finally:
     cursor.close()
+
+def save_video(connection: mysql.connector.MySQLConnection, movieId: int, video: Video):
+  cursor = connection.cursor()
+  try:
+    cursor.execute("INSERT INTO video(movieId, name, site, size, type, official, `key`) VALUES (%s, %s, %s, %s, %s, %s, %s)", (movieId, video.name, video.site, video.size, video.type, video.official, video.key))
+  except Exception as error:
+    print(error, flush=True)
+  finally:
+    cursor.close()

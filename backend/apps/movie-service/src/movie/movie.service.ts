@@ -23,7 +23,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     const beginDate = new Date(year, 1, 1);
     const endDate = year === currentYear ? currentDate : endOfYear(beginDate);
 
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "DESC"},
       take: limit,
       skip: skip,
@@ -54,7 +54,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
   async getByRating(dto: MovieByRatingDTO) {
     const { skip, limit } = dto;
   
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { 
         voteCount: "DESC",
         rating: "DESC" 
@@ -88,7 +88,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
 
   async getByGenres(dto: MovieByGenresDTO) {
     const relatedMovieIds = await this.repository.getByGenres(dto);
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "DESC" },
       take: dto.limit,
       skip: dto.skip,
@@ -119,7 +119,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
 
   async getByDay(dto: MovieByDayDTO) {
     const { skip, limit } = dto;
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "DESC" },
       take: limit,
       skip: skip,
@@ -149,7 +149,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
 
   async getBySearch(dto: MovieBySeachDTO) {
     const { search, skip, limit } = dto;
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "DESC" },
       take: limit,
       skip: skip,
@@ -180,7 +180,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
 
   async getByUpcoming(dto: MovieByUpcomingDTO) {
     const { skip, limit } = dto;
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "ASC" },
       skip: skip,
       take: limit,
@@ -210,8 +210,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     const results = await this.repository.find({
       relations: {
         genres: { genre: true },
-        trailers: true,
+        videos: true,
         casts: { actor: true },
+        directors: { actor: true }
       },
       select: {
         id: true,
@@ -228,9 +229,13 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
             name: true,
           }
         },
-        trailers: {
+        videos: {
+          key: true,
           type: true,
-          imdbId: true,
+          site: true,
+          official: true,
+          name: true,
+          size: true,
         },
         casts: {
           role: true,
@@ -238,6 +243,13 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
             id: true,
             name: true,
             imageUrl: true
+          }
+        },
+        directors: {
+          actorId: true,
+          actor: {
+            name: true,
+            imageUrl: true,
           }
         }
       },

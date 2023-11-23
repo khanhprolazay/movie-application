@@ -1,6 +1,5 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { BaseEntity } from "../base";
-import { Trailer } from "./trailer.entity";
 import { WriterToMovie } from "./writer-to-movie.entity";
 import { CastToMovie } from "./cast-to-movie.entity";
 import { DirectorToMovie } from "./director-to-movie.entity";
@@ -8,6 +7,7 @@ import { OpeningWeekendGross } from "./opening-weekend-gross.entity";
 import { MovieToGenre } from "./movie-to-genre.entity";
 import { Budget } from "./budget.entity";
 import { MovieToKeyword } from "./movie-to-keyword.entity";
+import { Video } from "./video.entity";
 
 @Entity({name: "movie"})
 export class Movie extends BaseEntity {
@@ -15,6 +15,7 @@ export class Movie extends BaseEntity {
   imdbId: string
 
   @Column({ length: 100 })
+  @Index()
   title: string
 
   @Column({type: "double", nullable: true})
@@ -30,6 +31,7 @@ export class Movie extends BaseEntity {
   imageUrl: string
 
   @Column({type: 'date', nullable: true})
+  @Index()
   release: Date
 
   @Column({nullable: true})
@@ -62,8 +64,8 @@ export class Movie extends BaseEntity {
   @OneToMany(() => DirectorToMovie, directorToMovie => directorToMovie.movie)
   directors: DirectorToMovie[]
 
-  @OneToMany(() => Trailer, trailer => trailer.movie)
-  trailers: Trailer[]
+  @OneToMany(() => Video, video => video.movie)
+  videos: Video[]
 
   @OneToOne(() => Budget, { nullable: true })
   @JoinColumn()

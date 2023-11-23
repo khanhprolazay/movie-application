@@ -13,6 +13,7 @@ import { MovieService } from "./movie.service";
       useFactory: (configService: ConfigService) => {
         const brokerHost = configService.get("BROKER_HOST");
         const brokerPort = configService.get("BROKER_PORT");
+        const brokerVhost = configService.get("BROKER_VHOST");
         const brokerUsername = configService.get("BROKER_USERNAME");
         const brokerPassword = configService.get("BROKER_PASSWORD");
 
@@ -20,7 +21,7 @@ import { MovieService } from "./movie.service";
           name: Service.MOVIE,
           transport: Transport.RMQ,
           options: {
-            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}`],
+            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
             queue: QUEUE.MOVIE,
             queueOptions: {
               durable: false,

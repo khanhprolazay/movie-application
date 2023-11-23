@@ -6,7 +6,6 @@ import { Genre, ReduxAction } from "@/type";
 function getGenres() {
   return (dispatch: TypedDispatch) => {
     dispatch(request());
-    // Fetch genres here
     homeApis.getGenres()
       .then(data => dispatch(success(data)))
       .catch(err => dispatch(error(err)))

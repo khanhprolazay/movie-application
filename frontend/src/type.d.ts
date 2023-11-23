@@ -59,9 +59,13 @@ export interface Movie {
   genres: { id: number, genre: Genre }[], 
 }
 
-export interface Trailer {
+export interface Video {
+  name: string;
+  key: string;
+  site: string;
   type: string;
-  imdbId: string;
+  size: number;
+  official: boolean;
 }
 
 export interface Actor {
@@ -82,7 +86,7 @@ export interface DetailMovie {
   rating: number,
   description?: string,
   movieLength?: number,
-  trailers: Trailer[],
+  videos: Video[],
   imageUrl: string,
   release?: string,
   plot?: string,
@@ -91,6 +95,7 @@ export interface DetailMovie {
   backdropPath?: string,
   genres: { id: number, genre: Genre }[], 
   casts: Cast[],
+  directors: {actorId: string, actor: Actor}[],
 }
 
 // Other

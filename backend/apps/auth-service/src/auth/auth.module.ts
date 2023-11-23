@@ -14,13 +14,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       useFactory: (configService: ConfigService) => {
         const brokerHost = configService.get<string>('BROKER_HOST') ;
         const brokerPort = configService.get<string>('BROKER_PORT');
+        const brokerVhost = configService.get<string>('BROKER_VHOST');
         const brokerUsername = configService.get<string>('BROKER_USERNAME');
         const brokerPassword = configService.get<string>('BROKER_PASSWORD');
 
         return {
           transport: Transport.RMQ,
           options: {
-            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}`],
+            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
             queue: QUEUE.USER,
             queueOptions: {
               durable: false,

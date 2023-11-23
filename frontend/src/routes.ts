@@ -2,7 +2,7 @@ import React from 'react';
 import { Role } from './roles';
 
 const AboutUsPage = React.lazy(() => import("./pages/home/about.us.page").then((AboutUsPage ) => AboutUsPage  ));
-const DetailPage = React.lazy(() => import("./pages/home/detail.page").then(( DetailPage) => DetailPage ));
+const MoviePage = React.lazy(() => import("./pages/home/movie.page").then(( MoviePage) => MoviePage ));
 const HomePage = React.lazy(() => import("./pages/home/home.page").then(( HomePage ) => HomePage ));
 const SearchPage = React.lazy(() => import("./pages/home/search.page").then(( SearchPage ) => SearchPage ));
 const WatchPage = React.lazy(() => import("./pages/home/watch.page").then(( WatchPage ) => WatchPage ));
@@ -42,10 +42,10 @@ const routes: RouteType[] = [
     accessible: ["ALL"]
   },
   {
-    path: "/detail/:id",
+    path: "/movie/:id",
     name: "Detail",
     login: false,
-    element: DetailPage,
+    element: MoviePage,
     accessible: ["ALL"],
   },
   {

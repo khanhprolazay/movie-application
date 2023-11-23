@@ -1,3 +1,4 @@
+import urlUtils from "@/utils/urlUtils";
 import { Carousel, IconButton, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ const CarouselItem = (props: {
 }) => {
   return (
     <Link
-      to={`/detail/${props.id}`}
+      to={urlUtils.getDetailUrl(props.id)}
       className="relative h-28 w-1/2 transform object-cover duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-36 md:h-44"
     >
       <img

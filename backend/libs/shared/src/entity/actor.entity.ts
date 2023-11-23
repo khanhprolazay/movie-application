@@ -15,18 +15,6 @@ export class Actor extends BaseEntity {
   @Column({type: "text", nullable: true})
   imageUrl: string
 
-  @Column({type: 'date', nullable: true})
-  birthDay: Date
-
-  @Column({ nullable: true })
-  birthPlace: string
-
-  @Column({ type: 'text', nullable: true })
-  partialBio: string
-
-  @Column({nullable: true})
-  height: string
-
   @OneToMany(() => CastToMovie, castToMovie => castToMovie.actor)
   castingMovies: CastToMovie[]
 

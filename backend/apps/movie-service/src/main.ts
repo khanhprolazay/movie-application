@@ -12,6 +12,7 @@ dotenv.config({
 async function bootstrap() {
   const brokerHost = process.env.BROKER_HOST;
   const brokerPort = process.env.BROKER_PORT;
+  const brokerVhost = process.env.BROKER_VHOST;
   const brokerUsername = process.env.BROKER_USERNAME;
   const brokerPassword = process.env.BROKER_PASSWORD;
 
@@ -19,7 +20,7 @@ async function bootstrap() {
       {
         transport: Transport.RMQ,
         options: {
-          urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}`],
+          urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
           queue: QUEUE.MOVIE,
           queueOptions: {
             durable: false,

@@ -33,7 +33,7 @@ import { redisStore } from 'cache-manager-redis-yet';
               port: redisPort,
             },
             password: redisPassword,
-            ttl: 24 * 60 * 60 * 1000,
+            ttl: 6 * 60 * 60 * 1000, // 6 hours
           })
         }}
     }),

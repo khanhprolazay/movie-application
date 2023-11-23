@@ -1,9 +1,13 @@
 import datetime
 
 class Video:
-  def __init__(self, imdbId: str, type: str):
-    self.imdbId = imdbId
+  def __init__(self, name: str, key: str, site: str, size: int, type: str, official: bool):
+    self.name = name
+    self.key = key
+    self.site = site
+    self.size = size
     self.type = type
+    self.official = official
 
 class Cast:
   def __init__(self, imdbId: str, name: str, imageUrl: str, role: str):

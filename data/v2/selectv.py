@@ -170,5 +170,16 @@ def select_budget(connection: mysql.connector.MySQLConnection, movieId: int):
   finally:
     cursor.close()
 
+def select_null_video_movie(connection: mysql.connector.MySQLConnection):
+  try:
+    cursor = connection.cursor()
+    cursor.execute("SELECT id, imdbId FROM movie WHERE id not in (SELECT DISTINCT movieId FROM video)", ())
+    rows = cursor.fetchall()
+    cursor.close()
+    
+    return rows
+  except:
+    return None
+
 
     
