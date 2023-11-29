@@ -1,1 +1,0 @@
-web: cd backend && npm run build:api-gateway && npm run start:prod:api-gateway
