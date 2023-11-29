@@ -1,18 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ClientKafka } from "@nestjs/microservices";
-import { first, firstValueFrom } from "rxjs";
-import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterRequestDto, Service, UserEntity } from "@app/shared";
+import { ClientProxy } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
+import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterRequestDto, Service, User } from "@app/shared";
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(Service.AUTH) 
-    private readonly authClient: ClientKafka
+    private readonly authClient: ClientProxy
   ) {}
 
   async validate(token: string) {
     return await firstValueFrom(
-      this.authClient.send<UserEntity>(PatternOption["AUTH.VALIDATE"], token)
+      this.authClient.send<User>(PatternOption["AUTH.VALIDATE"], token)
     );
   }
 
@@ -30,7 +30,7 @@ export class AuthService {
 
   async register(dto: RegisterRequestDto) {
     return await firstValueFrom(
-      this.authClient.send<UserEntity>(PatternOption["AUTH.REGISTER"], dto)
+      this.authClient.send<User>(PatternOption["AUTH.REGISTER"], dto)
     );
   }
 

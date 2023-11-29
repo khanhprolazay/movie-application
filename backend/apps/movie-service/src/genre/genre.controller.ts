@@ -7,7 +7,7 @@ import { PatternOption } from "@app/shared";
 export class GenreController {
   constructor ( private readonly genreService: GenreService ) {}
 
-  @MessagePattern(PatternOption["GENRE.GET_ALL"])
+  @MessagePattern(PatternOption["GENRE.GET.ALL"])
   async getAll() {
     return await this.genreService.getAll();
   }

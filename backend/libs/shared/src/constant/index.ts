@@ -1,4 +1,5 @@
 export * from "./role.enum";
+export * from "./queue.enum";
 export * from "./pattern.type";
 export * from "./service.enum";
 export * from "./service.enum";

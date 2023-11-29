@@ -1,132 +1,261 @@
 import { Injectable } from "@nestjs/common";
-import { BaseService, LoggerService, MovieEntity } from "@app/shared";
+import { BaseService, LoggerService, Movie } from "@app/shared";
 import { MovieRepository } from "./movie.repository";
-import { Between, In, IsNull, Not } from "typeorm";
-import { startOfYear, endOfYear } from "date-fns";
-import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieByYearDTO } from "../dto/movie.dto";
+import { Between, In, LessThanOrEqual, Like, MoreThan } from "typeorm";
+import { endOfYear } from "date-fns";
+import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
 
 @Injectable()
-export class MovieService extends BaseService<MovieEntity, MovieRepository>{
+export class MovieService extends BaseService<Movie, MovieRepository>{
   constructor(
     protected readonly loggerService: LoggerService,
-    protected readonly repository: MovieRepository,
+    protected readonly repository: MovieRepository
   ) {
     super(repository, loggerService);
   }
 
   async getByYear(dto: MovieByYearDTO) {
     const { year, skip, limit } = dto;
-    const formatYear = new Date(year, 1, 1);
 
-    return await this.repository.find({
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+    const beginDate = new Date(year, 1, 1);
+    const endDate = year === currentYear ? currentDate : endOfYear(beginDate);
+
+    return await this.repository.findAndCount({
       order: { release: "DESC"},
       take: limit,
       skip: skip,
       where: {
-        release: Between(startOfYear(formatYear), endOfYear(formatYear))
+        release: Between(beginDate, endDate),
+      },
+      relations: {
+        genres: { genre: true },
       },
       select: {
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
-        banner: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
 
   async getByRating(dto: MovieByRatingDTO) {
     const { skip, limit } = dto;
-    
-    return await this.repository.find({
-      order: { rating: "DESC" },
-      take: limit,
-      skip: skip,
-      select: {
-        id: true,
-        title: true,
-        rating: true,
-        imageUrl: true,
-        release: true,
-        banner: true,
-        movieLength: true,
-      }
-    })
-  }
-
-  async getByGenres(dto: MovieByGenresDTO) {
-    const { genres, skip, limit } = dto;
-    
-    return await this.repository.find({
-      order: { release: "DESC"},
+  
+    return await this.repository.findAndCount({
+      order: { 
+        voteCount: "DESC",
+        rating: "DESC" 
+      },
+      relations: {
+        genres: { genre: true },
+      },
       take: limit,
       skip: skip,
       where: {
-        genres: {
-          name: In(genres),
-        },
+        release: LessThanOrEqual(new Date()),
       },
       select: {
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
+        voteCount: true,
         release: true,
-        banner: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      }
+    })
+  }
+
+  async getByGenres(dto: MovieByGenresDTO) {
+    const relatedMovieIds = await this.repository.getByGenres(dto);
+    return await this.repository.findAndCount({
+      order: { release: "DESC" },
+      take: dto.limit,
+      skip: dto.skip,
+      where: {
+        id: In(relatedMovieIds),
+        release: LessThanOrEqual(new Date()),
+      },
+      relations: { 
+        genres: { genre: true },
+       },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
     })
   }
 
   async getByDay(dto: MovieByDayDTO) {
     const { skip, limit } = dto;
-
-    return await this.repository.find({
+    return await this.repository.findAndCount({
       order: { release: "DESC" },
       take: limit,
       skip: skip,
+      where: {
+        release: LessThanOrEqual(new Date()),
+      },
+      relations: { 
+        genres: { genre: true },
+       },
       select: {
         id: true,
         title: true,
         rating: true,
-        imageUrl: true,
         release: true,
-        banner: true,
+        imageUrl: true,
+        posterPath: true,
         movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
       }
+    })
+  }
+
+  async getBySearch(dto: MovieBySeachDTO) {
+    const { search, skip, limit } = dto;
+    return await this.repository.findAndCount({
+      order: { release: "DESC" },
+      take: limit,
+      skip: skip,
+      where: {
+        title: Like(`%${search}%`),
+        release: LessThanOrEqual(new Date()),
+      },
+      relations: { 
+        genres: { genre: true },
+       },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
+    })
+  }
+
+  async getByUpcoming(dto: MovieByUpcomingDTO) {
+    const { skip, limit } = dto;
+    return await this.repository.findAndCount({
+      order: { release: "ASC" },
+      skip: skip,
+      take: limit,
+      where: {
+        release: MoreThan(new Date()),
+      },
+      relations: { genres: { genre: true } },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
     })
   }
 
   override async getById(id: number){
     const results = await this.repository.find({
       relations: {
-        genres: true,
-        actors: { actor: true }
+        genres: { genre: true },
+        videos: true,
+        casts: { actor: true },
+        directors: { actor: true }
       },
       select: {
+        id: true,
         imdbId: true,
-        genres: { name: true },
-        actors: {
+        imageUrl: true,
+        plot: true,
+        title: true,
+        rating: true,
+        release: true,
+        description: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+        videos: {
+          key: true,
+          type: true,
+          site: true,
+          official: true,
+          name: true,
+          size: true,
+        },
+        casts: {
           role: true,
           actor: {
             id: true,
             name: true,
             imageUrl: true
           }
-        }
-      },
-      where: {
-        id,
-        actors: {
+        },
+        directors: {
+          actorId: true,
           actor: {
-            imageUrl: Not(IsNull())
+            name: true,
+            imageUrl: true,
           }
         }
-      }
+      },
+      where: { id }
     });
-    return results[0];
+    return results.length === 0 ? null : results[0];
 
   }
 }

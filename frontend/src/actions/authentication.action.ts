@@ -90,9 +90,10 @@ function logout() {
   return (dispatch: TypedDispatch) => {
     dispatch(request());
     dispatch(success());
-    tokenUtils.clearToken();
     dispatch(userActions.clearUser());
     dispatch(alertActions.add("success", "Logout successfully !!!"));
+
+    tokenUtils.clearToken();
     
 
     function request(): ReduxAction {

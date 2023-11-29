@@ -1,5 +1,4 @@
-import { v4 } from "uuid";
-import { Service } from "@app/shared";
+import { QUEUE, Service } from "@app/shared";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ClientsModule, Transport } from "@nestjs/microservices";
@@ -10,18 +9,26 @@ import { MovieService } from "./movie.service";
   imports: [
     ClientsModule.registerAsync([{
       name: Service.MOVIE,
-      useFactory: (configService: ConfigService) => (
-        {
-          transport: Transport.KAFKA,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const brokerHost = configService.get("BROKER_HOST");
+        const brokerPort = configService.get("BROKER_PORT");
+        const brokerVhost = configService.get("BROKER_VHOST");
+        const brokerUsername = configService.get("BROKER_USERNAME");
+        const brokerPassword = configService.get("BROKER_PASSWORD");
+
+        return {
+          name: Service.MOVIE,
+          transport: Transport.RMQ,
           options: {
-            client: { 
-              brokers: [configService.get<string>('BROKER_HOST')],
+            urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
+            queue: QUEUE.MOVIE,
+            queueOptions: {
+              durable: false,
             },
-            consumer: {
-              groupId: `movie-from-api-gateway-${v4()}`,
-            }
           }
-        }), inject: [ConfigService]
+        }
+      }
     }])
   ],
   controllers: [MovieController],

@@ -12,18 +12,42 @@ import {
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
-import { FC, memo } from "react";
+import { FC, memo, useEffect } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import sidebarActions from "@/actions/sidebar.action";
 import AppContainer from "./AppContainer";
+import genreActions from "@/actions/genre.action"
+import { useState } from "react"
 
 const AppHeader: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, data } = useAppSelector((state) => state.user);
   const triggerOpen = () => dispatch(sidebarActions.trigger());
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  // Call API get Genres
+  useEffect(() => {
+    dispatch(genreActions.getGenres());
+  }, []);
+  const listGenres = useAppSelector((state) => state.genre.data);
+
+  const handleSearch = () => {
+    if (searchKeyword.trim() !== '') {
+      navigate(`/search?keyword=${searchKeyword}`);
+    }
+  }
+
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+    else if (event.key === 'Backspace' && searchKeyword === '') {
+      console.log('Input null');
+    }
+  };
 
   return (
     <header className="flex items-center justify-between box-border sticky z-40 top-0 right-0 left-0 h-[60px] border-b border-divider bg-cblack-100">
@@ -43,7 +67,9 @@ const AppHeader: FC = () => {
             role="search"
             color="blue-gray"
             aria-autocomplete="none"
-            icon={<MagnifyingGlassIcon className="text-cred" />}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyDown={handleEnter}
+            icon={<MagnifyingGlassIcon className="text-cred" onClick={handleSearch} />}
             label="Find movie"
             labelProps={{
               className: "before:border-none after:border-none",
@@ -55,10 +81,14 @@ const AppHeader: FC = () => {
           />
 
           <Select
-            label="Select genre"
+            // label="Select genre"
+            value={"Select genre"}
             color="blue-gray"
             containerProps={{
-              className: "!min-w-[124px] !w-[124px] -ml-2",
+              className: "!min-w-[152px] !w-[124px] -ml-2",
+            }}
+            menuProps={{
+              className: "bg-cblack-600 no-scrollbar"
             }}
             labelProps={{
               className: "before:border-none after:border-none",
@@ -66,8 +96,21 @@ const AppHeader: FC = () => {
             arrow={<ChevronDownIcon className="text-cred" />}
             className="border-none !bg-cblack-600 text-slate-400 hover:border-none"
           >
-            <Option>Action</Option>
-            <Option>Fantasy</Option>
+            {listGenres.map((genre) => (
+              <Option
+                key={genre.name}
+                className="p-0 mx-2 my-1"
+              >
+                <Link
+                  key={genre.name}
+                  to={`/search?genre=${genre.name}`}
+                >
+                  <Typography className="text-base font-normal text-slate-400 hover:bg-white px-2 rounded">
+                    {genre.name}
+                  </Typography>
+                </Link>
+              </Option>
+            ))}
           </Select>
         </div>
 

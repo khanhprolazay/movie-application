@@ -16,17 +16,19 @@
     "docker:build:user-service": "docker build --no-cache -f ./apps/user-service/Dockerfile -t user-service:version1 .",
     "docker:build:movie-service": "docker build --no-cache -f ./apps/movie-service/Dockerfile -t movie-service:version1 .",
     "docker:build:all": "concurrently --kill-others \"npm run docker:build:api-gateway\" \"npm run docker:build:auth-service\" \"npm run docker:build:user-service\" \"npm run docker:build:movie-service\"",
-    
     "docker:export:api-gateway": "docker save -o ./tar/api-gateway.tar api-gateway:version1",
     "docker:export:auth-service": "docker save -o ./tar/auth-service.tar auth-service:version1",
     "docker:export:user-service": "docker save -o ./tar/user-service.tar user-service:version1",
     "docker:export:movie-service": "docker save -o ./tar/movie-service.tar movie-service:version1",
     "docker:export:all": "concurrently --kill-others \"npm run docker:export:api-gateway\" \"npm run docker:export:auth-service\" \"npm run docker:export:user-service\" \"npm run docker:export:movie-service\"",
-
     "start:dev:api-gateway": "cross-env NODE_ENV=development nest start api-gateway --watch",
     "start:dev:auth-service": "cross-env NODE_ENV=development nest start auth-service --watch",
     "start:dev:user-service": "cross-env NODE_ENV=development nest start user-service --watch",
     "start:dev:movie-service": "cross-env NODE_ENV=development nest start movie-service --watch",
+    "start:prod:api-gateway": "cross-env NODE_ENV=production node dist/apps/api-gateway/main.js",
+    "start:prod:auth-service": "cross-env NODE_ENV=production  dist/apps/auth-service/main.js",
+    "start:prod:user-service": "cross-env NODE_ENV=production dist/apps/user-service/main.js",
+    "start:prod:movie-service": "cross-env NODE_ENV=production dist/apps/movie-service/main.js",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -40,6 +42,7 @@
     "test:e2e": "jest --config ./apps/backend/test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
@@ -48,8 +51,12 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.1.14",
     "@nestjs/typeorm": "^10.0.0",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.3",
     "argon2": "^0.31.1",
     "axios": "^1.5.1",
+    "cache-manager": "^5.2.4",
+    "cache-manager-redis-yet": "^4.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cross-env": "^7.0.3",
@@ -109,5 +116,8 @@
     "moduleNameMapper": {
       "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
+  },
+  "engines": {
+    "node": "20.9.0"
   }
 }

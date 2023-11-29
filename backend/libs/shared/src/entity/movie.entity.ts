@@ -1,49 +1,85 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
-import { GenreEntity } from "./genre.entity";
-import { ActorToMovie } from "./actor-to-movie.entity";
+import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { BaseEntity } from "../base";
-import { AwardEntity } from "./award.entity";
+import { WriterToMovie } from "./writer-to-movie.entity";
+import { CastToMovie } from "./cast-to-movie.entity";
+import { DirectorToMovie } from "./director-to-movie.entity";
+import { OpeningWeekendGross } from "./opening-weekend-gross.entity";
+import { MovieToGenre } from "./movie-to-genre.entity";
+import { Budget } from "./budget.entity";
+import { MovieToKeyword } from "./movie-to-keyword.entity";
+import { Video } from "./video.entity";
 
 @Entity({name: "movie"})
-export class MovieEntity extends BaseEntity {
+export class Movie extends BaseEntity {
   @Column({ unique: true, length: '20' })
   imdbId: string
 
   @Column({ length: 100 })
+  @Index()
   title: string
 
-  @Column('text')
-  description: string
-
-  @Column('double')
-  movieLength: number
-
-  @Column('double')
+  @Column({type: "double", nullable: true})
   rating: number
 
-  @Column({ nullable: true })
-  trailer: string
+  @Column({ type: "int", nullable: true})
+  voteCount: number
 
-  @Column({ nullable: true })
+  @Column({ type: "double", nullable: true })
+  movieLength: number
+
+  @Column({ type: "text", nullable: true })
   imageUrl: string
 
   @Column({type: 'date', nullable: true})
+  @Index()
   release: Date
+
+  @Column({nullable: true})
+  tagline: string
+
+  @Column({nullable: true})
+  posterPath: string
+
+  @Column({nullable: true}) 
+  backdropPath: string
 
   @Column({ type: 'text', nullable: true })
   plot: string
 
-  @Column({ nullable: true })
-  banner: string
+  @Column({type: 'text', nullable: true})
+  description: string
 
-  @ManyToMany(() => GenreEntity)
-  @JoinTable()
-  genres: GenreEntity[]
+  @OneToMany(() => MovieToGenre, movieToGenre => movieToGenre.movie)
+  genres: MovieToGenre[]
 
-  @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.movie)
-  actors: ActorToMovie[]
+  @OneToMany(() => MovieToKeyword, movieToKeyword => movieToKeyword.movie)
+  keywords: MovieToKeyword[]
 
-  @OneToMany(() => AwardEntity, award => award.movie)
-  awards: AwardEntity[]
+  @OneToMany(() => CastToMovie, castToMovie => castToMovie.movie)
+  casts: CastToMovie[]
 
+  @OneToMany(() => WriterToMovie, writerToMovie => writerToMovie.movie)
+  writers: WriterToMovie[]
+
+  @OneToMany(() => DirectorToMovie, directorToMovie => directorToMovie.movie)
+  directors: DirectorToMovie[]
+
+  @OneToMany(() => Video, video => video.movie)
+  videos: Video[]
+
+  @OneToOne(() => Budget, { nullable: true })
+  @JoinColumn()
+  productionBudget: Budget
+
+  @OneToOne(() => Budget, { nullable: true })
+  @JoinColumn()
+  lifetimeGross: Budget  
+
+  @OneToOne(() => OpeningWeekendGross, { nullable: true })
+  @JoinColumn()
+  openingWeekendGross: OpeningWeekendGross
+
+  @OneToOne(() => Budget, { nullable: true })
+  @JoinColumn()
+  worldwideGross: Budget
 }

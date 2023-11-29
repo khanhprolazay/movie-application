@@ -1,54 +1,26 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
-import { ActorToMovie } from "./actor-to-movie.entity";
-import { QuoteEntity } from "./quote.entity";
-import { TrademarkEntity } from "./trademark.entity";
-import { TriviaEntity } from "./trivia.entity";
+import { Column, Entity, OneToMany } from "typeorm";
+import { CastToMovie } from "./cast-to-movie.entity";
 import { BaseEntity } from "../base";
-import { AwardEntity } from "./award.entity";
-import { BioEntity } from "./bio.entity";
-import { text } from "stream/consumers";
+import { WriterToMovie } from "./writer-to-movie.entity";
+import { DirectorToMovie } from "./director-to-movie.entity";
 
 @Entity({name: "actor"})
-export class ActorEntity extends BaseEntity {
+export class Actor extends BaseEntity {
   @Column({unique: true})
   imdbId: string
 
   @Column()
   name: string
 
-  @Column({nullable: true})
+  @Column({type: "text", nullable: true})
   imageUrl: string
 
-  @Column({type: 'date', nullable: true})
-  birthDay: Date
+  @OneToMany(() => CastToMovie, castToMovie => castToMovie.actor)
+  castingMovies: CastToMovie[]
 
-  @Column({ nullable: true })
-  birthPlace: string
+  @OneToMany(() => WriterToMovie, writerToMovie => writerToMovie.actor)
+  writingMovies: WriterToMovie[]
 
-  @Column({ type: 'text', nullable: true })
-  partialBio: string
-
-  @Column({nullable: true})
-  height: string
-
-  // @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.actor)
-  // actorToMovies: ActorToMovie[]
-  @OneToMany(() => ActorToMovie, actorToMovie => actorToMovie.actor)
-  movies: ActorToMovie[]
-
-  @OneToMany(() => QuoteEntity, (quote) => quote.actor)
-  quotes: QuoteEntity[]
-
-  @OneToMany(() => TrademarkEntity, (trademark) => trademark.actor)
-  trademarks: TrademarkEntity[]
-
-  @OneToMany(() => TriviaEntity, (trivia) => trivia.actor)
-  trivias: TriviaEntity[]
-
-  @OneToMany(() => AwardEntity, award => award.actor)
-  awards: AwardEntity[]
-
-  @OneToOne(() => BioEntity)
-  @JoinColumn()
-  bio: BioEntity  
+  @OneToMany(() => DirectorToMovie, directorToMovie => directorToMovie.actor)
+  directingMovies: DirectorToMovie[]
 }

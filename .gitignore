@@ -1,11 +1,12 @@
 */node_modules
-*/dist
-dist-ssr
 */config/env
 */volumes
+*/dist
 
 data/*/*.csv
-data/v1/*
+data/*/*.json
+data/*/__pycache__
+
 data/*.sql
 
 backend/*.sql
@@ -14,4 +15,10 @@ backend/tar
 
 frontend/*.zip
 
-image-volumes
+images
+
+spark/.ipynb_checkpoints
+spark/checkpoint_dir
+
+note.txt
+node_modules

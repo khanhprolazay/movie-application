@@ -1,41 +1,29 @@
 import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Movie } from "@/type";
+import urlUtils from "@/utils/urlUtils";
+import stringUtils from "@/utils/stringUtils";
 
-interface PosterFilmProps {
-  image: string;
-  name: string;
-  rating: number;
-}
-
-const PosterFilmResult = (props: PosterFilmProps) => {
+const PosterFilmResult = (props: { movie: Movie }) => {
+  const { movie } = props;
   const navigate = useNavigate();
 
-  const handleDetail = () => {
-    navigate("/detail");
-  };
-
-  const maxCharacters = 15; // Độ dài tối đa trước khi cắt
-
-  // Hàm để kiểm tra và cắt `name` khi cần thiết
-  const truncateText = (text: string) => {
-    if (text.length > maxCharacters) {
-      return text.slice(0, maxCharacters - 2) + "...";
-    }
-    return text;
-  };
-
-  return (
+  return  (
     <div
-      className="relative mb-16 object-cover text-gray-300 transition-colors hover:text-slate-100"
-      onClick={handleDetail}
+      className="relative mx-auto mb-10 mt-5 object-cover text-gray-300 transition-colors hover:text-slate-100"
+      onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
     >
-      <img
-        src={props.image}
+      <LazyLoadImage
         alt="image 1"
-        className="h-48 w-32 transform border object-cover duration-300 ease-in-out hover:scale-105 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        effect="blur"
+        src={urlUtils.getImageUrl(movie)}
+        width={206}
+        height={320}
+        wrapperClassName="transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       />
-      <div className="absolute left-20 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
-        {props.rating}
+      <div className="absolute left-28 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
+        {stringUtils.formatRating(movie.rating)}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -49,12 +37,14 @@ const PosterFilmResult = (props: PosterFilmProps) => {
           />
         </svg>
       </div>
-      <Typography
-        variant="h2"
-        className="text-md font-medium absolute -bottom-7 w-32 overflow-hidden whitespace-nowrap font-manrope hover:cursor-pointer hover:transition-colors"
-      >
-        {truncateText(props.name)}
-      </Typography>
+      <div className="line-clamp-1 w-full">
+        <Typography
+          variant="h2"
+          className="text-md absolute -bottom-7 max-w-full overflow-hidden whitespace-nowrap font-manrope font-medium hover:cursor-pointer hover:text-gray-500 hover:transition-colors"
+        >
+          {movie.title}
+        </Typography>
+      </div>
     </div>
   );
 };

@@ -1,14 +1,21 @@
 import userApis from "@/apis/userApis";
 import userConstants from "@/constants/user.constant";
 import { ReduxAction, User } from "@/type";
-import { Dispatch } from "redux";
+import tokenUtils from "@/utils/tokenUtils";
+import authenticationActions from "./authentication.action";
+import { TypedDispatch } from "@/redux/store";
 
 function getUser() {
-  return (dispatch: Dispatch) => {
+  return (dispatch: TypedDispatch) => {
     dispatch(request());
+
     userApis.getProfile()
       .then(data => dispatch(success(data)))
-      .catch(err => dispatch(error(err)))
+      .catch(err => {
+        tokenUtils.clearToken();
+        dispatch(error(err));
+        dispatch(authenticationActions.check());
+      })
 
     function request(): ReduxAction {
       return { 
@@ -33,7 +40,7 @@ function getUser() {
 }
 
 function clearUser() {
-  return (dispatch: Dispatch) => {
+  return (dispatch: TypedDispatch) => {
     dispatch(request());
     dispatch(success());
 

@@ -2,7 +2,7 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
-import { LoggerService, Service, ExceptionFilter } from '@app/shared';
+import { LoggerService, Service, ExceptionFilter, QUEUE } from '@app/shared';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 dotenv.config({
@@ -10,17 +10,22 @@ dotenv.config({
 });
 
 async function bootstrap() {
+  const brokerHost = process.env.BROKER_HOST;
+  const brokerPort = process.env.BROKER_PORT;
+  const brokerVhost = process.env.BROKER_VHOST;
+  const brokerUsername = process.env.BROKER_USERNAME;
+  const brokerPassword = process.env.BROKER_PASSWORD;
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          brokers: [process.env.BROKER_HOST],
+        urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
+        queue: QUEUE.AUTH,
+        queueOptions: {
+          durable: false,
         },
-        consumer: {
-          groupId: `${Service.AUTH}`,
-        }
       }
     }
   ); 

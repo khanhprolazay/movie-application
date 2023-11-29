@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerModule, RoleEntity, UserEntity } from '@app/shared';
+import { LoggerModule, Role, User, KafkaGroup, Service } from '@app/shared';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RoleModule } from './role/role.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -16,19 +17,19 @@ import { RoleModule } from './role/role.module';
     }),
     
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        return {
-          type: 'mysql',
-          entities: [UserEntity, RoleEntity],
-          host: configService.get('USER_SERVICE_DATABASE_HOST'),
-          port: configService.get('USER_SERVICE_DATABASE_PORT'),
-          database: configService.get('USER_SERVICE_DATABASE_NAME'),
-          username: configService.get('USER_SERVICE_DATABASE_USER_USERNAME'),
-          password: configService.get('USER_SERVICE_DATABASE_USER_PASSWORD'),
-          synchronize: true
-        }
-      }, inject: [ConfigService], 
-    })
+      inject: [ConfigService], 
+      useFactory: (configService: ConfigService) => ({
+        name: 'user',
+        type: 'mysql',
+        entities: [User, Role],
+        host: configService.get('USER_DATABASE_HOST'),
+        port: configService.get('USER_DATABASE_PORT'),
+        database: configService.get('USER_DATABASE_NAME'),
+        username: configService.get('USER_DATABASE_USER_USERNAME'),
+        password: configService.get('USER_DATABASE_USER_PASSWORD'),
+        synchronize: true
+      }), 
+    }),
   ],
 })
 export class AppModule {}

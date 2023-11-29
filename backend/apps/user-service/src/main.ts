@@ -3,24 +3,29 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { ExceptionFilter, LoggerService, Service } from '@app/shared';
+import { ExceptionFilter, LoggerService, QUEUE, Service } from '@app/shared';
 
 dotenv.config({
   path: `config/env/${process.env.NODE_ENV}.env`
 });
 
 async function bootstrap() {
+  const brokerHost = process.env.BROKER_HOST;
+  const brokerPort = process.env.BROKER_PORT;
+  const brokerVhost = process.env.BROKER_VHOST;
+  const brokerUsername = process.env.BROKER_USERNAME;
+  const brokerPassword = process.env.BROKER_PASSWORD;
+
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule, 
     {
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          brokers: [process.env.BROKER_HOST],
+        urls: [`amqp://${brokerUsername}:${brokerPassword}@${brokerHost}:${brokerPort}/${brokerVhost}`],
+        queue: QUEUE.USER,
+        queueOptions: {
+          durable: false,
         },
-        consumer: {
-          groupId: `${Service.USER}`
-        }
       }
     }
   );

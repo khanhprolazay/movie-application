@@ -3,11 +3,11 @@ import { verify, hash } from 'argon2';
 import { UserRepository } from './user.repository';
 import { RoleService } from '../role/role.service';
 import { ForbiddenException, Injectable, NotAcceptableException } from '@nestjs/common';
-import { BaseService, UserEntity, LoggerService, LoginRequestDto, RegisterRequestDto, Role, RegisterGoogleRequestDto, UserLoginType } from '@app/shared';
+import { BaseService, User, LoggerService, LoginRequestDto, RegisterRequestDto, RoleEnum, RegisterGoogleRequestDto, UserLoginType } from '@app/shared';
 import { UpdatePasswordDTO } from '@app/shared/dto/user.dto';
 
 @Injectable()
-export class UserService extends BaseService<UserEntity, UserRepository> {
+export class UserService extends BaseService<User, UserRepository> {
   constructor(
     protected readonly roleService: RoleService,
     protected readonly repository: UserRepository,
@@ -38,10 +38,13 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
   }
 
   async createUser(dto: RegisterRequestDto) {
-    const role = await this.roleService.getByName(Role.USER);
-    const user = new UserEntity();
+    const role = await this.roleService.getByName(RoleEnum.USER);
+
+    const user = new User();
     Object.assign(user, dto);
     user.role = role;
+    user.password = await hash(user.password);
+    
     return await this.repository.save(user);
   }
 
@@ -50,8 +53,8 @@ export class UserService extends BaseService<UserEntity, UserRepository> {
   }
 
   async createGoogleUser(dto: RegisterGoogleRequestDto) {
-    const role = await this.roleService.getByName(Role.USER);
-    const user = new UserEntity();
+    const role = await this.roleService.getByName(RoleEnum.USER);
+    const user = new User();
     Object.assign(user, dto);
 
     user.password = v4();
