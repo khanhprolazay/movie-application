@@ -10,7 +10,6 @@ export * from './budget.entity';
 export * from './keyword.entity';
 export * from './movie-to-keyword.entity';
 export * from './video.entity';
-export * from './kafka-group.entity';
 export * from './cast-to-movie.entity';
 export * from './director-to-movie.entity';
 export * from './writer-to-movie.entity';
