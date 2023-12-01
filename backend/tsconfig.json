@@ -25,5 +25,8 @@
         "libs/shared/src/*"
       ]
     }
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
   }
 }

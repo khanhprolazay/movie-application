@@ -1,17 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Inject, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { ClientProxy } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
 import { LoginGoogleRequestDto, LoginRequestDto, RefreshTokenDto, RegisterRequestDto, Service} from "@app/shared";
 
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
-  constructor(
-    @Inject(Service.AUTH) 
-    private readonly authClient: ClientProxy,
-    private readonly authService: AuthService
-  ) {}
+  constructor( private readonly authService: AuthService ) {}
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -25,9 +20,9 @@ export class AuthController {
     return this.authService.register(dto);
   }
 
-  @Post('google')
-  loginGoogle(@Body() dto: LoginGoogleRequestDto) {
-    return this.authService.googleLogin(dto);
+  @Post('google/callback')
+  sso(@Body() dto: LoginGoogleRequestDto) {
+    return this.authService.sso(dto);
   }
 
   @Post('refreshToken')

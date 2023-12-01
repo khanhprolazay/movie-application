@@ -25,7 +25,7 @@ export class AuthController {
 
   @MessagePattern(PatternOption['AUTH.GOOGLE_LOGIN'])
   googleLogin(@Payload() dto: LoginGoogleRequestDto) {
-    return this.authService.googleLogin(dto);
+    return this.authService.sso(dto);
   }
 
   @MessagePattern(PatternOption['AUTH.REFRESH_TOKEN'])

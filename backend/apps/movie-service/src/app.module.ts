@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MovieModule } from './movie/movie.module';
@@ -18,7 +19,7 @@ import { LoggerModule, Actor, Genre, Movie, Video, Service, CastToMovie, Directo
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       name: Service.MOVIE,
-      useFactory: (configService: ConfigService) => ({   
+      useFactory: (configService: ConfigService) => ({ 
           name: "movie-connection",
           type: "mysql",
           entities: [Movie, Actor, Genre, Video, Currency, Budget, Keyword, MovieToKeyword, CastToMovie, MovieToGenre, DirectorToMovie, WriterToMovie,  OpeningWeekendGross],
@@ -27,7 +28,12 @@ import { LoggerModule, Actor, Genre, Movie, Video, Service, CastToMovie, Directo
           database: configService.get('MOVIE_DATABASE_NAME'),
           username: configService.get('MOVIE_DATABASE_USER_USERNAME'),
           password: configService.get('MOVIE_DATABASE_USER_PASSWORD'),
-          synchronize: true
+          synchronize: true,
+          dropSchema: false,
+          ssl: configService.get('NODE_ENV') === 'production' && {
+            rejectUnauthorized: true,
+            ca: [fs.readFileSync("config/ca/DigiCertGlobalRootCA.crt.pem", "utf8")],
+          }
       })
     }),
   ],

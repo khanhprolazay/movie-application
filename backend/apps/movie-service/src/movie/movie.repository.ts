@@ -16,10 +16,10 @@ export class MovieRepository extends Repository<Movie> {
     super(Movie, dataSource.createEntityManager());
   }
 
-  async getByGenres(dto: MovieByGenresDTO): Promise<number[]> {
+  async getByGenres(dto: MovieByGenresDTO) {
     const { genres, skip, limit } = dto;
     const genreIds = (await this.genreService.getIdsByNames(genres)).map(genre => genre.id);
-    return await this.dataSource
+    const builder = this.dataSource
                       .getRepository(MovieToGenre)
                       .createQueryBuilder('movieToGenre')
                       .select(["movieToGenre.movieId movieIds"])
@@ -28,8 +28,11 @@ export class MovieRepository extends Repository<Movie> {
                       .orderBy('COUNT(movieToGenre.movieId)', 'DESC')
                       .take(limit)
                       .skip(skip)
-                      .getRawMany()
-                      .then(movies => movies.map(movie => movie.movieIds));
+
+      const moviesIds = await builder.getRawMany().then(movies => movies.map(movie => movie.movieIds));
+      const total = await builder.getCount();
+
+      return { moviesIds, total }
   }
   
 }

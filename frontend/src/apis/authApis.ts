@@ -11,8 +11,9 @@ class AuthApis {
     return await axiosClient.post("/auth/register", { ...values });
   }
 
-  async googleLogin(accessToken: string): Promise<LoginResponseDto> {
-    return await axiosClient.post("/auth/google", { accessToken });
+  async googleLogin(props: { accessToken?: string, credential?: string }): Promise<LoginResponseDto> {
+    const { accessToken, credential } = props;
+    return await axiosClient.post("/auth/google/callback", { accessToken, credential });
   }
 
   async refreshToken(refreshToken: string): Promise<{ accessToken: string } | null> {

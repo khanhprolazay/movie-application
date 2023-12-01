@@ -2,12 +2,13 @@ import "./App.css";
 import { getRoutersWithRole } from "./routes";
 import React, { FC,  useEffect } from "react";
 import AppLayout from "./components/AppLayout";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, Route, Routes } from "react-router-dom";
 import authenticationActions from "./actions/authentication.action";
 import AuthLayout from "./pages/auth/AuthLayout";
 import AppAlert from "./components/AppAlert";
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 
 const LoginPage = React.lazy(() =>
   import("./pages/auth/components/SingleLoginForm").then(
@@ -22,10 +23,22 @@ const RegisterPage = React.lazy(() =>
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
+  const { isLogin} = useAppSelector(state => state.authentication)
 
   useEffect(() => {
     dispatch(authenticationActions.check());
   }, []);
+
+  useGoogleOneTapLogin({
+    disabled: isLogin,
+    onSuccess: (credentialResponse) =>
+      dispatch(
+        authenticationActions.googleLogin({
+          credential: credentialResponse.credential,
+        }),
+      ),
+    onError: () => console.log("Error"),
+  });
 
   return (
     <>

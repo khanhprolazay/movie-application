@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from "class-validator";
 import { UserLoginType } from "../constant";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -63,9 +63,14 @@ export class ValidateDto {
 
 export class LoginGoogleRequestDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
-  readonly accessToken: string
+  readonly accessToken?: string
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  readonly credential?: string
 }
 
 export class RefreshTokenDto {
@@ -74,7 +79,7 @@ export class RefreshTokenDto {
   readonly refreshToken: string
 }
 
-export interface GoogleResponseDto  {
+export interface GoogleProfile  {
   id: string,
   email: string,
   given_name: string,

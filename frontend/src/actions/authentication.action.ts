@@ -6,6 +6,7 @@ import { TypedDispatch } from "@/redux/store";
 import authApis from "@/apis/authApis";
 import { NavigateFunction } from "react-router-dom";
 import alertActions from "./alert.action";
+import { googleLogout } from "@react-oauth/google";
 
 function check() {
   return (dispatch: TypedDispatch) => {
@@ -20,7 +21,7 @@ function check() {
       return;
     }
 
-    tokenUtils.clearToken();
+    dispatch(logout());
     dispatch(error("User does not log in !!!"));
   }
 
@@ -91,11 +92,10 @@ function logout() {
     dispatch(request());
     dispatch(success());
     dispatch(userActions.clearUser());
-    dispatch(alertActions.add("success", "Logout successfully !!!"));
+    googleLogout();
 
     tokenUtils.clearToken();
     
-
     function request(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_LOGOUT_REQUEST,
@@ -146,11 +146,17 @@ function register(values: RegisterDTO, navigate: NavigateFunction) {
   }
 }
 
-function googleLogin(accessToken: string, navigate: NavigateFunction) {
+function googleLogin(props: {
+  accessToken?: string, 
+  credential?: string, 
+  navigate?: NavigateFunction
+}) {
+  const { accessToken, credential, navigate } = props;
+
   return (dispatch: TypedDispatch) => {
 
     dispatch(request());
-    authApis.googleLogin(accessToken)
+    authApis.googleLogin({ accessToken, credential })
       .then(response => {
         tokenUtils.saveAccessToken(response.accessToken);
         tokenUtils.saveRefreshToken(response.refreshToken);
@@ -159,7 +165,8 @@ function googleLogin(accessToken: string, navigate: NavigateFunction) {
         dispatch(check());
         dispatch(alertActions.add("success", "Login successfully !!!"));
 
-        navigate("/");
+        if (navigate) 
+          navigate("/");
       })
       .catch(err => {
         dispatch(error(err));

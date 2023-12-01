@@ -22,7 +22,7 @@ export class AuthService {
     );
   }
 
-  async googleLogin(dto: LoginGoogleRequestDto) {
+  async sso(dto: LoginGoogleRequestDto) {
     return await firstValueFrom(
       this.authClient.send<LoginResonseDto>(PatternOption["AUTH.GOOGLE_LOGIN"], dto)
     );

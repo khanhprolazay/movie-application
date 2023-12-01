@@ -25,6 +25,7 @@ const AppHeader: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, data } = useAppSelector((state) => state.user);
+  const authLoading = useAppSelector((state) => state.authentication.loading);
   const triggerOpen = () => dispatch(sidebarActions.trigger());
   const [searchKeyword, setSearchKeyword] = useState('');
 
@@ -114,8 +115,8 @@ const AppHeader: FC = () => {
           </Select>
         </div>
 
-        {loading && <Spinner color="red" className="h-10 w-10" />}
-        {!loading &&
+        {loading || authLoading && <Spinner color="red" className="h-10 w-10" />}
+        {!loading && !authLoading &&
           (!data ? (
             <div className="flex items-center gap-5">
               <Button

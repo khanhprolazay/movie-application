@@ -25,7 +25,7 @@ const AppLogo: FC<AppLogoProps> = ({
 }) => {
   return (
     <div className={`${containerProps && containerProps.className} h-auto`}>
-      <div className="relative flex min-h-[60px] items-center">
+      <div className="relative flex h-[60px] items-center">
         <img
           src={logo}
           alt="logo"

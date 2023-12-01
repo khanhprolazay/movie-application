@@ -2,11 +2,12 @@ import { firstValueFrom } from 'rxjs';
 import { ExpiresInType } from '../type';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../interface';
+import { jwtDecode } from 'jwt-decode';
 import { ConfigService } from '@nestjs/config';
 import goolgeUtils from '../utils/googleUtils';
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject, Injectable, ConflictException, ForbiddenException, InternalServerErrorException } from '@nestjs/common';
-import { LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, User, UserLoginType } from '@app/shared';
+import { GoogleProfile, LoginGoogleRequestDto, LoginRequestDto, LoginResonseDto, PatternOption, RefreshTokenDto, RegisterGoogleRequestDto, RegisterRequestDto, Service, User, UserLoginType } from '@app/shared';
 
 @Injectable()
 export class AuthService {
@@ -43,28 +44,30 @@ export class AuthService {
     };
   }
 
-  async googleLogin(dto: LoginGoogleRequestDto) : Promise<LoginResonseDto> {
+  async sso(dto: LoginGoogleRequestDto) : Promise<LoginResonseDto> {
     try {
       const googleToken = dto.accessToken;
-      const response = await goolgeUtils.getUserProfile(googleToken);
+      const credential = dto.credential;
+
+      const profile = googleToken ? await goolgeUtils.getUserProfile(googleToken) : jwtDecode<GoogleProfile>(credential);
       
       const check = await firstValueFrom(
-        this.userClient.send<string>(PatternOption['USER.CHECK.BY_EMAIL'], response.email)
+        this.userClient.send<string>(PatternOption['USER.CHECK.BY_EMAIL'], profile.email)
       );
 
       let user: User;
 
-      if (check === "false") {
+      if (!check || check === "false") {
         const googleDto: RegisterGoogleRequestDto = {
-          email: response.email,
-          avatar: response.picture,
-          lastName: response.given_name,
+          email: profile.email,
+          avatar: profile.picture,
+          lastName: profile.given_name,
           loginType: UserLoginType.GOOGLE,
-          firstName: response.family_name,
+          firstName: profile.family_name,
         };
         user = await firstValueFrom(this.userClient.send<User>(PatternOption['USER.CREATE.BY_GOOGLE'], googleDto));
       } else {
-        user = await firstValueFrom(this.userClient.send<User>(PatternOption['USER.GET.BY_EMAIL'], response.email));
+        user = await firstValueFrom(this.userClient.send<User>(PatternOption['USER.GET.BY_EMAIL'], profile.email));
       }
       
       const payload: JwtPayload = {sub: user.id, email: user.email};
@@ -79,7 +82,6 @@ export class AuthService {
   }
 
   async register(dto: RegisterRequestDto) {
-    console.log(dto);
     if (dto.password !== dto.rePassword) {
       throw new ConflictException('Two provided password is not the same !!!');
     }

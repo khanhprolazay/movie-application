@@ -29,7 +29,10 @@ const SingleLoginForm: FC = () => {
   const googleLogin = useGoogleLogin({
     onSuccess: (response) =>
       dispatch(
-        authenticationActions.googleLogin(response.access_token, navigate),
+        authenticationActions.googleLogin({
+          accessToken: response.access_token,
+          navigate,
+        }),
       ),
     onError: (error) => console.log(error),
   });

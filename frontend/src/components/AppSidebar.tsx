@@ -106,7 +106,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
           imageProps={{ className: "ml-3 " }}
           textProps={{ className: "left-[54px] top-[6px]"}}
           containerProps={{
-            className: "mb-2 box-border border-b border-divider px-2",
+            className: "mb-2 !h-[60px] box-border border-b border-divider px-2",
           }}
         />
       </Link>

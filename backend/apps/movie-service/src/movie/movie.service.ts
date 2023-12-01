@@ -87,13 +87,15 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
   }
 
   async getByGenres(dto: MovieByGenresDTO) {
-    const relatedMovieIds = await this.repository.getByGenres(dto);
-    return await this.repository.findAndCount({
+    const { skip, limit } = dto;
+    const { moviesIds, total} = await this.repository.getByGenres(dto);
+    
+    const movies = await this.repository.find({
       order: { release: "DESC" },
-      take: dto.limit,
-      skip: dto.skip,
+      take: limit,
+      skip: skip,
       where: {
-        id: In(relatedMovieIds),
+        id: In(moviesIds),
         release: LessThanOrEqual(new Date()),
       },
       relations: { 
@@ -114,7 +116,9 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
           }
         },
       }
-    })
+    });
+
+    return [movies, total]
   }
 
   async getByDay(dto: MovieByDayDTO) {
