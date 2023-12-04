@@ -107,7 +107,7 @@ function getMovieByYear(year: number, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByYear(year, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -117,10 +117,10 @@ function getMovieByYear(year: number, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
+        function success(movies: Movie[], total: number): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_YEAR_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 
@@ -203,7 +203,7 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByGenres(genres, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -213,11 +213,11 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
+        function success(movies: Movie[], total: number): ReduxAction {
 
             return {
                 type: moviesConstants.GET_MOVIE_BY_GENRES_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 
@@ -236,7 +236,7 @@ function getMovieByKeyword(keyword: string, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByKeyword(keyword, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -246,11 +246,10 @@ function getMovieByKeyword(keyword: string, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
-
+        function success(movies: Movie[], total: number): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_KEYWORD_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 

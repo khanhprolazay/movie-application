@@ -44,6 +44,7 @@ export interface MovieRootState {
     genres: Genre[],
     keyword: string,
     data: Movie[],
+    total: number,
     error: string | null
   },
 
@@ -99,6 +100,7 @@ const initialState: MovieRootState = {
     genres: [],
     keyword: '',
     data: [],
+    total: 0,
     error: null
   },
   current: {
@@ -214,7 +216,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 
@@ -301,7 +304,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 
@@ -330,7 +334,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 
