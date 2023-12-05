@@ -18,7 +18,7 @@ export function ListPosterFilmRow() {
             />
           ))
         : data
-            .slice(0, 5)
+            .slice(14, 19)
             .map((movie, index: number) => (
               <PosterFilmRow key={index} movie={movie} />
             ))}

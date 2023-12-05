@@ -40,7 +40,7 @@ const MovieAside = () => {
             return (
               <Link
                 key={year}
-                to={`/search?year=${year}`}
+                to={`/search?year=${year}&page=${1}`}
                 className="h-8 w-28 cursor-pointer rounded bg-cblack-600 py-1 text-center font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:!border-transparent hover:!bg-cred hover:!text-slate-200"
               >
                 {year}
@@ -55,7 +55,7 @@ const MovieAside = () => {
           return (
             <Link
               key={year}
-              to={`/search?year=${year}`}
+              to={`/search?year=${year}&page=${1}`}
               className="flex h-8 w-full cursor-pointer items-center justify-evenly rounded bg-cblack-600 font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:bg-cred hover:text-slate-200"
             >
               {year}

@@ -16,6 +16,8 @@ export function PopularMovie() {
     dispatch(moviesActions.getMovieByRating(0, 20));
   }, []);
 
+  // console.log("data", data)
+
   return (
     <div className="relative ml-12 grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_5px]">
       <div className="w-full max-w-full overflow-hidden">
