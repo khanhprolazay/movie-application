@@ -2,6 +2,7 @@
 */config/ca/*
 */volumes
 */dist
+*/config/env/production.env
 
 data/*/*.csv
 data/*/*.json

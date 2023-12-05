@@ -33,11 +33,20 @@ export class MovieService extends BaseMessageService<Movie> {
   }
 
   async getByUpcoming(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_UPCOMING"], { skip, limit })
+    return await this.executeMany(PatternOption["MOVIE.GET.BY_UPCOMING"], { skip, limit });
+  }
+
+  async getByRadomBackdrop() {
+    return await this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM_BACKDROP"], {});
+  }
+
+  async getByRandom() {
+    return await this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM"], {});
   }
 
   async getBySearch(search: string, skip, limit) {
     return await this.executeMany(PatternOption["MOVIE.GET.BY_SEARCH"], { search, skip, limit });
   }
+
 
 }

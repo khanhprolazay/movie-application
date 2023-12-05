@@ -172,6 +172,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        backdropPath: true,
         genres: {
           genreId: true,
           genre: {
@@ -191,6 +192,66 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       where: {
         release: MoreThan(new Date()),
       },
+      relations: { genres: { genre: true } },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
+    })
+  }
+
+  async getByRandomBackdrop() {
+   const ids = await this.repository.createQueryBuilder()
+    .select("movie.id")
+    .where("movie.backdropPath IS NOT NULL")
+    .orderBy("RAND()")
+    .take(20)
+    .getRawMany()
+    .then(movies => movies.map(movie => movie.id));
+
+    return await this.repository.find({
+      where: { id: In(ids) },
+      relations: { genres: { genre: true } },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        backdropPath: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
+    })
+  }
+
+  async getByRandom() {
+    const ids = await this.repository.createQueryBuilder()
+      .select("movie.id")
+      .orderBy("RAND()")
+      .take(20)
+      .getRawMany()
+      .then(movies => movies.map(movie => movie.id));
+
+    return await this.repository.find({
+      where: { id: In(ids) },
       relations: { genres: { genre: true } },
       select: {
         id: true,

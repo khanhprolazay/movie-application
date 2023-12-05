@@ -1,7 +1,7 @@
 import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { ApiTags } from "@nestjs/swagger";
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller("movies")
 @ApiTags("Movie")
@@ -63,6 +63,20 @@ export class MovieController {
     @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
     return this.movieService.getByUpcoming(skip, limit);
+  }
+
+  @Get("byRadomBackdrop")
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(24 * 60 * 60 * 1000) // 1 day
+  async getByRadomBackdrop() {
+    return this.movieService.getByRadomBackdrop();
+  }
+
+  @Get("byRadom")
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(24 * 60 * 60 * 1000) // 1 day
+  async getByRadom() {
+    return this.movieService.getByRandom();
   }
 
   @Get("byId/:id") 
