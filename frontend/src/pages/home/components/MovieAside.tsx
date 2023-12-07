@@ -73,6 +73,7 @@ const MovieAside = () => {
           alt="image 2"
           effect="blur"
           wrapperClassName="h-44 w-full rounded"
+          className="border-2 border-slate-700"
         />
         <Typography className="absolute bottom-6 left-3 font-manrope text-xl font-semibold text-slate-200 hover:cursor-pointer">
           Fast And Furios 7
