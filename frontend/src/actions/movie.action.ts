@@ -134,12 +134,12 @@ function getMovieByYear(year: number, skip: number, limit: number) {
 }
 
 
-function getMovieByRandom(skip: number, limit: number) {
+function getMovieByRandom() {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        homeApis.getMovieByRandom(skip, limit)
-            .then(data => dispatch(success(data[0])))
+        homeApis.getMovieByRandom()
+            .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
 
 
@@ -160,6 +160,38 @@ function getMovieByRandom(skip: number, limit: number) {
         function error(error: string): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_RANDOM_ERROR,
+                payload: { error },
+            }
+        }
+    }
+}
+
+function getMovieByRandomBackdrop() {
+
+    return (dispatch: TypedDispatch) => {
+        dispatch(request());
+        homeApis.getMovieByRadomBackdrop()
+            .then(data => dispatch(success(data)))
+            .catch(err => dispatch(error(err)))
+
+
+        function request(): ReduxAction {
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP
+            }
+        }
+
+        function success(movies: Movie[]): ReduxAction {
+
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP_SUCCESS,
+                payload: { movies },
+            }
+        }
+
+        function error(error: string): ReduxAction {
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP_ERROR,
                 payload: { error },
             }
         }
@@ -329,5 +361,5 @@ function getRelatedMovie(genres: Genre[]) {
     }
 }
 
-const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByGenres, getMovieByComing, getMovieByKeyword, getMovieDetail, getRelatedMovie };
+const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByRandomBackdrop, getMovieByGenres, getMovieByComing, getMovieByKeyword, getMovieDetail, getRelatedMovie };
 export default moviesActions;

@@ -1,10 +1,9 @@
 import SkeletonCard from "@/components/SkeletonCard";
 import PosterFilmRow from "@/pages/home/components/PosterFilmRow";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppSelector } from "@/redux/hooks";
 
 export function ListPosterFilmRow() {
-  const dispatch = useAppDispatch();
-  const { data, loading } = useAppSelector((state) => state.movie.rating);
+  const { data, loading } = useAppSelector((state) => state.movie.random);
 
   return (
     <div className="mt-2 flex flex-col gap-2">
@@ -17,11 +16,9 @@ export function ListPosterFilmRow() {
               direction="row"
             />
           ))
-        : data
-            .slice(14, 19)
-            .map((movie, index: number) => (
-              <PosterFilmRow key={index} movie={movie} />
-            ))}
+        : data.slice(0, 8).map((movie, index: number) => (
+            <PosterFilmRow key={index} movie={movie} />
+          ))}
     </div>
   );
 }

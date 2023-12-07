@@ -22,7 +22,7 @@ const PosterFilmResult = (props: { movie: Movie }) => {
         height={320}
         wrapperClassName="transform border object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       />
-      <div className="absolute left-28 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
+      <div className="absolute right-2 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
         {stringUtils.formatRating(movie.rating)}
         <svg
           xmlns="http://www.w3.org/2000/svg"

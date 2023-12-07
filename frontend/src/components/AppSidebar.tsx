@@ -32,7 +32,7 @@ const icon = "h-5 w-6";
 
 const locations = [
   "/home",
-  "/aboutus",
+  "/about-us",
   "/user/profile",
   "/user/favorite",
   "/user/history",
@@ -123,18 +123,19 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
         <SidebarItem
           name="About us"
-          to="/aboutus"
+          to="/about-us"
           open={open}
           selected={currentMenu === 1}
           icon={<InformationCircleIcon className={icon} />}
         />
 
-        <hr className="mb-2 border-divider" />
-
         {/* Check LogIn để show Sidebar */}
         {loading && <Spinner color="red" className="h-10 w-10" />}
         {!loading && data !== null && (
           <>
+
+            <hr className="mb-2 border-divider" />
+            
             <SidebarItem
               name="Profile"
               open={open}

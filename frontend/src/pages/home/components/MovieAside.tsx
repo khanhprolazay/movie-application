@@ -5,7 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const MovieAside = () => {
   return (
-    <aside className="relative col-span-1 hidden bg-cblack-100 px-4 lg:block">
+    <aside className="relative mb-4 col-span-1 hidden bg-cblack-100 px-4 lg:block">
       <Typography
         variant="h1"
         className="mb-3 mt-5 font-manrope text-lg font-semibold text-slate-300"

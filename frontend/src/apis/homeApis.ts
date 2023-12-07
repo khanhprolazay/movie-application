@@ -24,8 +24,12 @@ class HomeApis {
         return await axiosClient.get(`/movies/byYear?year=${year}&skip=${skip}&limit=${limit}`)
     }
 
-    async getMovieByRandom(skip: number, limit: number): Promise<[Movie[], number]> {
-        return await axiosClient.get(`/movies/byRandom?skip=${skip}&limit=${limit}`)
+    async getMovieByRandom(): Promise<Movie[]> {
+        return await axiosClient.get(`/movies/byRandom`)
+    }
+
+    async getMovieByRadomBackdrop(): Promise<Movie[]> {
+        return await axiosClient.get(`/movies/byRandomBackdrop`)
     }
 
     async getDetailMovie(id: number): Promise<DetailMovie> {

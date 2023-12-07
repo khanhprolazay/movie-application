@@ -75,14 +75,14 @@ export class MovieController {
     return this.movieService.getByUpcoming(skip, limit);
   }
 
-  @Get("byRadomBackdrop")
+  @Get("byRandomBackdrop")
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(24 * 60 * 60 * 1000) // 1 day
   async getByRadomBackdrop() {
     return this.movieService.getByRadomBackdrop();
   }
 
-  @Get("byRadom")
+  @Get("byRandom")
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(24 * 60 * 60 * 1000) // 1 day
   async getByRadom() {

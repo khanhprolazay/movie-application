@@ -19,10 +19,13 @@ import { useMovie } from "@/hooks/use-movie.hook";
 import TabContent, { TabType, TabValues } from "./components/Tab";
 import SkeletonCard from "@/components/SkeletonCard";
 import AppFallback from "@/components/AppFallback";
+import { useSlider } from "@/hooks/use-slider.hook";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 const MoviePage = () => {
   const { loading, data, related, relatedLoading } = useMovie();
   const [activeTab, setActiveTab] = useState<TabValues>("video");
+  const { current, handlePrev, handleNext } = useSlider(related.length);
 
   const tabs: TabType[] = [
     {
@@ -45,8 +48,10 @@ const MoviePage = () => {
   return (
     data && (
       <AppContainer className="z-10 pt-8">
-        <div className="grid relative min-h-[735.5px] w-full gap-4 sm:grid-cols-1 md:grid-cols-[294px_1fr]">
-          {loading ? <AppFallback /> : (
+        <div className="relative grid min-h-[735.5px] w-full gap-4 sm:grid-cols-1 md:grid-cols-[294px_1fr]">
+          {loading ? (
+            <AppFallback />
+          ) : (
             <>
               <Card className="w-auto bg-cblack-600">
                 <CardHeader floated={false} className="rounded-md">
@@ -171,26 +176,43 @@ const MoviePage = () => {
           )}
         </div>
 
-        <Typography className="mb-3 mt-12 font-manrope text-3xl font-bold text-slate-200">
-          More like this
-        </Typography>
+        <div className="mb-3 mt-12 flex items-center justify-between">
+          <Typography className="font-manrope text-3xl font-bold text-slate-200">
+            More like this
+          </Typography>
+          <div className="flex items-end gap-4">
+            <ChevronLeftIcon
+              onClick={handlePrev}
+              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+            />
+            <ChevronRightIcon
+              onClick={handleNext}
+              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+            />
+          </div>
+        </div>
+
         <hr className="full-width-underline mb-5 mt-4" />
 
-        <div className="no-scrollbar mx-5 mb-10 flex gap-4 overflow-x-scroll">
-          {relatedLoading
-            ? Array.from<number>({ length: 7 }).map((index) => (
-                <SkeletonCard
-                  bodyClassname="!w-auto"
-                  imageClassname="!w-[204px] !h-[318px]"
-                  key={index}
-                />
-              ))
-            : related.map((movie, index: number) => (
-                <PosterFilmResult
-                  key={index}
-                  movie={movie}
-                />
-              ))}
+        <div className="w-full max-w-full overflow-hidden">
+          <div
+            className="mx-5 mb-10 flex gap-4 transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${current * (204.4 + 16)}px)`,
+            }}
+          >
+            {relatedLoading
+              ? Array.from<number>({ length: 7 }).map((index) => (
+                  <SkeletonCard
+                    bodyClassname="!w-auto"
+                    imageClassname="!w-[204px] !h-[318px]"
+                    key={index}
+                  />
+                ))
+              : related.map((movie, index: number) => (
+                  <PosterFilmResult key={index} movie={movie} />
+                ))}
+          </div>
         </div>
       </AppContainer>
     )

@@ -20,10 +20,10 @@ const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
     >
       <LazyLoadImage
         src={urlUtils.getImageUrl(movie)}
-        alt="image 1"
+        alt={urlUtils.getImageUrl(movie)}
         width={84}
         height={112}
-        wrapperClassName="flex-2 border"
+        wrapperClassName="flex-2 border min-w-[84px]"
       />
       <div className="grow font-manrope">
         <div className="ml-5 mt-3 line-clamp-1 pr-20">
