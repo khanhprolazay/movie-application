@@ -18,6 +18,16 @@ export class MovieController {
     return await this.movieService.getByYear(year, skip, limit);
   }
 
+  @Get("byRecommend")
+  @UseInterceptors(CacheInterceptor)
+  async getByRecommend(
+    @Query("genres", new ParseArrayPipe({ items: String, separator: ","})) genres: string[],
+    @Query("skip", new DefaultValuePipe(0), ParseIntPipe) skip: number, 
+    @Query("limit", new DefaultValuePipe(10), ParseIntPipe) limit: number
+  ) {
+    return await this.movieService.getByRecommend(genres, skip, limit);
+  }
+
   @Get("byGenres")
   @UseInterceptors(CacheInterceptor)
   async getByGenres(

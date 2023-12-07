@@ -20,6 +20,10 @@ export class MovieService extends BaseMessageService<Movie> {
     return await this.executeMany(PatternOption["MOVIE.GET.BY_RATING"], { skip, limit });
   }
 
+  async getByRecommend(genres: string[], skip: number, limit: number) {
+    return await this.executeMany(PatternOption["MOVIE.GET.BY_RECOMMENDATION"], { genres, skip, limit });
+  }
+
   async getByGenres(genres: string[], skip: number, limit: number) {
     return await this.executeMany(PatternOption["MOVIE.GET.BY_GENRES"], { genres, skip, limit });
   }

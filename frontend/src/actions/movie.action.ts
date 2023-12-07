@@ -69,37 +69,37 @@ function getMovieByDay(skip: number, limit: number) {
     }
 }
 
-function getMovieByRecommend(skip: number, limit: number) {
+// function getMovieByRecommend(skip: number, limit: number) {
 
-    return (dispatch: TypedDispatch) => {
-        dispatch(request());
-        homeApis.getMovieByRecommend(skip, limit)
-            .then(data => dispatch(success(data[0])))
-            .catch(err => dispatch(error(err)))
+//     return (dispatch: TypedDispatch) => {
+//         dispatch(request());
+//         homeApis.getMovieByRecommend(skip, limit)
+//             .then(data => dispatch(success(data[0])))
+//             .catch(err => dispatch(error(err)))
 
 
-        function request(): ReduxAction {
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND
-            }
-        }
+//         function request(): ReduxAction {
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND
+//             }
+//         }
 
-        function success(movies: Movie[]): ReduxAction {
+//         function success(movies: Movie[]): ReduxAction {
 
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND_SUCCESS,
-                payload: { movies },
-            }
-        }
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND_SUCCESS,
+//                 payload: { movies },
+//             }
+//         }
 
-        function error(error: string): ReduxAction {
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND_ERROR,
-                payload: { error },
-            }
-        }
-    }
-}
+//         function error(error: string): ReduxAction {
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND_ERROR,
+//                 payload: { error },
+//             }
+//         }
+//     }
+// }
 
 
 function getMovieByYear(year: number, skip: number, limit: number) {
@@ -302,7 +302,7 @@ function getRelatedMovie(genres: Genre[]) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        homeApis.getMovieByGenres(genres, 0, 10)
+        homeApis.getMovieByRecommend(genres, 0, 10)
             .then(data => dispatch(success(data[0])))
             .catch(err => dispatch(error(err)))
     }

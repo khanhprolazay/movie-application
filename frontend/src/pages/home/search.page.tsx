@@ -61,9 +61,6 @@ const SearchPage: FC = () => {
   const prevLink = page === 1 ? `page=${1}` : `page=${page - 1}`;
   const nextLink = page === maxPage ? `page=${maxPage}` : `page=${page + 1}`;
 
-  // console.log("total", total)
-  console.log("data", data)
-
   useEffect(() => {
     if (year) dispatch(moviesActions.getMovieByYear(year, 30 * (page - 1), 30));
     else if (keyword) dispatch(moviesActions.getMovieByKeyword(keyword, 30 * (page - 1), 30));

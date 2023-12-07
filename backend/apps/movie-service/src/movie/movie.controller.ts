@@ -20,8 +20,13 @@ export class MovieController{
     return this.movieService.getByYear(dto);
   }
 
+  @MessagePattern(PatternOption["MOVIE.GET.BY_RECOMMENDATION"])
+  async getByRecommend(@Payload() dto: MovieByGenresDTO) {
+    return this.movieService.getByRecommend(dto);
+  }
+
   @MessagePattern(PatternOption["MOVIE.GET.BY_GENRES"])
-  async getByGenre(@Payload() dto: MovieByGenresDTO) {
+  async getByGenres(@Payload() dto: MovieByGenresDTO) {
     return this.movieService.getByGenres(dto);
   }
 
