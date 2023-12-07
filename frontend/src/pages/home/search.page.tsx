@@ -13,7 +13,6 @@ import { Genre } from "@/type";
 import SkeletonCard from "@/components/SkeletonCard";
 import Empty from "@/components/Empty";
 import List from "./components/List";
-import { useState } from "react"
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 
 const SearchPage: FC = () => {
@@ -25,8 +24,6 @@ const SearchPage: FC = () => {
   const keyword = searchParams.get("keyword");
   const genre = searchParams.get("genre");
   const page = parseInt(searchParams.get("page") || "")
-  // const page = parseInt(page, 10);
-  // const [page, setpage] = useState(1);
 
   const genres: Array<Genre> = [];
   if (genre !== null) {
@@ -95,7 +92,7 @@ const SearchPage: FC = () => {
                 effect="blur"
                 src={urlUtils.getImageUrl(item)}
                 wrapperClassName="h-[170px] w-full md:h-[200px]"
-                className="border-2 border-slate-700"
+                className="rounded"
               />
               {item.rating !== null && (
                 <div className="absolute right-1 top-1 flex cursor-pointer items-center rounded-lg bg-black px-2 py-0.5 text-sm text-white">

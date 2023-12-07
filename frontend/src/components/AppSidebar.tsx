@@ -95,9 +95,7 @@ type SidebarProps = {
 
 const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
   const dispatch = useAppDispatch();
-
   const { loading, data } = useAppSelector((state) => state.user);
-
 
   return (
     <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
@@ -130,7 +128,6 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
         />
 
         {/* Check LogIn để show Sidebar */}
-        {loading && <Spinner color="red" className="h-10 w-10" />}
         {!loading && data !== null && (
           <>
 
@@ -177,6 +174,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
             />
 
             <SidebarItem
+              to="/home"
               name="Logout"
               open={open}
               action={() => dispatch(authenticationActions.logout())}

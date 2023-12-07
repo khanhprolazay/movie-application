@@ -17,7 +17,7 @@ const CarouselItem = (props: {
       <img
         src={props.image}
         alt="image 1"
-        className="h-28 w-full rounded border-2 border-slate-700 sm:h-36 md:h-44"
+        className="h-28 w-full rounded sm:h-36 md:h-44"
       />
       <Typography
         variant="h3"

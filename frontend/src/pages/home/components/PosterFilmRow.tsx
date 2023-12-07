@@ -23,8 +23,8 @@ const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
         alt={urlUtils.getImageUrl(movie)}
         width={84}
         height={112}
-        wrapperClassName="flex-2"
-        className="border-2 border-slate-700"
+        wrapperClassName="flex-2 min-w-[84px]"
+        className="rounded"
       />
       <div className="grow font-manrope">
         <div className="ml-5 mt-3 line-clamp-1 pr-20">

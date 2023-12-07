@@ -51,7 +51,7 @@ const App: FC = () => {
       <AppAlert />
       <Routes>
         <Route element={<AppLayout />}>
-          {getRoutersWithRole(true, "USER").map((route) => (
+          {getRoutersWithRole(isLogin, "USER").map((route) => (
             <Route
               path={route.path}
               key={route.name}

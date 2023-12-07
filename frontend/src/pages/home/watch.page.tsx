@@ -204,6 +204,7 @@ const WatchPage: FC = () => {
                         >
                           <CardBody className="w-[165px] p-0">
                             <LazyLoadImage
+                              className="rounded"
                               wrapperClassName="h-[251px] w-full"
                               src={urlUtils.getImageUrl(movie)}
                             />
