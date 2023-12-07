@@ -21,7 +21,8 @@ const MovieCard: FC<Props> = ({movie}) => {
     <CardBody className="w-[125px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
       <LazyLoadImage
         effect="blur"
-        wrapperClassName="h-[205px] w-full border"
+        className="border-2 border-slate-700"
+        wrapperClassName="h-[205px] w-full"
         src={urlUtils.getImageUrl(movie)}
       />
       {movie.rating !== null && (

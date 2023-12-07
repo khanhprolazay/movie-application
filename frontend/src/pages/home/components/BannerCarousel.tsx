@@ -16,7 +16,7 @@ const CarouselItem = (props: {
       <img
         src={props.image}
         alt="image 1"
-        className="h-28 w-full rounded border sm:h-36 md:h-44"
+        className="h-28 w-full rounded border-2 border-slate-700 sm:h-36 md:h-44"
       />
       <Typography
         variant="h3"
@@ -103,7 +103,7 @@ export function BannerCarousel() {
       autoplay
       autoplayDelay={6000}
     >
-      <div className="mx-auto flex w-[95%] space-x-5">
+      <div className="mx-auto flex w-[95%] space-x-5 ">
         <CarouselItem
           id={91332}
           image="https://image.tmdb.org/t/p/w500/69d8whnfJJnuxocrSLSdnqE38zV.jpg"
