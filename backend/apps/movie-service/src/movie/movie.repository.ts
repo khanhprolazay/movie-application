@@ -19,20 +19,32 @@ export class MovieRepository extends Repository<Movie> {
   async getByGenres(dto: MovieByGenresDTO) {
     const { genres, skip, limit } = dto;
     const genreIds = (await this.genreService.getIdsByNames(genres)).map(genre => genre.id);
-    const builder = this.dataSource
-                      .getRepository(MovieToGenre)
-                      .createQueryBuilder('movieToGenre')
-                      .select(["movieToGenre.movieId movieIds"])
+    const builder = this.dataSource.getRepository(MovieToGenre).createQueryBuilder('movieToGenre');
+
+    const movieIds = builder
+                      .select(["movieToGenre.movieId movieId"])
                       .where('movieToGenre.genreId IN(:...genreIds)', { genreIds })
                       .groupBy('movieToGenre.movieId')
-                      .orderBy('COUNT(movieToGenre.movieId)', 'DESC')
-                      .take(limit)
+                      .having('COUNT(movieId) = :genreIdsLength', { genreIdsLength: genreIds.length })
                       .skip(skip)
+                      .take(limit)
+                      .getRawMany()
+                      .then(movies => movies.map(movie => movie.movieId));
+                  
+    const total = builder.createQueryBuilder()
+                  .select("COUNT(*)", "total")
+                  .from(subQuery => {
+                      return subQuery
+                      .select(["movieToGenre.movieId movieId"])
+                      .from(MovieToGenre, "movieToGenre")
+                      .where('movieToGenre.genreId IN(:...genreIds)', { genreIds })
+                      .groupBy('movieToGenre.movieId')
+                      .having('COUNT(movieId) = :genreIdsLength', { genreIdsLength: genreIds.length })
+                    }, "i")
+                  .getRawOne()
+                  .then(result => parseInt(result.total));
 
-      const moviesIds = await builder.getRawMany().then(movies => movies.map(movie => movie.movieIds));
-      const total = await builder.getCount();
-
-      return { moviesIds, total }
+    return await Promise.all([movieIds, total]).then(([movieIds, total]) => ({ movieIds, total }));            
   }
   
 }

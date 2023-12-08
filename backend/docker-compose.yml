@@ -63,8 +63,7 @@ services:
     networks:
       - backend
     environment:
-      RABBITMQ_USERNAME: root
-      RABBITMQ_PASSWORD: root
+      RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: true
 
   mysql:
     container_name: mysql

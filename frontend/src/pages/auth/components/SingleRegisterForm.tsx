@@ -34,17 +34,10 @@ const SingleRegisterForm: FC = () => {
           />
         </Link>
         <Typography
-          variant="h1"
-          className="mb-4 font-manrope text-xl font-bold text-slate-200"
-        >
-          SIGN UP
-        </Typography>
-        <Typography
           variant="paragraph"
           className="font-base mb-8 font-manrope text-base text-slate-300"
         >
-          Stay with login and enjoy our Products. We appreciate your
-          subcription.
+          Thank you for choosing TMT movie! We're excited to have you on board.
         </Typography>
 
         <div

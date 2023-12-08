@@ -69,37 +69,37 @@ function getMovieByDay(skip: number, limit: number) {
     }
 }
 
-function getMovieByRecommend(skip: number, limit: number) {
+// function getMovieByRecommend(skip: number, limit: number) {
 
-    return (dispatch: TypedDispatch) => {
-        dispatch(request());
-        homeApis.getMovieByRecommend(skip, limit)
-            .then(data => dispatch(success(data[0])))
-            .catch(err => dispatch(error(err)))
+//     return (dispatch: TypedDispatch) => {
+//         dispatch(request());
+//         homeApis.getMovieByRecommend(skip, limit)
+//             .then(data => dispatch(success(data[0])))
+//             .catch(err => dispatch(error(err)))
 
 
-        function request(): ReduxAction {
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND
-            }
-        }
+//         function request(): ReduxAction {
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND
+//             }
+//         }
 
-        function success(movies: Movie[]): ReduxAction {
+//         function success(movies: Movie[]): ReduxAction {
 
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND_SUCCESS,
-                payload: { movies },
-            }
-        }
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND_SUCCESS,
+//                 payload: { movies },
+//             }
+//         }
 
-        function error(error: string): ReduxAction {
-            return {
-                type: moviesConstants.GET_MOVIE_BY_RECOMMEND_ERROR,
-                payload: { error },
-            }
-        }
-    }
-}
+//         function error(error: string): ReduxAction {
+//             return {
+//                 type: moviesConstants.GET_MOVIE_BY_RECOMMEND_ERROR,
+//                 payload: { error },
+//             }
+//         }
+//     }
+// }
 
 
 function getMovieByYear(year: number, skip: number, limit: number) {
@@ -107,7 +107,7 @@ function getMovieByYear(year: number, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByYear(year, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -117,10 +117,10 @@ function getMovieByYear(year: number, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
+        function success(movies: Movie[], total: number): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_YEAR_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 
@@ -134,12 +134,12 @@ function getMovieByYear(year: number, skip: number, limit: number) {
 }
 
 
-function getMovieByRandom(skip: number, limit: number) {
+function getMovieByRandom() {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        homeApis.getMovieByRandom(skip, limit)
-            .then(data => dispatch(success(data[0])))
+        homeApis.getMovieByRandom()
+            .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
 
 
@@ -160,6 +160,38 @@ function getMovieByRandom(skip: number, limit: number) {
         function error(error: string): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_RANDOM_ERROR,
+                payload: { error },
+            }
+        }
+    }
+}
+
+function getMovieByRandomBackdrop() {
+
+    return (dispatch: TypedDispatch) => {
+        dispatch(request());
+        homeApis.getMovieByRadomBackdrop()
+            .then(data => dispatch(success(data)))
+            .catch(err => dispatch(error(err)))
+
+
+        function request(): ReduxAction {
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP
+            }
+        }
+
+        function success(movies: Movie[]): ReduxAction {
+
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP_SUCCESS,
+                payload: { movies },
+            }
+        }
+
+        function error(error: string): ReduxAction {
+            return {
+                type: moviesConstants.GET_MOVIE_BY_RANDOM_BACKDROP_ERROR,
                 payload: { error },
             }
         }
@@ -203,7 +235,7 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByGenres(genres, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -213,11 +245,11 @@ function getMovieByGenres(genres: Array<Genre>, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
+        function success(movies: Movie[], total: number): ReduxAction {
 
             return {
                 type: moviesConstants.GET_MOVIE_BY_GENRES_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 
@@ -236,7 +268,7 @@ function getMovieByKeyword(keyword: string, skip: number, limit: number) {
     return (dispatch: TypedDispatch) => {
         dispatch(request());
         homeApis.getMovieByKeyword(keyword, skip, limit)
-            .then(data => dispatch(success(data[0])))
+            .then(data => dispatch(success(data[0], data[1])))
             .catch(err => dispatch(error(err)))
 
 
@@ -246,11 +278,10 @@ function getMovieByKeyword(keyword: string, skip: number, limit: number) {
             }
         }
 
-        function success(movies: Movie[]): ReduxAction {
-
+        function success(movies: Movie[], total: number): ReduxAction {
             return {
                 type: moviesConstants.GET_MOVIE_BY_KEYWORD_SUCCESS,
-                payload: { movies },
+                payload: { movies, total },
             }
         }
 
@@ -303,7 +334,7 @@ function getRelatedMovie(genres: Genre[]) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        homeApis.getMovieByGenres(genres, 0, 10)
+        homeApis.getMovieByRecommend(genres, 0, 10)
             .then(data => dispatch(success(data[0])))
             .catch(err => dispatch(error(err)))
     }
@@ -330,5 +361,5 @@ function getRelatedMovie(genres: Genre[]) {
     }
 }
 
-const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByGenres, getMovieByComing, getMovieByKeyword, getMovieDetail, getRelatedMovie };
+const moviesActions = { getMovieByRating, getMovieByYear, getMovieByDay, getMovieByRandom, getMovieByRandomBackdrop, getMovieByGenres, getMovieByComing, getMovieByKeyword, getMovieDetail, getRelatedMovie };
 export default moviesActions;

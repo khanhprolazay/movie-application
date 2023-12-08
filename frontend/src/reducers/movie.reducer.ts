@@ -25,8 +25,11 @@ export interface MovieRootState {
   },
   random: {
     loading: boolean,
-    skip: number,
-    limit: number,
+    data: Movie[],
+    error: string | null
+  },
+  randomBackdrop: {
+    loading: boolean,
     data: Movie[],
     error: string | null
   },
@@ -44,6 +47,7 @@ export interface MovieRootState {
     genres: Genre[],
     keyword: string,
     data: Movie[],
+    total: number,
     error: string | null
   },
 
@@ -81,8 +85,11 @@ const initialState: MovieRootState = {
   },
   random: {
     loading: false,
-    skip: 0,
-    limit: 20,
+    data: [],
+    error: null
+  },
+  randomBackdrop: {
+    loading: false,
     data: [],
     error: null
   },
@@ -99,6 +106,7 @@ const initialState: MovieRootState = {
     genres: [],
     keyword: '',
     data: [],
+    total: 0,
     error: null
   },
   current: {
@@ -214,7 +222,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 
@@ -231,8 +240,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
     case movieConstants.GET_MOVIE_BY_RANDOM:
       return {
         ...state,
-        search: {
-          ...state.search,
+        random: {
+          ...state.random,
           loading: true,
         }
       }
@@ -240,8 +249,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
     case movieConstants.GET_MOVIE_BY_RANDOM_SUCCESS:
       return {
         ...state,
-        search: {
-          ...state.search,
+        random: {
+          ...state.random,
           loading: false,
           data: action.payload?.movies
         }
@@ -250,12 +259,41 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
     case movieConstants.GET_MOVIE_BY_RANDOM_ERROR:
       return {
         ...state,
-        search: {
-          ...state.search,
+        random: {
+          ...state.random,
           loading: false,
           error: action.payload?.error,
         }
       }
+
+      case movieConstants.GET_MOVIE_BY_RANDOM_BACKDROP:
+        return {
+          ...state,
+          randomBackdrop: {
+            ...state.randomBackdrop,
+            loading: true,
+          }
+        }
+  
+      case movieConstants.GET_MOVIE_BY_RANDOM_BACKDROP_SUCCESS:
+        return {
+          ...state,
+          randomBackdrop: {
+            ...state.randomBackdrop,
+            loading: false,
+            data: action.payload?.movies
+          }
+        }
+  
+      case movieConstants.GET_MOVIE_BY_RANDOM_BACKDROP_ERROR:
+        return {
+          ...state,
+          randomBackdrop: {
+            ...state.random,
+            loading: false,
+            error: action.payload?.error,
+          }
+        }
 
     case movieConstants.GET_MOVIE_BY_COMING:
       return {
@@ -301,7 +339,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 
@@ -330,7 +369,8 @@ export function movie(state: MovieRootState = initialState, action: ReduxAction)
         search: {
           ...state.search,
           loading: false,
-          data: action.payload?.movies
+          data: action.payload?.movies,
+          total: action.payload?.total
         }
       }
 

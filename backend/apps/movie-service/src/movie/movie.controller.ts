@@ -20,8 +20,13 @@ export class MovieController{
     return this.movieService.getByYear(dto);
   }
 
+  @MessagePattern(PatternOption["MOVIE.GET.BY_RECOMMENDATION"])
+  async getByRecommend(@Payload() dto: MovieByGenresDTO) {
+    return this.movieService.getByRecommend(dto);
+  }
+
   @MessagePattern(PatternOption["MOVIE.GET.BY_GENRES"])
-  async getByGenre(@Payload() dto: MovieByGenresDTO) {
+  async getByGenres(@Payload() dto: MovieByGenresDTO) {
     return this.movieService.getByGenres(dto);
   }
 
@@ -40,8 +45,18 @@ export class MovieController{
     return this.movieService.getBySearch(dto);
   }
 
+  @MessagePattern(PatternOption["MOVIE.GET.BY_RANDOM_BACKDROP"])
+  async getByRandomBackdrop() {
+    return this.movieService.getByRandomBackdrop();
+  }
+
   @MessagePattern(PatternOption["MOVIE.GET.BY_UPCOMING"])
   async getByUpcoming(@Payload() dto: MovieByUpcomingDTO) {
     return this.movieService.getByUpcoming(dto);
+  }
+
+  @MessagePattern(PatternOption["MOVIE.GET.BY_RANDOM"])
+  async getByRandom() {
+    return this.movieService.getByRandom();
   }
 }

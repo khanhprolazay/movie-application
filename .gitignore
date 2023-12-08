@@ -1,6 +1,7 @@
 */node_modules
 */volumes
 */dist
+*/config/env/production.env
 
 data/*/*.csv
 data/*/*.json

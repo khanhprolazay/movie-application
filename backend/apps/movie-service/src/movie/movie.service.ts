@@ -86,17 +86,12 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     })
   }
 
-  async getByGenres(dto: MovieByGenresDTO) {
-    const { skip, limit } = dto;
-    const { moviesIds, total} = await this.repository.getByGenres(dto);
+  async getByRecommend(dto: MovieByGenresDTO) {
+    const { movieIds, total} = await this.repository.getByGenres(dto);
     
     const movies = await this.repository.find({
-      order: { release: "DESC" },
-      take: limit,
-      skip: skip,
       where: {
-        id: In(moviesIds),
-        release: LessThanOrEqual(new Date()),
+        id: In(movieIds),
       },
       relations: { 
         genres: { genre: true },
@@ -151,6 +146,36 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     })
   }
 
+  async getByGenres(dto: MovieByGenresDTO) { 
+    const { movieIds, total} = await this.repository.getByGenres(dto);
+    
+    const movies = await this.repository.find({
+      where: {
+        id: In(movieIds),
+      },
+      relations: { 
+        genres: { genre: true },
+       },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      }
+    });
+
+    return [movies, total]
+  }
+
   async getBySearch(dto: MovieBySeachDTO) {
     const { search, skip, limit } = dto;
     return await this.repository.findAndCount({
@@ -172,6 +197,7 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         imageUrl: true,
         posterPath: true,
         movieLength: true,
+        backdropPath: true,
         genres: {
           genreId: true,
           genre: {
@@ -191,6 +217,66 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
       where: {
         release: MoreThan(new Date()),
       },
+      relations: { genres: { genre: true } },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
+    })
+  }
+
+  async getByRandomBackdrop() {
+   const ids = await this.repository.createQueryBuilder()
+    .select("movie.id")
+    .where("movie.backdropPath IS NOT NULL")
+    .orderBy("RAND()")
+    .take(10)
+    .getRawMany()
+    .then(movies => movies.map(movie => movie.id));
+
+    return await this.repository.find({
+      where: { id: In(ids) },
+      relations: { genres: { genre: true } },
+      select: {
+        id: true,
+        title: true,
+        rating: true,
+        release: true,
+        imageUrl: true,
+        posterPath: true,
+        movieLength: true,
+        backdropPath: true,
+        genres: {
+          genreId: true,
+          genre: {
+            name: true,
+          }
+        },
+      },
+    })
+  }
+
+  async getByRandom() {
+    const ids = await this.repository.createQueryBuilder()
+      .select("movie.id")
+      .orderBy("RAND()")
+      .take(10)
+      .getRawMany()
+      .then(movies => movies.map(movie => movie.id));
+
+    return await this.repository.find({
+      where: { id: In(ids) },
       relations: { genres: { genre: true } },
       select: {
         id: true,

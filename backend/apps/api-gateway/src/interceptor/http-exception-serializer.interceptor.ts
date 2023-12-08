@@ -6,7 +6,7 @@ export class HttpExceptionSerializer implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle()
     .pipe(
-      timeout(30000), 
+      timeout(100000), 
       catchError(error => {
         throw error.response ? new HttpException(error.response, error.response.statusCode) : new InternalServerErrorException(error, "Internal Server Error");
       }),

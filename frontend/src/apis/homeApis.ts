@@ -15,16 +15,21 @@ class HomeApis {
         return await axiosClient.get(`/movies/byDay?skip=${skip}&limit=${limit}`)
     }
 
-    async getMovieByRecommend(skip: number, limit: number): Promise<[Movie[], number]> {
-        return await axiosClient.get(`/movies/byRecommend?skip=${skip}&limit=${limit}`)
+    async getMovieByRecommend(genres: Array<Genre>, skip: number, limit: number): Promise<[Movie[], number]> {
+        const genreQuery = genres.reduce((acc, genre, index) => index > 0 ? `${acc},${genre.name}` : genre.name, '');
+        return await axiosClient.get(`/movies/byRecommend?genres=${genreQuery}&skip=${skip}&limit=${limit}`);
     }
 
     async getMovieByYear(year: number, skip: number, limit: number): Promise<[Movie[], number]> {
         return await axiosClient.get(`/movies/byYear?year=${year}&skip=${skip}&limit=${limit}`)
     }
 
-    async getMovieByRandom(skip: number, limit: number): Promise<[Movie[], number]> {
-        return await axiosClient.get(`/movies/byRandom?skip=${skip}&limit=${limit}`)
+    async getMovieByRandom(): Promise<Movie[]> {
+        return await axiosClient.get(`/movies/byRandom`)
+    }
+
+    async getMovieByRadomBackdrop(): Promise<Movie[]> {
+        return await axiosClient.get(`/movies/byRandomBackdrop`)
     }
 
     async getDetailMovie(id: number): Promise<DetailMovie> {

@@ -25,7 +25,6 @@ const AppHeader: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, data } = useAppSelector((state) => state.user);
-  const authLoading = useAppSelector((state) => state.authentication.loading);
   const triggerOpen = () => dispatch(sidebarActions.trigger());
   const [searchKeyword, setSearchKeyword] = useState('');
 
@@ -37,7 +36,7 @@ const AppHeader: FC = () => {
 
   const handleSearch = () => {
     if (searchKeyword.trim() !== '') {
-      navigate(`/search?keyword=${searchKeyword}`);
+      navigate(`/search?keyword=${searchKeyword}&page=${1}`);
     }
   }
 
@@ -104,7 +103,7 @@ const AppHeader: FC = () => {
               >
                 <Link
                   key={genre.name}
-                  to={`/search?genre=${genre.name}`}
+                  to={`/search?genre=${genre.name}&page=${1}`}
                 >
                   <Typography className="text-base font-normal text-slate-400 hover:bg-white px-2 rounded">
                     {genre.name}
@@ -115,8 +114,8 @@ const AppHeader: FC = () => {
           </Select>
         </div>
 
-        {loading || authLoading && <Spinner color="red" className="h-10 w-10" />}
-        {!loading && !authLoading &&
+        {loading && <Spinner color="red" className="h-10 w-10" />}
+        {!loading &&
           (!data ? (
             <div className="flex items-center gap-5">
               <Button

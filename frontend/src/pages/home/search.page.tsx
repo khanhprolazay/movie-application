@@ -1,7 +1,7 @@
 import AppContainer from "@/components/AppContainer";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FC, useEffect } from "react";
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Card, CardBody, IconButton, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import moviesActions from "@/actions/movie.action";
@@ -13,16 +13,17 @@ import { Genre } from "@/type";
 import SkeletonCard from "@/components/SkeletonCard";
 import Empty from "@/components/Empty";
 import List from "./components/List";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 
 const SearchPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [searchParams, _setSearchParams] = useSearchParams();
-  const { data, loading } = useAppSelector((state) => state.movie.search);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data, total, loading } = useAppSelector((state) => state.movie.search);
   const year = stringUtils.cParseInt(searchParams.get("year"), 10);
   const keyword = searchParams.get("keyword");
   const genre = searchParams.get("genre");
+  const page = parseInt(searchParams.get("page") || "")
 
   const genres: Array<Genre> = [];
   if (genre !== null) {
@@ -31,11 +32,37 @@ const SearchPage: FC = () => {
     });
   }
 
+  const maxPage = total % 30 !== 0 ? Math.floor(total / 30) + 1 : Math.floor(total / 30);
+
+  const next = () => {
+    if (page === maxPage) return;
+    searchParams.set("page", `${page + 1}`)
+    setSearchParams(searchParams)
+  };
+
+  const prev = () => {
+    if (page === 1) return;
+    searchParams.set("page", `${page - 1}`)
+    setSearchParams(searchParams)
+  };
+
+  let linkTo = '';
+  if (year) {
+    linkTo = `year=${year}`;
+  } else if (genre) {
+    linkTo = `genre=${genre}`;
+  } else if (keyword) {
+    linkTo = `keyword=${keyword}`;
+  }
+
+  const prevLink = page === 1 ? `page=${1}` : `page=${page - 1}`;
+  const nextLink = page === maxPage ? `page=${maxPage}` : `page=${page + 1}`;
+
   useEffect(() => {
-    if (year) dispatch(moviesActions.getMovieByYear(year, 0, 30));
-    else if (keyword) dispatch(moviesActions.getMovieByKeyword(keyword, 0, 30));
-    else if (genres) dispatch(moviesActions.getMovieByGenres(genres, 0, 30));
-  }, [year, keyword, genre]);
+    if (year) dispatch(moviesActions.getMovieByYear(year, 30 * (page - 1), 30));
+    else if (keyword) dispatch(moviesActions.getMovieByKeyword(keyword, 30 * (page - 1), 30));
+    else if (genres) dispatch(moviesActions.getMovieByGenres(genres, 30 * (page - 1), 30));
+  }, [year, keyword, genre, page]);
 
   const getContent = () => {
     if (loading) {
@@ -64,7 +91,8 @@ const SearchPage: FC = () => {
               <LazyLoadImage
                 effect="blur"
                 src={urlUtils.getImageUrl(item)}
-                wrapperClassName="h-[170px] w-full border md:h-[200px]"
+                wrapperClassName="h-[170px] w-full md:h-[200px]"
+                className="rounded"
               />
               {item.rating !== null && (
                 <div className="absolute right-1 top-1 flex cursor-pointer items-center rounded-lg bg-black px-2 py-0.5 text-sm text-white">
@@ -111,7 +139,7 @@ const SearchPage: FC = () => {
 
         <div className="col-span-full border-r border-r-divider px-4 pb-5 lg:col-span-2">
           <hr className="full-width-underline mb-1 mt-20 border-2 border-gray-500" />
-          <div className="-my-12 flex justify-center font-manrope text-4xl font-extrabold text-slate-200 ">
+          <div className="-mb-6 -mt-16 flex justify-center font-manrope text-4xl font-extrabold text-slate-200 ">
             {keyword || year || genre}
           </div>
 
@@ -122,7 +150,42 @@ const SearchPage: FC = () => {
           <div className="relative h-auto w-full items-end lg:grid-cols-[1fr_5px]">
             {getContent()}
           </div>
+          {maxPage > 1 && (
+            <div className="flex items-center gap-5 mt-10 mb-5 justify-center">
+              <Link to={`/search?${linkTo}&${prevLink}`}>
+                <IconButton
+                  size="sm"
+                  variant="outlined"
+                  onClick={prev}
+                  disabled={page === 1}
+                  className="bg-slate-300"
+                >
+                  <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+                </IconButton>
+              </Link>
+
+              <Typography color="gray" className="text-gray-400 font-bold">
+                Page <strong className="text-white">{page}</strong> of{' '}
+                <strong className="text-white">{maxPage}</strong>
+              </Typography>
+
+              <Link to={`/search?${linkTo}&${nextLink}`}>
+                <IconButton
+                  size="sm"
+                  variant="outlined"
+                  onClick={next}
+                  disabled={page === maxPage}
+                  className="bg-slate-300"
+                >
+                  <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+                </IconButton>
+              </Link>
+            </div>
+          )}
+
         </div>
+
+
 
         <MovieAside />
       </div>

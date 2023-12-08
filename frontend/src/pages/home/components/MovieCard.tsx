@@ -15,13 +15,14 @@ const MovieCard: FC<Props> = ({movie}) => {
 
   return (
     <Card
-    className={`rounded-none bg-transparent`}
+    className="rounded-lg bg-transparent"
     onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
   >
     <CardBody className="w-[125px] transform p-0 duration-300 ease-in-out hover:scale-95 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
       <LazyLoadImage
         effect="blur"
-        wrapperClassName="h-[205px] w-full border"
+        className="rounded"
+        wrapperClassName="h-[205px] w-full"
         src={urlUtils.getImageUrl(movie)}
       />
       {movie.rating !== null && (

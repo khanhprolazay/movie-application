@@ -14,25 +14,10 @@ import timeUtils from "@/utils/timeUtils";
 import SkeletonCard from "@/components/SkeletonCard";
 import { useNavigate } from "react-router-dom";
 
-const items: string[] = [
-  "bg-red-100",
-  "bg-red-200",
-  "bg-red-300",
-  "bg-red-400",
-  "bg-red-500",
-  "bg-red-600",
-  "bg-red-700",
-  "bg-red-800",
-  "bg-red-900",
-  "bg-red-100",
-  "bg-red-200",
-  "bg-red-300",
-];
-
 const WatchPage: FC = () => {
   const navigate = useNavigate();
   const { loading, data, related, relatedLoading } = useMovie();
-  const { current, handlePrev, handleNext } = useSlider(items.length);
+  const { current, handlePrev, handleNext } = useSlider(related.length);
 
   return (
     data &&
@@ -219,6 +204,7 @@ const WatchPage: FC = () => {
                         >
                           <CardBody className="w-[165px] p-0">
                             <LazyLoadImage
+                              className="rounded"
                               wrapperClassName="h-[251px] w-full"
                               src={urlUtils.getImageUrl(movie)}
                             />

@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/redux/hooks";
 import urlUtils from "@/utils/urlUtils";
 import { Carousel, IconButton, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
@@ -16,7 +17,7 @@ const CarouselItem = (props: {
       <img
         src={props.image}
         alt="image 1"
-        className="h-28 w-full rounded border sm:h-36 md:h-44"
+        className="h-28 w-full rounded sm:h-36 md:h-44"
       />
       <Typography
         variant="h3"
@@ -35,6 +36,9 @@ const CarouselItem = (props: {
 };
 
 export function BannerCarousel() {
+  const { data, loading } = useAppSelector(
+    (state) => state.movie.randomBackdrop,
+  );
   return (
     <Carousel
       className="h-32 w-full content-center rounded sm:h-44 md:h-48"
@@ -103,7 +107,40 @@ export function BannerCarousel() {
       autoplay
       autoplayDelay={6000}
     >
-      <div className="mx-auto flex w-[95%] space-x-5">
+      {loading ? (
+        <div className="mx-auto flex h-full w-[95%] space-x-5">
+          <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
+            <div className="h-full w-full"></div>
+          </div>
+          <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
+            <div className="h-full w-full"></div>
+          </div>
+        </div>
+      ) : (
+        data.map(
+          (movie, index) =>
+            index % 2 === 1 && (
+              <div
+                key={`banner-${index}`}
+                className="mx-auto flex w-[95%] space-x-5"
+              >
+                <CarouselItem
+                  id={movie.id}
+                  title={movie.title}
+                  year={new Date(movie.release).getFullYear()}
+                  image={`https://image.tmdb.org/t/p/w500${movie.backdropPath}`}
+                />
+                <CarouselItem
+                  id={data[index - 1].id}
+                  title={data[index - 1].title}
+                  year={new Date(data[index - 1].release).getFullYear()}
+                  image={`https://image.tmdb.org/t/p/w500${data[index - 1].backdropPath}`}
+                />
+              </div>
+            ),
+        )
+      )}
+      {/* <div className="mx-auto flex w-[95%] space-x-5">
         <CarouselItem
           id={91332}
           image="https://image.tmdb.org/t/p/w500/69d8whnfJJnuxocrSLSdnqE38zV.jpg"
@@ -161,7 +198,7 @@ export function BannerCarousel() {
           title="The Exorcist: Believer"
           year={2023}
         />
-      </div>
+      </div> */}
     </Carousel>
   );
 }

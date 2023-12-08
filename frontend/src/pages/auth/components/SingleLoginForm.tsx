@@ -53,12 +53,6 @@ const SingleLoginForm: FC = () => {
           />
         </Link>
         <Typography
-          variant="h1"
-          className="mb-4 font-manrope text-xl font-bold text-slate-200"
-        >
-          Login
-        </Typography>
-        <Typography
           variant="paragraph"
           className="font-base mb-8 font-manrope text-base text-slate-300"
         >

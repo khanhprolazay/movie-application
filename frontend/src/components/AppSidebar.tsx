@@ -21,6 +21,7 @@ import {
   Popover,
   PopoverContent,
   PopoverHandler,
+  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import { memo, FC, ReactNode, useState, useEffect } from "react";
@@ -31,7 +32,7 @@ const icon = "h-5 w-6";
 
 const locations = [
   "/home",
-  "/aboutus",
+  "/about-us",
   "/user/profile",
   "/user/favorite",
   "/user/history",
@@ -65,15 +66,13 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
     <Popover open={openPopover} placement="left">
       <PopoverHandler {...trigger} onClick={action}>
         <ListItem
-          className={`${background} ${
-            selected && "!text-slate-200"
-          } transition-color mb-2 w-full flex-1 py-2 font-manrope text-slate-400 ring-cred transition-all duration-300 ease-in-out hover:text-slate-200 hover:ring-[1px] focus:bg-transparent focus:text-slate-400 active:bg-cred/90 active:text-slate-200`}
+          className={`${background} ${selected && "!text-slate-200"
+            } transition-color mb-2 w-full flex-1 py-2 font-manrope text-slate-400 ring-cred transition-all duration-300 ease-in-out hover:text-slate-200 hover:ring-[1px] focus:bg-transparent focus:text-slate-400 active:bg-cred/90 active:text-slate-200`}
         >
           <ListItemPrefix className="mr-0 min-h-[26px]">{icon}</ListItemPrefix>
           <Typography
-            className={`${
-              !open && "hidden"
-            } ml-4 truncate text-sm font-medium  `}
+            className={`${!open && "hidden"
+              } ml-4 truncate text-sm font-medium  `}
           >
             {name}
           </Typography>
@@ -96,6 +95,7 @@ type SidebarProps = {
 
 const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
   const dispatch = useAppDispatch();
+  const { loading, data } = useAppSelector((state) => state.user);
 
   return (
     <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
@@ -104,7 +104,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
           hidden={!open}
           variant="h5"
           imageProps={{ className: "ml-3 " }}
-          textProps={{ className: "left-[54px] top-[6px]"}}
+          textProps={{ className: "left-[54px] top-[6px]" }}
           containerProps={{
             className: "mb-2 !h-[60px] box-border border-b border-divider px-2",
           }}
@@ -121,60 +121,67 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
         <SidebarItem
           name="About us"
-          to="/aboutus"
+          to="/about-us"
           open={open}
           selected={currentMenu === 1}
           icon={<InformationCircleIcon className={icon} />}
         />
 
-        <hr className="mb-2 border-divider" />
+        {/* Check LogIn để show Sidebar */}
+        {!loading && data !== null && (
+          <>
 
-        <SidebarItem
-          name="Profile"
-          open={open}
-          to="/user/profile"
-          selected={currentMenu === 2}
-          icon={<UserCircleIcon className={icon} />}
-        />
+            <hr className="mb-2 border-divider" />
+            
+            <SidebarItem
+              name="Profile"
+              open={open}
+              to="/user/profile"
+              selected={currentMenu === 2}
+              icon={<UserCircleIcon className={icon} />}
+            />
 
-        <SidebarItem
-          name="Favorite"
-          open={open}
-          to="/user/favorite"
-          selected={currentMenu === 3}
-          icon={<HeartIcon className={icon} />}
-        />
+            <SidebarItem
+              name="Favorite"
+              open={open}
+              to="/user/favorite"
+              selected={currentMenu === 3}
+              icon={<HeartIcon className={icon} />}
+            />
 
-        <SidebarItem
-          name="History"
-          open={open}
-          to="/user/history"
-          selected={currentMenu === 4}
-          icon={<ClockIcon className={icon} />}
-        />
+            <SidebarItem
+              name="History"
+              open={open}
+              to="/user/history"
+              selected={currentMenu === 4}
+              icon={<ClockIcon className={icon} />}
+            />
 
-        <SidebarItem
-          open={open}
-          name="Subcription"
-          to="/user/subcription"
-          selected={currentMenu === 5}
-          icon={<CreditCardIcon className={icon} />}
-        />
+            <SidebarItem
+              open={open}
+              name="Subcription"
+              to="/user/subcription"
+              selected={currentMenu === 5}
+              icon={<CreditCardIcon className={icon} />}
+            />
 
-        <SidebarItem
-          name="Password"
-          open={open}
-          to="/user/change-password"
-          selected={currentMenu === 6}
-          icon={<IdentificationIcon className={icon} />}
-        />
+            <SidebarItem
+              name="Password"
+              open={open}
+              to="/user/change-password"
+              selected={currentMenu === 6}
+              icon={<IdentificationIcon className={icon} />}
+            />
 
-        <SidebarItem
-          name="Logout"
-          open={open}
-          action={() => dispatch(authenticationActions.logout())}
-          icon={<PowerIcon className={icon} />}
-        />
+            <SidebarItem
+              to="/home"
+              name="Logout"
+              open={open}
+              action={() => dispatch(authenticationActions.logout())}
+              icon={<PowerIcon className={icon} />}
+            />
+          </>
+        )}
       </List>
     </Card>
   );
@@ -211,9 +218,8 @@ const AppSideBar: FC = () => {
         </Drawer>
       ) : (
         <div
-          className={`${
-            open ? "min-w-[196px] max-w-[196px]" : "min-w-[72px] max-w-[72px]"
-          } transition-all`}
+          className={`${open ? "min-w-[196px] max-w-[196px]" : "min-w-[72px] max-w-[72px]"
+            } transition-all`}
         >
           <Sidebar open={open} dispatch={dispatch} currentMenu={currentMenu} />
         </div>

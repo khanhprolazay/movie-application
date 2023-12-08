@@ -36,8 +36,10 @@ const HomePage: FC = () => {
           <PopularMovie />
 
           <hr className="mt-5 border-divider"></hr>
+          
+          {/* <hr className="mt-5 border-divider"></hr>
 
-          {/* Check LogIn để Recommend
+          Check LogIn để Recommend
           {loading && <Spinner color="red" className="h-10 w-10" />}
           {!loading && data !== null && (
             <>
