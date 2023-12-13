@@ -39,7 +39,6 @@ axiosClient.interceptors.request.use(
         return config; 
       }
 
-      console.log(response)
       tokenUtils.saveAccessToken(response.accessToken);
       return tokenUtils.addTokenToConfig(config, response.accessToken);
     }

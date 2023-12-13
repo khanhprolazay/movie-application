@@ -1,4 +1,4 @@
-import { Controller, DefaultValuePipe, Get, Inject, OnModuleInit, Param, ParseArrayPipe, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
+import { Controller, DefaultValuePipe, Get, Param, ParseArrayPipe, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 import { MovieService } from "./movie.service";
 import { ApiTags } from "@nestjs/swagger";
 import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
