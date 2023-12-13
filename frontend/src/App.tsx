@@ -25,7 +25,6 @@ const RegisterPage = React.lazy(() =>
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { isLogin } = useAppSelector(state => state.authentication);
-  console.log(isLogin);
 
   useEffect(() => {
     dispatch(authenticationActions.check());

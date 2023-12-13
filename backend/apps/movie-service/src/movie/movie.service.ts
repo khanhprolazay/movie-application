@@ -6,6 +6,7 @@ import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
 import { ClientProxy } from "@nestjs/microservices";
 import { first, switchMap } from "rxjs";
+import { ApiTooManyRequestsResponse } from "@nestjs/swagger";
 
 @Injectable()
 export class MovieService extends BaseService<Movie, MovieRepository>{
@@ -330,6 +331,18 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     .pipe(
       first(),
       switchMap(async (imdbIds) => {
+        if (imdbIds.length === 0) {
+          const genres = await this.repository.findOne({
+            where: { imdbId },
+            relations: { genres: { genre: true } },
+            select: { id: true, genres: true }
+          })
+          .then(movie => movie.genres.map(genre => genre.genre.name))
+          .catch(() => []);
+          
+          return await this.getByGenres({ genres, limit: 20, skip: 0 }).then(result => result[0]);
+        };
+        
         return await this.repository.find({
           where: { imdbId: In(imdbIds) },
           relations: { genres: { genre: true } },

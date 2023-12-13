@@ -19,7 +19,7 @@ export class MovieController {
   }
 
   @Get("byRecommend")
-  // @UseInterceptors(CacheInterceptor)
+  @UseInterceptors(CacheInterceptor)
   getByRecommend(@Query("imdbId") imdbId: string) {
     return this.movieService.getByRecommend(imdbId);
   }
