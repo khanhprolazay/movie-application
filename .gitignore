@@ -13,6 +13,7 @@ data/*.sql
 backend/*.sql
 backend/*.zip
 backend/tar
+backend/apps/recommendation-service/*.pkl
 
 frontend/*.zip
 

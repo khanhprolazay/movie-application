@@ -302,7 +302,7 @@ function getMovieDetail(id: number) {
         homeApis.getDetailMovie(id)
             .then(data => {
                 dispatch(success(data));
-                dispatch(getRelatedMovie(data.genres.map(genre => genre.genre)));
+                dispatch(getRelatedMovie(data.imdbId));
             })
             .catch(err => dispatch(error(err)))
 
@@ -330,12 +330,12 @@ function getMovieDetail(id: number) {
     }
 }
 
-function getRelatedMovie(genres: Genre[]) {
+function getRelatedMovie(imdbId: string) {
 
     return (dispatch: TypedDispatch) => {
         dispatch(request());
-        homeApis.getMovieByRecommend(genres, 0, 10)
-            .then(data => dispatch(success(data[0])))
+        homeApis.getMovieByRecommend(imdbId)
+            .then(data => dispatch(success(data)))
             .catch(err => dispatch(error(err)))
     }
 

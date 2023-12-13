@@ -30,7 +30,9 @@ export type UserPattern = BasePattern<"USER"> |
   "USER.GET.BY_EMAIL" | "USER.CREATE.BY_GOOGLE" | "USER.CHECK.BY_EMAIL" | 
   "USER.GET.BY_EMAIL_AND_PASSWORD" | "USER.UPDATE.PASSWORD"
 
-export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern
+export type RecommendationPattern = "RECOMMENDATION.GET.BY_IMDB_ID"
+
+export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern | RecommendationPattern
 
 export type PatternOptionType = {
   [T in Pattern]: `${T}`
@@ -77,4 +79,7 @@ export const PatternOption: PatternOptionType = {
   "GENRE.DELETE": "GENRE.DELETE",
   "GENRE.GET.ALL": "GENRE.GET.ALL",
   "GENRE.GET.BY_ID": "GENRE.GET.BY_ID",
+
+  // Recommendation
+  "RECOMMENDATION.GET.BY_IMDB_ID": "RECOMMENDATION.GET.BY_IMDB_ID",
 }

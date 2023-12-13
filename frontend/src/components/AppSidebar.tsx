@@ -21,7 +21,6 @@ import {
   Popover,
   PopoverContent,
   PopoverHandler,
-  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import { memo, FC, ReactNode, useState, useEffect } from "react";
@@ -174,7 +173,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
             />
 
             <SidebarItem
-              to="/home"
+              // to="/home"
               name="Logout"
               open={open}
               action={() => dispatch(authenticationActions.logout())}

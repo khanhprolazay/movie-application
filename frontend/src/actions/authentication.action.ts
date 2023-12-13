@@ -104,7 +104,7 @@ function logout() {
 
     function success(): ReduxAction {
       return {
-        type: authenticationConstants.AUTH_LOGIN_SUCCESS
+        type: authenticationConstants.AUTH_LOGOUT_SUCCESS
       }
     }
   }

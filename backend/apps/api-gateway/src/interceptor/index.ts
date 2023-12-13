@@ -1,1 +1,1 @@
-export * from './http-exception-serializer.interceptor';
+export * from './service-serializer.interceptor';

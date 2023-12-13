@@ -51,7 +51,7 @@ const routes: RouteType[] = [
   {
     path: "/watch/:id",
     name: "Watch",
-    login: true,
+    login: false,
     element: WatchPage,
     accessible: ["ALL"],
   },

@@ -13,8 +13,7 @@ export class UserService extends BaseMessageService<User> {
     super(userClient, "USER");
   }
 
-  async updatePassword(id: number, dto: UpdatePasswordDTO) {
-    await this.excuteEmpty(PatternOption["USER.UPDATE.PASSWORD"], { id, data: dto });
-    return null;
+  updatePassword(id: number, dto: UpdatePasswordDTO) {
+    return this.excuteEmpty(PatternOption["USER.UPDATE.PASSWORD"], { id, data: dto });
   }  
 }

@@ -40,7 +40,7 @@ const AppLogo: FC<AppLogoProps> = ({
             variant={variant}
             className={` ${hidden ? "hidden" : "block"}  text-slate-200`}
           >
-            <span className="text-cred">TMT</span> Movie
+            <span className="text-cred">TMT</span> MOVIE
           </Typography>
         </div>
       </div>

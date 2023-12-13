@@ -10,33 +10,23 @@ export class AuthService {
     private readonly authClient: ClientProxy
   ) {}
 
-  async validate(token: string) {
-    return await firstValueFrom(
-      this.authClient.send<User>(PatternOption["AUTH.VALIDATE"], token)
-    );
+  validate(token: string) {
+    return this.authClient.send<User>(PatternOption["AUTH.VALIDATE"], token);
   }
 
-  async login(dto: LoginRequestDto) {
-    return await firstValueFrom(
-      this.authClient.send<LoginResonseDto>(PatternOption["AUTH.LOGIN"], dto)
-    );
+  login(dto: LoginRequestDto) {
+    return this.authClient.send<LoginResonseDto>(PatternOption["AUTH.LOGIN"], dto);
   }
 
-  async sso(dto: LoginGoogleRequestDto) {
-    return await firstValueFrom(
-      this.authClient.send<LoginResonseDto>(PatternOption["AUTH.GOOGLE_LOGIN"], dto)
-    );
+  sso(dto: LoginGoogleRequestDto) {
+    return this.authClient.send<LoginResonseDto>(PatternOption["AUTH.GOOGLE_LOGIN"], dto);
   }
 
-  async register(dto: RegisterRequestDto) {
-    return await firstValueFrom(
-      this.authClient.send<User>(PatternOption["AUTH.REGISTER"], dto)
-    );
+  register(dto: RegisterRequestDto) {
+    return this.authClient.send<User>(PatternOption["AUTH.REGISTER"], dto);
   }
 
-  async refreshToken(dto: RefreshTokenDto) {
-    return await firstValueFrom(
-      this.authClient.send<string>(PatternOption["AUTH.REFRESH_TOKEN"], dto)
-    );
+  refreshToken(dto: RefreshTokenDto) {
+    return this.authClient.send<string>(PatternOption["AUTH.REFRESH_TOKEN"], dto);
   }
 }

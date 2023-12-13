@@ -12,6 +12,7 @@ import { Video } from "./video.entity";
 @Entity({name: "movie"})
 export class Movie extends BaseEntity {
   @Column({ unique: true, length: '20' })
+  @Index()
   imdbId: string
 
   @Column({ length: 100 })

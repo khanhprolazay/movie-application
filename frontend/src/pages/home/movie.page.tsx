@@ -176,23 +176,26 @@ const MoviePage = () => {
           )}
         </div>
 
-        <div className="mb-3 mt-12 flex items-center justify-between">
-          <Typography className="font-manrope text-3xl font-bold text-slate-200">
-            More like this
-          </Typography>
-          <div className="flex items-end gap-4">
-            <ChevronLeftIcon
-              onClick={handlePrev}
-              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
-            />
-            <ChevronRightIcon
-              onClick={handleNext}
-              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
-            />
-          </div>
-        </div>
-
-        <hr className="full-width-underline mb-5 mt-4" />
+        {(related.length || relatedLoading ) && (
+          <>
+            <div className="mb-3 mt-12 flex items-center justify-between">
+              <Typography className="font-manrope text-3xl font-bold text-slate-200">
+                More like this
+              </Typography>
+              <div className="flex items-end gap-4">
+                <ChevronLeftIcon
+                  onClick={handlePrev}
+                  className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+                />
+                <ChevronRightIcon
+                  onClick={handleNext}
+                  className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+                />
+              </div>
+            </div>
+              <hr className="full-width-underline mb-5 mt-4" />
+          </>
+        )}
 
         <div className="w-full max-w-full overflow-hidden">
           <div
@@ -202,15 +205,15 @@ const MoviePage = () => {
             }}
           >
             {relatedLoading
-              ? Array.from<number>({ length: 7 }).map((index) => (
+              ? Array.from<number>({ length: 7 }).map((_, index) => (
                   <SkeletonCard
                     bodyClassname="!w-auto"
                     imageClassname="!w-[204px] !h-[318px]"
-                    key={index}
+                    key={`skeleton-${index}`}
                   />
                 ))
-              : related.map((movie, index: number) => (
-                  <PosterFilmResult key={index} movie={movie} />
+              : related.map((movie) => (
+                  <PosterFilmResult key={movie.id} movie={movie} />
                 ))}
           </div>
         </div>

@@ -1,13 +1,17 @@
-import { Injectable } from "@nestjs/common";
-import { BaseService, LoggerService, Movie } from "@app/shared";
+import { Inject, Injectable } from "@nestjs/common";
+import { BaseService, LoggerService, Movie, PatternOption, Service } from "@app/shared";
 import { MovieRepository } from "./movie.repository";
 import { Between, In, LessThanOrEqual, Like, MoreThan } from "typeorm";
 import { endOfYear } from "date-fns";
 import { MovieByDayDTO, MovieByGenresDTO, MovieByRatingDTO, MovieBySeachDTO, MovieByUpcomingDTO, MovieByYearDTO } from "../dto/movie.dto";
+import { ClientProxy } from "@nestjs/microservices";
+import { first, switchMap } from "rxjs";
 
 @Injectable()
 export class MovieService extends BaseService<Movie, MovieRepository>{
   constructor(
+    @Inject(Service.RECOMMENDATION)
+    private readonly recommendationClient: ClientProxy,
     protected readonly loggerService: LoggerService,
     protected readonly repository: MovieRepository
   ) {
@@ -84,36 +88,6 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
         },
       }
     })
-  }
-
-  async getByRecommend(dto: MovieByGenresDTO) {
-    const { movieIds, total} = await this.repository.getByGenres(dto);
-    
-    const movies = await this.repository.find({
-      where: {
-        id: In(movieIds),
-      },
-      relations: { 
-        genres: { genre: true },
-       },
-      select: {
-        id: true,
-        title: true,
-        rating: true,
-        release: true,
-        imageUrl: true,
-        posterPath: true,
-        movieLength: true,
-        genres: {
-          genreId: true,
-          genre: {
-            name: true,
-          }
-        },
-      }
-    });
-
-    return [movies, total]
   }
 
   async getByDay(dto: MovieByDayDTO) {
@@ -347,5 +321,35 @@ export class MovieService extends BaseService<Movie, MovieRepository>{
     });
     return results.length === 0 ? null : results[0];
 
+  }
+
+  getByRecommend(imdbId: string) {
+    return this.recommendationClient.send<string[]>(
+      PatternOption["RECOMMENDATION.GET.BY_IMDB_ID"], imdbId
+    )
+    .pipe(
+      first(),
+      switchMap(async (imdbIds) => {
+        return await this.repository.find({
+          where: { imdbId: In(imdbIds) },
+          relations: { genres: { genre: true } },
+          select: {
+            id: true,
+            title: true,
+            rating: true,
+            release: true,
+            imageUrl: true,
+            posterPath: true,
+            movieLength: true,
+            genres: {
+              genreId: true,
+              genre: {
+                name: true,
+              }
+            },
+          },
+        })
+      })
+    )
   }
 }
