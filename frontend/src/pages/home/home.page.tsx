@@ -1,13 +1,16 @@
 import AppContainer from "@/components/AppContainer";
 import { FC } from "react";
-import { Typography } from "@material-tailwind/react";
+import { Spinner, Typography } from "@material-tailwind/react";
 import { BannerCarousel } from "./components/BannerCarousel";
 import { PopularMovie } from "./components/PopularMovie";
 import { RecentlyMovie } from "./components/RecentlyMovie";
+import { RecomendationsMovie } from "./components/RecomendationsMovie";
 import { UpcomingMovie } from "./components/UpcomingMovie";
 import MovieAside from "./components/MovieAside";
+import { useAppSelector } from "@/redux/hooks";
 
 const HomePage: FC = () => {
+  // const { loading, data } = useAppSelector((state) => state.user);
 
   return (
     <AppContainer>
@@ -36,11 +39,9 @@ const HomePage: FC = () => {
           <PopularMovie />
 
           <hr className="mt-5 border-divider"></hr>
-          
-          {/* <hr className="mt-5 border-divider"></hr>
 
-          Check LogIn để Recommend
-          {loading && <Spinner color="red" className="h-10 w-10" />}
+          {/* Check LogIn để Recommend */}
+          {/* {loading && <Spinner color="red" className="h-10 w-10" />}
           {!loading && data !== null && (
             <>
               <Typography
