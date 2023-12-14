@@ -20,10 +20,10 @@ const PosterFilmResult = (props: { movie: Movie }) => {
         src={urlUtils.getImageUrl(movie)}
         width={206}
         height={320}
-        className="border-2 border-slate-700"
+        className="rounded"
         wrapperClassName="transform object-cover duration-300 ease-in-out hover:opacity-40 hover:cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       />
-      <div className="absolute left-[150px] top-3 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
+      <div className="absolute right-2 top-1 flex cursor-pointer items-center rounded-lg bg-black px-1 py-0.5 text-sm text-white">
         {stringUtils.formatRating(movie.rating)}
         <svg
           xmlns="http://www.w3.org/2000/svg"

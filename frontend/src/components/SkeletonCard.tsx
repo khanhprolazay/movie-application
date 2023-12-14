@@ -52,7 +52,7 @@ const SkeletonCard: FC<Props> = ({
           direction === "column" ? "flex-col space-y-2" : "flex-row gap-2"
         }`}
       >
-        <div className={`${imageClassname} w-full bg-gray-300`}></div>
+        <div className={`${imageClassname} w-full bg-gray-300 rounded`}></div>
         {getContent()}
       </div>
     </div>

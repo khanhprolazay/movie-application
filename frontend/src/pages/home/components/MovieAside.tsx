@@ -5,7 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const MovieAside = () => {
   return (
-    <aside className="relative col-span-1 hidden bg-cblack-100 px-4 lg:block">
+    <aside className="relative mb-4 col-span-1 hidden bg-cblack-100 px-4 lg:block">
       <Typography
         variant="h1"
         className="mb-3 mt-5 font-manrope text-lg font-semibold text-slate-300"
@@ -72,8 +72,8 @@ const MovieAside = () => {
           src="https://image.tmdb.org/t/p/w500/cHkhb5A4gQRK6zs6Pv7zorHs8Nk.jpg"
           alt="image 2"
           effect="blur"
-          wrapperClassName="h-44 w-full rounded"
-          className="border-2 border-slate-700"
+          wrapperClassName="h-44 w-full"
+          className="rounded"
         />
         <Typography className="absolute bottom-6 left-3 font-manrope text-xl font-semibold text-slate-200 hover:cursor-pointer">
           Fast And Furios 7

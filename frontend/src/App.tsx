@@ -9,6 +9,7 @@ import AuthLayout from "./pages/auth/AuthLayout";
 import AppAlert from "./components/AppAlert";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useGoogleOneTapLogin } from "@react-oauth/google";
+import moviesActions from "./actions/movie.action";
 
 const LoginPage = React.lazy(() =>
   import("./pages/auth/components/SingleLoginForm").then(
@@ -27,6 +28,11 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(authenticationActions.check());
+    dispatch(moviesActions.getMovieByRandom());
+    dispatch(moviesActions.getMovieByDay(0, 20));
+    dispatch(moviesActions.getMovieByComing(0, 20));
+    dispatch(moviesActions.getMovieByRating(0, 20));
+    dispatch(moviesActions.getMovieByRandomBackdrop());
   }, []);
 
   useGoogleOneTapLogin({
@@ -45,7 +51,7 @@ const App: FC = () => {
       <AppAlert />
       <Routes>
         <Route element={<AppLayout />}>
-          {getRoutersWithRole(true, "USER").map((route) => (
+          {getRoutersWithRole(isLogin, "USER").map((route) => (
             <Route
               path={route.path}
               key={route.name}

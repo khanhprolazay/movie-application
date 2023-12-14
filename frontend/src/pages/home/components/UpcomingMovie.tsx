@@ -1,20 +1,13 @@
 import { IconButton } from "@material-tailwind/react";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import moviesActions from "@/actions/movie.action";
+import { useAppSelector } from "@/redux/hooks";
 import { useSlider } from "@/hooks/use-slider.hook";
 import SkeletonCard from "@/components/SkeletonCard";
 import MovieCard from "./MovieCard";
 
 export function UpcomingMovie() {
-  const dispatch = useAppDispatch();
   const { data, loading } = useAppSelector((state) => state.movie.coming);
   const { current, handlePrev, handleNext, disablePrev, disableNext } =
     useSlider(data.length);
-
-  useEffect(() => {
-    dispatch(moviesActions.getMovieByComing(0, 20));
-  }, []);
 
   return (
     <div className="relative ml-12 grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_5px]">

@@ -28,7 +28,7 @@ const routes: RouteType[] = [
     accessible: ["ALL"],
   },
   {
-    path: "/aboutus",
+    path: "/about-us",
     name: "About us",
     login: false,
     element: AboutUsPage,
