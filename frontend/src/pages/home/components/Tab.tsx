@@ -1,6 +1,6 @@
 import Empty from "@/components/Empty";
 import { Cast, Video } from "@/type";
-import urlUtils from "@/utils/urlUtils";
+import urlUtils from "@/utils/url.util";
 import { Avatar, Carousel, Typography } from "@material-tailwind/react";
 import { FC } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
@@ -73,27 +73,32 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
     case "video":
       return (
         <Carousel navigation={() => <></>} loop>
-          {videos?.length === 0 ? <Empty /> :
-            videos?.sort((a, b) => {
-              const aType = a.type;
-              const bType = b.type;
-              const aOfficial = a.official;
-              const bOfficial = b.official;
+          {videos?.length === 0 ? (
+            <Empty />
+          ) : (
+            videos
+              ?.sort((a, b) => {
+                const aType = a.type;
+                const bType = b.type;
+                const aOfficial = a.official;
+                const bOfficial = b.official;
 
-              if (aType === "Trailer" && bType !== "Trailer") return -1;
-              if (aType !== "Trailer" && bType === "Trailer") return 1;
-              if (aOfficial && !bOfficial) return -1;
-              if (!aOfficial && bOfficial) return 1;
-              return 0;
-            }).map((video) => (
-              <iframe
-                key={video.key}
-                loading="lazy"
-                allowFullScreen
-                className="h-full w-full rounded-lg"
-                src={urlUtils.getYoutubeEmbedUrl(video.key)}
-              />
-            ))}
+                if (aType === "Trailer" && bType !== "Trailer") return -1;
+                if (aType !== "Trailer" && bType === "Trailer") return 1;
+                if (aOfficial && !bOfficial) return -1;
+                if (!aOfficial && bOfficial) return 1;
+                return 0;
+              })
+              .map((video) => (
+                <iframe
+                  key={video.key}
+                  loading="lazy"
+                  allowFullScreen
+                  className="h-full w-full rounded-lg"
+                  src={urlUtils.getYoutubeEmbedUrl(video.key)}
+                />
+              ))
+          )}
         </Carousel>
       );
 

@@ -2,14 +2,14 @@ import { Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Movie } from "@/type";
-import urlUtils from "@/utils/urlUtils";
-import stringUtils from "@/utils/stringUtils";
+import urlUtils from "@/utils/url.util";
+import stringUtils from "@/utils/string.util";
 
 const PosterFilmResult = (props: { movie: Movie }) => {
   const { movie } = props;
   const navigate = useNavigate();
 
-  return  (
+  return (
     <div
       className="relative mx-auto mb-10 mt-5 object-cover text-gray-300 transition-colors hover:text-slate-100"
       onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}

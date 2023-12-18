@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import urlUtils from "@/utils/urlUtils";
+import urlUtils from "@/utils/url.util";
 import PosterFilmResult from "./components/PosterFilmResult";
 import { useMovie } from "@/hooks/use-movie.hook";
 import TabContent, { TabType, TabValues } from "./components/Tab";
@@ -53,7 +53,7 @@ const MoviePage = () => {
             <AppFallback />
           ) : (
             <>
-              <Card className="w-auto bg-cblack-600">
+              <Card className="w-auto bg-form">
                 <CardHeader floated={false} className="rounded-md">
                   <img
                     src={urlUtils.getImageUrl(data)}
@@ -115,7 +115,7 @@ const MoviePage = () => {
               </Card>
 
               <div className="grid w-full grid-rows-[auto_1fr] gap-4">
-                <Card className="bg-cblack-600">
+                <Card className="bg-form">
                   <CardBody className="flex items-center justify-between p-4 font-manrope">
                     <div>
                       <Typography
@@ -135,10 +135,10 @@ const MoviePage = () => {
                 </Card>
                 <Tabs
                   value={activeTab}
-                  className="flex h-full flex-col rounded-xl bg-cblack-600"
+                  className="flex h-full flex-col rounded-xl bg-form"
                 >
                   <TabsHeader
-                    className="rounded-none border-b border-divider bg-cblack-600 bg-opacity-100 px-4"
+                    className="rounded-none border-b border-divider bg-form bg-opacity-100 px-4"
                     indicatorProps={{
                       className:
                         "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
@@ -176,41 +176,44 @@ const MoviePage = () => {
           )}
         </div>
 
-        <div className="mb-3 mt-12 flex items-center justify-between">
-          <Typography className="font-manrope text-3xl font-bold text-slate-200">
-            More like this
-          </Typography>
-          <div className="flex items-end gap-4">
-            <ChevronLeftIcon
-              onClick={handlePrev}
-              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
-            />
-            <ChevronRightIcon
-              onClick={handleNext}
-              className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
-            />
-          </div>
-        </div>
-
-        <hr className="full-width-underline mb-5 mt-4" />
+        {(related.length || relatedLoading) && (
+          <>
+            <div className="mb-3 mt-12 flex items-center justify-between">
+              <Typography className="font-manrope text-3xl font-bold text-slate-200">
+                More like this
+              </Typography>
+              <div className="flex items-end gap-4">
+                <ChevronLeftIcon
+                  onClick={handlePrev}
+                  className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+                />
+                <ChevronRightIcon
+                  onClick={handleNext}
+                  className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
+                />
+              </div>
+            </div>
+            <hr className="full-width-underline mb-5 mt-4" />
+          </>
+        )}
 
         <div className="w-full max-w-full overflow-hidden">
           <div
-            className="mx-5 mb-10 flex gap-4 transition-transform duration-500 ease-out"
+            className="mb-10 flex gap-4 transition-transform duration-500 ease-out"
             style={{
               transform: `translateX(-${current * (204.4 + 16)}px)`,
             }}
           >
             {relatedLoading
-              ? Array.from<number>({ length: 7 }).map((index) => (
+              ? Array.from<number>({ length: 7 }).map((_, index) => (
                   <SkeletonCard
                     bodyClassname="!w-auto"
                     imageClassname="!w-[204px] !h-[318px]"
-                    key={index}
+                    key={`skeleton-${index}`}
                   />
                 ))
-              : related.map((movie, index: number) => (
-                  <PosterFilmResult key={index} movie={movie} />
+              : related.map((movie) => (
+                  <PosterFilmResult key={movie.id} movie={movie} />
                 ))}
           </div>
         </div>

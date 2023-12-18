@@ -1,56 +1,55 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ClientKafka, ClientProxy } from "@nestjs/microservices";
+import { ClientProxy } from "@nestjs/microservices";
 import { Genre, Movie, PatternOption, Service } from "@app/shared";
 import { BaseMessageService } from "../base";
+import { first } from "rxjs";
 
 @Injectable()
 export class MovieService extends BaseMessageService<Movie> {
   constructor(
     @Inject(Service.MOVIE) 
-    protected readonly movieClient: ClientProxy,
+    protected readonly movieClient: ClientProxy
   ) {
     super(movieClient, "MOVIE");
   }
 
-  async getByYear(year: number, skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_YEAR"], { skip, limit, year });
+  getByYear(year: number, skip: number, limit: number) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_YEAR"], { skip, limit, year });
   }
 
-  async getByRating(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_RATING"], { skip, limit });
+  getByRating(skip: number, limit: number) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_RATING"], { skip, limit });
   }
 
-  async getByRecommend(genres: string[], skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_RECOMMENDATION"], { genres, skip, limit });
+  getByGenres(genres: string[], skip: number, limit: number) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_GENRES"], { genres, skip, limit });
   }
 
-  async getByGenres(genres: string[], skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_GENRES"], { genres, skip, limit });
+  getByDay(skip: number, limit: number) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_DAY"], { skip, limit });
   }
 
-  async getByDay(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_DAY"], { skip, limit });
+  getGenres() {
+    return this.executeMany<Genre>(PatternOption["GENRE.GET.ALL"], {});
   }
 
-  async getGenres() {
-    return await this.executeMany<Genre>(PatternOption["GENRE.GET.ALL"], {});
+  getByUpcoming(skip: number, limit: number) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_UPCOMING"], { skip, limit });
   }
 
-  async getByUpcoming(skip: number, limit: number) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_UPCOMING"], { skip, limit });
+  getByRadomBackdrop() {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM_BACKDROP"], {});
   }
 
-  async getByRadomBackdrop() {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM_BACKDROP"], {});
+  getByRandom() {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM"], {});
   }
 
-  async getByRandom() {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_RANDOM"], {});
+  getBySearch(search: string, skip, limit) {
+    return this.executeMany(PatternOption["MOVIE.GET.BY_SEARCH"], { search, skip, limit });
   }
 
-  async getBySearch(search: string, skip, limit) {
-    return await this.executeMany(PatternOption["MOVIE.GET.BY_SEARCH"], { search, skip, limit });
+  getByRecommend(imdbId: string) {
+    return this.movieClient.send<Movie[]>(PatternOption["MOVIE.GET.BY_RECOMMENDATION"], imdbId).pipe(first());
   }
-
-
 }

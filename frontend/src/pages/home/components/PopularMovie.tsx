@@ -8,16 +8,15 @@ export function PopularMovie() {
   const { data, loading } = useAppSelector((state) => state.movie.rating);
   const { current, handlePrev, handleNext, disablePrev, disableNext } =
     useSlider(data.length);
-
   return (
-    <div className="relative ml-12 grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_5px]">
+    <div className="relative grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_5px]">
       <div className="w-full max-w-full overflow-hidden">
         <div
           className="flex gap-5 transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${current * (125 + 19.5)}px)` }}
         >
           {loading
-            ? Array.from({ length: 5 }).map((_, index) => (
+            ? Array.from({ length: 10 }).map((_, index) => (
                 <SkeletonCard key={index} />
               ))
             : data.map((item) => <MovieCard movie={item} key={item.id}/>)}

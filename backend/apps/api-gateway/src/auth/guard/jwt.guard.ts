@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, HttpException } from "@nestjs/common";
 import { AuthService } from '../auth.service';
+import { firstValueFrom } from "rxjs";
 
 @Injectable()
 export class JwtGuard implements CanActivate {
@@ -25,7 +26,7 @@ export class JwtGuard implements CanActivate {
 
       // Get token then validate
       const token = bearerToken.split(' ')[1];
-      const user = await this.authService.validate(token); // the error will be thrown here
+      const user = await firstValueFrom(this.authService.validate(token)); // the error will be thrown here
 
       // Attach user to request
       request.user = user;

@@ -1,12 +1,15 @@
 import authenticationConstants from "@/constants/authentication.constant";
 import { LoginDTO, ReduxAction, RegisterDTO } from "@/type";
-import tokenUtils from "@/utils/tokenUtils";
+import tokenUtils from "@/utils/token.util";
 import userActions from "./user.action";
 import { TypedDispatch } from "@/redux/store";
-import authApis from "@/apis/authApis";
+import authService from "@/services/auth.service";
 import { NavigateFunction } from "react-router-dom";
 import alertActions from "./alert.action";
 import { googleLogout } from "@react-oauth/google";
+
+const authenticationActions = { check, login, logout, register, googleLogin };
+export default authenticationActions;
 
 function check() {
   return (dispatch: TypedDispatch) => {
@@ -23,25 +26,25 @@ function check() {
 
     dispatch(logout());
     dispatch(error("User does not log in !!!"));
-  }
+  };
 
   function request(): ReduxAction {
     return {
-      type: authenticationConstants.AUTH_CHECK_REQUEST
-    }
+      type: authenticationConstants.AUTH_CHECK_REQUEST,
+    };
   }
 
   function success(): ReduxAction {
     return {
       type: authenticationConstants.AUTH_CHECK_SUCCESS,
-    }
+    };
   }
 
   function error(error: string): ReduxAction {
     return {
       type: authenticationConstants.AUTH_CHECK_ERROR,
       payload: { error },
-    }
+    };
   }
 }
 
@@ -49,42 +52,42 @@ function login(values: LoginDTO, navigate: NavigateFunction) {
   return (dispatch: TypedDispatch) => {
     dispatch(request());
 
-    authApis.login(values)
-      .then(res => {
+    authService
+      .login(values)
+      .then((res) => {
         tokenUtils.saveAccessToken(res.accessToken);
         tokenUtils.saveRefreshToken(res.refreshToken);
-        
+
         dispatch(success());
         dispatch(check());
         dispatch(alertActions.add("success", "Login successfully !!!"));
 
         navigate("/");
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(alertActions.add("error", err));
         dispatch(error(err));
-      })
-
+      });
 
     function request(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_LOGIN_REQUEST,
-      }
+      };
     }
-    
+
     function success(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_LOGIN_SUCCESS,
-      }
+      };
     }
 
     function error(error: string): ReduxAction {
       return {
         type: authenticationConstants.AUTH_LOGIN_ERROR,
-        payload: { error }
-      }
+        payload: { error },
+      };
     }
-  }
+  };
 }
 
 function logout() {
@@ -95,69 +98,70 @@ function logout() {
     googleLogout();
 
     tokenUtils.clearToken();
-    
+
     function request(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_LOGOUT_REQUEST,
-      }
+      };
     }
 
     function success(): ReduxAction {
       return {
-        type: authenticationConstants.AUTH_LOGIN_SUCCESS
-      }
+        type: authenticationConstants.AUTH_LOGOUT_SUCCESS,
+      };
     }
-  }
+  };
 }
 
 function register(values: RegisterDTO, navigate: NavigateFunction) {
   return (dispatch: TypedDispatch) => {
     dispatch(request());
 
-    authApis.register(values)
+    authService
+      .register(values)
       .then(() => {
         dispatch(success());
         navigate("/auth/login");
         dispatch(alertActions.add("success", "Register successfully !!!"));
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(error(err));
         dispatch(alertActions.add("error", err));
-      })
-    
+      });
+
     function request(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_SIGNUP_REQUEST,
-      }
+      };
     }
-    
+
     function success(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_SIGNUP_SUCCESS,
-      }
+      };
     }
 
     function error(error: string): ReduxAction {
       return {
         type: authenticationConstants.AUTH_SIGNUP_ERROR,
         payload: { error },
-      }
+      };
     }
-  }
+  };
 }
 
 function googleLogin(props: {
-  accessToken?: string, 
-  credential?: string, 
-  navigate?: NavigateFunction
+  accessToken?: string;
+  credential?: string;
+  navigate?: NavigateFunction;
 }) {
   const { accessToken, credential, navigate } = props;
 
   return (dispatch: TypedDispatch) => {
-
     dispatch(request());
-    authApis.googleLogin({ accessToken, credential })
-      .then(response => {
+    authService
+      .googleLogin({ accessToken, credential })
+      .then((response) => {
         tokenUtils.saveAccessToken(response.accessToken);
         tokenUtils.saveRefreshToken(response.refreshToken);
 
@@ -165,34 +169,30 @@ function googleLogin(props: {
         dispatch(check());
         dispatch(alertActions.add("success", "Login successfully !!!"));
 
-        if (navigate) 
-          navigate("/");
+        if (navigate) navigate("/");
       })
-      .catch(err => {
+      .catch((err) => {
         dispatch(error(err));
         dispatch(alertActions.add("error", err));
-      }) 
+      });
 
     function request() {
       return {
         type: authenticationConstants.AUTH_LOGIN_REQUEST,
-      }
+      };
     }
 
     function success(): ReduxAction {
       return {
         type: authenticationConstants.AUTH_GOOGLE_LOGIN_REQUEST,
-      }
+      };
     }
 
     function error(error: string): ReduxAction {
       return {
         type: authenticationConstants.AUTH_GOOGLE_LOGIN_ERROR,
         payload: { error },
-      }
+      };
     }
-  }
+  };
 }
-
-const authenticationActions = { check, login, logout, register, googleLogin };
-export default authenticationActions;

@@ -4,7 +4,7 @@ import { useAppSelector } from "@/redux/hooks";
 
 export function ListPosterFilmRow() {
   const { data, loading } = useAppSelector((state) => state.movie.random);
-
+  
   return (
     <div className="mt-2 flex flex-col gap-2">
       {loading

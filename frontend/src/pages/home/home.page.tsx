@@ -8,14 +8,15 @@ import { UpcomingMovie } from "./components/UpcomingMovie";
 import MovieAside from "./components/MovieAside";
 
 const HomePage: FC = () => {
+  // const { loading, data } = useAppSelector((state) => state.user);
 
   return (
     <AppContainer>
       {/* --------------------------------Body----------------------------------- */}
-      <div className="grid grid-cols-3 bg-cblack-100">
+      <div className="grid grid-cols-3 bg-transparent">
         {/* Content  */}
-        <div className="col-span-full border-r border-r-divider px-4 pb-5 lg:col-span-2">
-          <>
+        <div className="col-span-full border-r border-r-divider pr-4 pb-5 lg:col-span-2">
+          <div className="hidden xs:block">
             <Typography
               variant="h1"
               className="mb-3 mt-5 font-manrope text-xl font-extrabold text-slate-200"
@@ -23,9 +24,8 @@ const HomePage: FC = () => {
               Movies
             </Typography>
             <BannerCarousel />
-          </>
-
-          <hr className="mt-5 border-divider"></hr>
+            <hr className="mt-5 border-divider"/>
+          </div>
 
           <Typography
             variant="h1"
@@ -35,12 +35,10 @@ const HomePage: FC = () => {
           </Typography>
           <PopularMovie />
 
-          <hr className="mt-5 border-divider"></hr>
-          
-          {/* <hr className="mt-5 border-divider"></hr>
+          <hr className="mt-5 border-divider"/>
 
-          Check LogIn để Recommend
-          {loading && <Spinner color="red" className="h-10 w-10" />}
+          {/* Check LogIn để Recommend */}
+          {/* {loading && <Spinner color="red" className="h-10 w-10" />}
           {!loading && data !== null && (
             <>
               <Typography
@@ -50,7 +48,7 @@ const HomePage: FC = () => {
                 Recommend
               </Typography>
               <RecomendationsMovie />
-              <hr className="mt-5 border-divider"></hr>
+              <hr className="mt-5 border-divider"/>
             </>
           )} */}
 
@@ -62,7 +60,7 @@ const HomePage: FC = () => {
           </Typography>
           <RecentlyMovie />
 
-          <hr className="mt-5 border-divider"></hr>
+          <hr className="mt-5 border-divider"/>
 
           <Typography
             variant="h1"

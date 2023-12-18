@@ -105,3 +105,29 @@ export interface Alert {
   type: AlertType,
   message: string
 }
+
+// Report
+export interface Report {
+  active: number
+  company: string
+  count: number
+  createdAt: string 
+  email: string 
+  expiredDate: string
+  id: string
+  isActived: boolean
+  isOwner: boolean 
+  pdf: string
+  plan: number
+  reportMethod: number
+  shared: number
+  sharedReportCount: number
+  startedDate: string
+  title: string
+  updatedAt: string
+  userId: string 
+  userName: string
+  workspaceId: number
+  workspaceName: string
+  embedUrl?: string
+}

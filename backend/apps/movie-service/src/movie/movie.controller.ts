@@ -21,8 +21,8 @@ export class MovieController{
   }
 
   @MessagePattern(PatternOption["MOVIE.GET.BY_RECOMMENDATION"])
-  async getByRecommend(@Payload() dto: MovieByGenresDTO) {
-    return this.movieService.getByRecommend(dto);
+  getByRecommend(@Payload() imdbId: string) {
+    return this.movieService.getByRecommend(imdbId);
   }
 
   @MessagePattern(PatternOption["MOVIE.GET.BY_GENRES"])

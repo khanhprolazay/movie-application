@@ -34,8 +34,7 @@ module.exports = withMT({
     extend: {
       colors: {
         coral: "#FCC82D",
-
-        divider: "#3E4042",
+        divider: "#ffffff26",
         black: "#100f10",
         cred: "#ad241b",
         cblack: {
@@ -45,7 +44,10 @@ module.exports = withMT({
           400: "#171d22",
           500: "#02050a",
           600: "#12151e",
-        }
+          700: "#0a061a"
+        },
+        form: "#ffffff0d",
+        input: "#ffffff0d",
       },
 
       fontFamily: {

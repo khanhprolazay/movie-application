@@ -1,6 +1,6 @@
 import "./App.css";
 import { getRoutersWithRole } from "./routes";
-import React, { FC,  useEffect } from "react";
+import { FC,  useEffect } from "react";
 import AppLayout from "./components/AppLayout";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -10,23 +10,18 @@ import AppAlert from "./components/AppAlert";
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useGoogleOneTapLogin } from "@react-oauth/google";
 import moviesActions from "./actions/movie.action";
-
-const LoginPage = React.lazy(() =>
-  import("./pages/auth/components/SingleLoginForm").then(
-    (LoginPage) => LoginPage,
-  ),
-);
-const RegisterPage = React.lazy(() =>
-  import("./pages/auth/components/SingleRegisterForm").then(
-    (RegisterPage) => RegisterPage,
-  ),
-);
+import SingleLoginForm from "./pages/auth/components/SingleLoginForm";
+import SingleRegisterForm from "./pages/auth/components/SingleRegisterForm";
+import genreActions from "./actions/genre.action";
+import reportActions from "./actions/report.action";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
-  const { isLogin} = useAppSelector(state => state.authentication)
+  const { isLogin } = useAppSelector(state => state.authentication);
 
   useEffect(() => {
+    dispatch(reportActions.getReports());
+    dispatch(genreActions.getGenres());
     dispatch(authenticationActions.check());
     dispatch(moviesActions.getMovieByRandom());
     dispatch(moviesActions.getMovieByDay(0, 20));
@@ -59,12 +54,12 @@ const App: FC = () => {
             />
           ))}
         </Route>
-
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-        </Route>
-
+        { !isLogin && (
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route path="login" element={<SingleLoginForm />} />
+            <Route path="register" element={<SingleRegisterForm />} />
+          </Route>
+        )}
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </>

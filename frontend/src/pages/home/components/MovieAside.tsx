@@ -1,11 +1,17 @@
-import { IconButton, Menu, MenuHandler, MenuList, Typography } from "@material-tailwind/react";
+import {
+  IconButton,
+  Menu,
+  MenuHandler,
+  MenuList,
+  Typography,
+} from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { ListPosterFilmRow } from "./ListPosterFilmRow";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const MovieAside = () => {
   return (
-    <aside className="relative mb-4 col-span-1 hidden bg-cblack-100 px-4 lg:block">
+    <aside className="relative col-span-1 mb-4 hidden bg-transparent pl-4 lg:block">
       <Typography
         variant="h1"
         className="mb-3 mt-5 font-manrope text-lg font-semibold text-slate-300"
@@ -34,14 +40,14 @@ const MovieAside = () => {
             </svg>
           </IconButton>
         </MenuHandler>
-        <MenuList className="no-scrollbar grid max-h-[200px] grid-cols-3 gap-1 overflow-y-auto bg-cblack-100">
+        <MenuList className="no-scrollbar grid max-h-[400px] grid-cols-3 gap-2 overflow-y-auto border-none bg-cblack-700 p-4">
           {Array.from({ length: 123 }, (_, i) => {
             const year = 2023 - i;
             return (
               <Link
                 key={year}
                 to={`/search?year=${year}&page=${1}`}
-                className="h-8 w-28 cursor-pointer rounded bg-cblack-600 py-1 text-center font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:!border-transparent hover:!bg-cred hover:!text-slate-200"
+                className="flex h-8 w-28 cursor-pointer items-center justify-evenly rounded !bg-input font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:!border-transparent hover:!bg-cred hover:!text-slate-200"
               >
                 {year}
               </Link>
@@ -56,7 +62,7 @@ const MovieAside = () => {
             <Link
               key={year}
               to={`/search?year=${year}&page=${1}`}
-              className="flex h-8 w-full cursor-pointer items-center justify-evenly rounded bg-cblack-600 font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:bg-cred hover:text-slate-200"
+              className="flex h-8 w-full cursor-pointer items-center justify-evenly rounded bg-input font-manrope text-sm text-slate-400 transition-colors ease-in-out hover:bg-cred hover:text-slate-200"
             >
               {year}
             </Link>

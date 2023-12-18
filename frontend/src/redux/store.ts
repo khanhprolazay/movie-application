@@ -1,5 +1,5 @@
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import rootReducer, { RootState as RootReducerState } from './rootReducer';
+import rootReducer, { RootState as RootReducerState } from './root-reducer';
 import { Store, createStore, applyMiddleware, AnyAction } from "redux";
 import { composeWithDevTools } from '@redux-devtools/extension';
 
