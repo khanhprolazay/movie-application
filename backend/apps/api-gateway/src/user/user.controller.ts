@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Inject, Param, ParseIntPipe, Put, UseGuards } from "@nestjs/common";
-import { Service, User } from "@app/shared";
+import { Body, Controller, Get, Param, ParseIntPipe, Put, UseGuards } from "@nestjs/common";
+import { User } from "@app/shared";
 import { UserService } from "./user.service";
 import { JwtGuard } from "../auth/guard";
 import { GetUser } from "../decorator";

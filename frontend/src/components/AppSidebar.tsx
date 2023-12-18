@@ -1,7 +1,6 @@
 import authenticationActions from "@/actions/authentication.action";
 import sidebarActions from "@/actions/sidebar.action";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { TypedDispatch } from "@/redux/store";
 import {
   ClockIcon,
   CreditCardIcon,
@@ -10,6 +9,7 @@ import {
   IdentificationIcon,
   InformationCircleIcon,
   PowerIcon,
+  PresentationChartBarIcon,
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
 import {
@@ -23,15 +23,17 @@ import {
   PopoverHandler,
   Typography,
 } from "@material-tailwind/react";
-import { memo, FC, ReactNode, useState, useEffect } from "react";
+import { memo, FC, ReactNode, useState, useRef, useLayoutEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppLogo from "./AppLogo";
+import useWindowSize from "@/hooks/use-window-size.hook";
 
 const icon = "h-5 w-6";
 
 const locations = [
   "/home",
   "/about-us",
+  "/reports",
   "/user/profile",
   "/user/favorite",
   "/user/history",
@@ -77,7 +79,7 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
           </Typography>
         </ListItem>
       </PopoverHandler>
-      <PopoverContent {...trigger} className="z-10 bg-slate-200 py-2">
+      <PopoverContent {...trigger} className="z-10 py-2">
         {name}
       </PopoverContent>
     </Popover>
@@ -89,7 +91,6 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
 type SidebarProps = {
   open: boolean;
   currentMenu: number;
-  dispatch: TypedDispatch;
 };
 
 const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
@@ -97,7 +98,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
   const { loading, data } = useAppSelector((state) => state.user);
 
   return (
-    <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-cblack-100 shadow-none">
+    <Card className="no-scrollbar relative z-10 flex h-screen max-h-screen flex-col overflow-x-hidden rounded-none border-r  border-r-divider bg-transparent shadow-none">
       <Link to="/home">
         <AppLogo
           hidden={!open}
@@ -131,12 +132,20 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
           <>
 
             <hr className="mb-2 border-divider" />
+
+            <SidebarItem
+              name="Report"
+              open={open}
+              to="/reports"
+              selected={currentMenu === 2}
+              icon={<PresentationChartBarIcon className={icon} />}
+            />
             
             <SidebarItem
               name="Profile"
               open={open}
               to="/user/profile"
-              selected={currentMenu === 2}
+              selected={currentMenu === 3}
               icon={<UserCircleIcon className={icon} />}
             />
 
@@ -144,7 +153,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="Favorite"
               open={open}
               to="/user/favorite"
-              selected={currentMenu === 3}
+              selected={currentMenu === 4}
               icon={<HeartIcon className={icon} />}
             />
 
@@ -152,7 +161,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="History"
               open={open}
               to="/user/history"
-              selected={currentMenu === 4}
+              selected={currentMenu === 5}
               icon={<ClockIcon className={icon} />}
             />
 
@@ -160,7 +169,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               open={open}
               name="Subcription"
               to="/user/subcription"
-              selected={currentMenu === 5}
+              selected={currentMenu === 6}
               icon={<CreditCardIcon className={icon} />}
             />
 
@@ -168,12 +177,11 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="Password"
               open={open}
               to="/user/change-password"
-              selected={currentMenu === 6}
+              selected={currentMenu === 7}
               icon={<IdentificationIcon className={icon} />}
             />
 
             <SidebarItem
-              // to="/home"
               name="Logout"
               open={open}
               action={() => dispatch(authenticationActions.logout())}
@@ -187,40 +195,38 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 };
 
 const AppSideBar: FC = () => {
+  const size = useWindowSize();
+  const firstMountRef = useRef(true);
   const dispatch = useAppDispatch();
   const { open } = useAppSelector((state) => state.sidebar);
-  const [absolute, setAbsolute] = useState<boolean>(window.innerWidth < 992);
 
   const { pathname } = useLocation();
   let currentMenu = locations.findIndex((location) => location === pathname);
   if (currentMenu === -1) currentMenu = 0;
 
-  useEffect(() => {
-    const handleAbsolute = () => {
-      if (window.innerWidth >= 1280) setAbsolute(false);
-      else setAbsolute(true);
-    };
-
-    window.addEventListener("resize", handleAbsolute);
-    return () => window.removeEventListener("resize", handleAbsolute);
-  }, []);
+  useLayoutEffect(() => {
+    if (firstMountRef.current) {
+      dispatch(sidebarActions.close());
+      firstMountRef.current = false;
+    }
+  }, [])
 
   return (
     <aside id="sidebar">
-      {absolute ? (
+      {size.width < 992 ? (
         <Drawer
           className="w-[196px]"
           open={open}
           onClose={() => dispatch(sidebarActions.close())}
         >
-          <Sidebar open={true} dispatch={dispatch} currentMenu={currentMenu} />
+          <Sidebar open={true} currentMenu={currentMenu} />
         </Drawer>
       ) : (
         <div
           className={`${open ? "min-w-[196px] max-w-[196px]" : "min-w-[72px] max-w-[72px]"
             } transition-all`}
         >
-          <Sidebar open={open} dispatch={dispatch} currentMenu={currentMenu} />
+          <Sidebar open={open} currentMenu={currentMenu} />
         </div>
       )}
     </aside>

@@ -32,7 +32,9 @@ export type UserPattern = BasePattern<"USER"> |
 
 export type RecommendationPattern = "RECOMMENDATION.GET.BY_IMDB_ID"
 
-export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern | RecommendationPattern
+export type ReportPattern = "REPORT.GET.ALL" | "REPORT.GET.BY_ID"
+
+export type Pattern = UserPattern | MoviePattern  | AuthPattern | GenrePattern | RecommendationPattern | ReportPattern
 
 export type PatternOptionType = {
   [T in Pattern]: `${T}`
@@ -82,4 +84,8 @@ export const PatternOption: PatternOptionType = {
 
   // Recommendation
   "RECOMMENDATION.GET.BY_IMDB_ID": "RECOMMENDATION.GET.BY_IMDB_ID",
+
+  // Report
+  "REPORT.GET.ALL": "REPORT.GET.ALL",
+  "REPORT.GET.BY_ID": "REPORT.GET.BY_ID",
 }

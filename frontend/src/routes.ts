@@ -11,6 +11,9 @@ const ProfileForm = React.lazy(() => import("./pages/user/profile/profile-form")
 const ChangePasswordForm = React.lazy(() => import("./pages/user/profile/change-password-form").then(( ChangePasswordForm ) => ChangePasswordForm ));
 const HistoryPage = React.lazy(() => import("./pages/user/history/index").then(( HistoryPage ) =>  HistoryPage));
 
+const ReportListPage = React.lazy(() => import("./pages/report/list").then(( ReportListPage ) => ReportListPage ));
+const ReportDetailPage = React.lazy(() => import("./pages/report/detail").then(( ReportDetailPage ) => ReportDetailPage ));
+
 type RouteType = {
   path: string,
   name: string,
@@ -98,6 +101,20 @@ const routes: RouteType[] = [
     login: true,
     accessible: ["ALL"],
   },
+  {
+    path: "/reports",
+    name: "Reports",
+    element: ReportListPage,
+    login: true,
+    accessible: ["ALL"],
+  },
+  {
+    path: "/reports/:id",
+    name: "Report Detail",
+    element: ReportDetailPage,
+    login: true,
+    accessible: ["ALL"],
+  }
 ]
 
 export const getRoutersWithRole = (login: boolean, role: Exclude<Role, "ALL">) : RouteType[] => 

@@ -1,15 +1,15 @@
 import axios from "axios";
-import authApis from "./authApis";
+import authApis from "./auth.service";
 import store from "@/redux/store";
-import tokenUtils from "@/utils/tokenUtils";
+import tokenUtils from "@/utils/token.util";
 import authenticationActions from "@/actions/authentication.action";
 import alertActions from "@/actions/alert.action";
 
 export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_SERVER_HOST,
   headers: {
-    'content-type': 'application/json',
-  }
+    "content-type": "application/json",
+  },
 });
 
 let refreshTokenRequest: typeof authApis.refreshToken | null = null;
@@ -27,16 +27,23 @@ axiosClient.interceptors.request.use(
     }
 
     if (refreshToken) {
-      refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest : authApis.refreshToken;
+      refreshTokenRequest = refreshTokenRequest
+        ? refreshTokenRequest
+        : authApis.refreshToken;
       const response = await refreshTokenRequest(refreshToken);
 
       refreshTokenRequest = null;
 
       // If there is no response => Refresh token expried
       if (!response) {
-        store.dispatch(alertActions.add("error", "Your login session expried. Please login again !!!") as any);
+        store.dispatch(
+          alertActions.add(
+            "error",
+            "Your login session expried. Please login again !!!",
+          ) as any,
+        );
         store.dispatch(authenticationActions.logout() as any);
-        return config; 
+        return config;
       }
 
       tokenUtils.saveAccessToken(response.accessToken);
@@ -44,16 +51,16 @@ axiosClient.interceptors.request.use(
     }
 
     return config;
-},
+  },
   (error: any) => {
     return Promise.reject(error);
-  }
-)
+  },
+);
 
 axiosClient.interceptors.response.use(
-  (response) => response.data ? response.data : response,
+  (response) => (response.data ? response.data : response),
   (error) => {
     if (error?.response?.data?.message) throw error.response.data.message;
     throw "Internal Server Error !!!";
-  }
-)
+  },
+);

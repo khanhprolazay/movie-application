@@ -9,8 +9,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useMovie } from "@/hooks/use-movie.hook";
 import { useSlider } from "@/hooks/use-slider.hook";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import urlUtils from "@/utils/urlUtils";
-import timeUtils from "@/utils/timeUtils";
+import urlUtils from "@/utils/url.util";
+import timeUtils from "@/utils/time.util";
 import SkeletonCard from "@/components/SkeletonCard";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +29,7 @@ const WatchPage: FC = () => {
             className: "sticky h-[calc(100vh-60px)] right-0 left-0 top-[60px]",
           }}
         >
-          <div className="h-[424px] w-full bg-[url('@/assets/images/loading.gif')] bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
+          <div className="h-[424px] w-full bg-cblack-600 bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
             <iframe
               allowFullScreen
               className="z-0 h-full w-full rounded-lg"
@@ -40,7 +40,7 @@ const WatchPage: FC = () => {
         <div className="relative z-10 w-full bg-[url('@/assets/images/pricing_bg.jpg')]">
           <AppContainer className="py-[100px]">
             <section className="grid grid-cols-1 border-b border-b-divider lg:grid-cols-[1fr_auto]">
-              <div className=" mb-6 border-r-0 border-r-divider lg:mb-4 lg:border-r lg:pl-4 xl:mb-6 xl:pr-8">
+              <div className=" mb-6 border-r-0 border-r-divider lg:mb-4 lg:border-r xl:mb-6 xl:pr-8">
                 <Typography
                   variant="h1"
                   className="mb-6 font-manrope text-slate-200"

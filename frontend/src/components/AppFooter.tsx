@@ -20,7 +20,7 @@ const currentYear = new Date().getFullYear();
 
 export default function AppFooter() {
   return (
-    <footer className="relative bg-cblack-100 border-t border-t-divider">
+    <footer className="relative bg-transparent border-t border-t-divider">
       <AppContainer className="px-4">
         <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2 mt-12">
           <Typography variant="h5" className="text-slate-200">

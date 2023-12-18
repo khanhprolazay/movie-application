@@ -122,7 +122,7 @@ const ProfileForm: FC = () => {
             </div>
           </form>
 
-          <div className="my-3 ml-8 border-r border-r-slate-50/[0.06] md:my-0 md:block" />
+          <div className="my-3 ml-8 border-r border-divider md:my-0 md:block" />
 
           <div className="flex w-full flex-col items-center gap-y-4 md:w-1/3">
             <Avatar src={user?.avatar} className="h-24 w-24" alt="avatar" />

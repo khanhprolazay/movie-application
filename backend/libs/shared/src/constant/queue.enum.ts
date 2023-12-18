@@ -2,5 +2,6 @@ export enum QUEUE {
   "AUTH"= "AUTH",
   "USER"= "USER",
   "MOVIE"= "MOVIE",
+  "REPORT" = "REPORT",
   "RECOMMENDATION" = "RECOMMENDATION",
 }

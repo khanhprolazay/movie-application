@@ -1,7 +1,7 @@
-import userApis from "@/apis/userApis";
+import userService from "@/services/user.service";
 import userConstants from "@/constants/user.constant";
 import { ReduxAction, User } from "@/type";
-import tokenUtils from "@/utils/tokenUtils";
+import tokenUtils from "@/utils/token.util";
 import authenticationActions from "./authentication.action";
 import { TypedDispatch } from "@/redux/store";
 
@@ -9,34 +9,35 @@ function getUser() {
   return (dispatch: TypedDispatch) => {
     dispatch(request());
 
-    userApis.getProfile()
-      .then(data => dispatch(success(data)))
-      .catch(err => {
+    userService
+      .getProfile()
+      .then((data) => dispatch(success(data)))
+      .catch((err) => {
         tokenUtils.clearToken();
         dispatch(error(err));
         dispatch(authenticationActions.check());
-      })
+      });
 
     function request(): ReduxAction {
-      return { 
-        type: userConstants.GET_USER_REQUEST
-      }
+      return {
+        type: userConstants.GET_USER_REQUEST,
+      };
     }
 
     function success(user: User): ReduxAction {
       return {
         type: userConstants.GET_USER_SUCCESS,
         payload: { user },
-      }
+      };
     }
 
     function error(error: string): ReduxAction {
       return {
         type: userConstants.GET_USER_ERROR,
         payload: { error },
-      }
+      };
     }
-  }
+  };
 }
 
 function clearUser() {
@@ -45,17 +46,17 @@ function clearUser() {
     dispatch(success());
 
     function request(): ReduxAction {
-      return { 
-        type: userConstants.CLEAR_USER_REQUEST
-      }
+      return {
+        type: userConstants.CLEAR_USER_REQUEST,
+      };
     }
 
     function success(): ReduxAction {
       return {
         type: userConstants.CLEAR_USER_SUCCESS,
-      }
+      };
     }
-  }
+  };
 }
 
 const userActions = { getUser, clearUser };

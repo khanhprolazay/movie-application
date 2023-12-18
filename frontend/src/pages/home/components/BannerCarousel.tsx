@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/redux/hooks";
-import urlUtils from "@/utils/urlUtils";
+import urlUtils from "@/utils/url.util";
 import { Carousel, IconButton, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
@@ -41,7 +41,7 @@ export function BannerCarousel() {
   );
   return (
     <Carousel
-      className="h-32 w-full content-center rounded sm:h-44 md:h-48"
+      className="h-32 w-full rounded sm:h-44 md:h-48"
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-0 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
@@ -108,7 +108,7 @@ export function BannerCarousel() {
       autoplayDelay={6000}
     >
       {loading ? (
-        <div className="mx-auto flex h-full w-[95%] space-x-5">
+        <div className="mx-auto flex space-x-5">
           <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
             <div className="h-full w-full"></div>
           </div>
@@ -122,7 +122,7 @@ export function BannerCarousel() {
             index % 2 === 1 && (
               <div
                 key={`banner-${index}`}
-                className="mx-auto flex w-[95%] space-x-5"
+                className="mx-auto flex space-x-3 lg:space-x-5"
               >
                 <CarouselItem
                   id={movie.id}
@@ -134,71 +134,14 @@ export function BannerCarousel() {
                   id={data[index - 1].id}
                   title={data[index - 1].title}
                   year={new Date(data[index - 1].release).getFullYear()}
-                  image={`https://image.tmdb.org/t/p/w500${data[index - 1].backdropPath}`}
+                  image={`https://image.tmdb.org/t/p/w500${
+                    data[index - 1].backdropPath
+                  }`}
                 />
               </div>
             ),
         )
       )}
-      {/* <div className="mx-auto flex w-[95%] space-x-5">
-        <CarouselItem
-          id={91332}
-          image="https://image.tmdb.org/t/p/w500/69d8whnfJJnuxocrSLSdnqE38zV.jpg"
-          title="A Haunting In Venice"
-          year={2023}
-        />
-        <CarouselItem
-          id={90867}
-          image="https://i.ytimg.com/vi/5JdiuqgVuiU/maxresdefault.jpg"
-          title="Oppenheimer"
-          year={2023}
-        />
-      </div>
-
-      <div className="mx-auto flex w-[95%] space-x-5">
-        <CarouselItem
-          id={109544}
-          image="https://image.tmdb.org/t/p/w500/oXn36crGvHQMTg33o417FVhrtYK.jpg"
-          title="Sharktopus"
-          year={2023}
-        />
-        <CarouselItem
-          id={4801}
-          image="https://image.tmdb.org/t/p/w500/qgSlGJurPzgSHKYlqBiDmr3vjrc.jpg"
-          title="The Thing"
-          year={2011}
-        />
-      </div>
-
-      <div className="mx-auto flex w-[95%] space-x-5">
-        <CarouselItem
-          id={90976}
-          image="https://maxblizz.com/wp-content/uploads/2023/05/Guardians-of-the-Galaxy-Vol.-3.png"
-          title="Guardians of the Galaxy Vol. 3"
-          year={2023}
-        />
-        <CarouselItem
-          id={91398}
-          image="https://image.tmdb.org/t/p/w500/vcNXzOfACCXZA7vb8SNde0LUC9o.jpg"
-          title="Power Rangers: Once and always"
-          year={2023}
-        />
-      </div>
-
-      <div className="mx-auto flex w-[95%] space-x-5">
-        <CarouselItem
-          id={109545}
-          image="https://image.tmdb.org/t/p/w500/eF6pkcpzxDCaQnJhaRlKdhhQebB.jpg"
-          title="Sister Deadth"
-          year={2023}
-        />
-        <CarouselItem
-          id={73953}
-          image="https://image.tmdb.org/t/p/w500/azD31DjpV3PJfjF3h72LVw2WCSD.jpg"
-          title="The Exorcist: Believer"
-          year={2023}
-        />
-      </div> */}
     </Carousel>
   );
 }

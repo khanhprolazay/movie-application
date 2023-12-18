@@ -1,6 +1,6 @@
 import { Movie } from "@/type";
-import stringUtils from "@/utils/stringUtils";
-import urlUtils from "@/utils/urlUtils";
+import stringUtils from "@/utils/string.util";
+import urlUtils from "@/utils/url.util";
 import { FC } from "react";
 import { Typography } from "@material-tailwind/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -15,7 +15,7 @@ const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
 
   return (
     <div
-      className="group relative flex h-28 w-auto cursor-pointer bg-cblack-300 object-cover transition duration-300 ease-in-out hover:opacity-50"
+      className="rounded group relative flex h-28 w-auto cursor-pointer bg-form object-cover transition duration-300 ease-in-out hover:opacity-50"
       onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
     >
       <LazyLoadImage
@@ -63,7 +63,7 @@ const PosterFilmRow: FC<PosterFilmmovie> = ({ movie }) => {
         <Typography className="ml-5 mt-1 text-xs font-normal text-slate-400">
           Genres:{" "}
           <span className="text-gray-400/70">
-            {movie.genres?.map((genre) => genre.genre.name).join(',')}
+            {movie.genres?.slice(0, 4).map((genre) => genre.genre.name).join(",")}
           </span>
         </Typography>
       </div>

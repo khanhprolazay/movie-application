@@ -7,12 +7,14 @@ import { JwtGuard } from './auth/guard';
 import { CacheModule } from '@nestjs/cache-manager';
 import type { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule, 
     MovieModule,
+    ReportModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `config/env/${process.env.NODE_ENV}.env`

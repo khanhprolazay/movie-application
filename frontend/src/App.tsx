@@ -12,12 +12,16 @@ import { useGoogleOneTapLogin } from "@react-oauth/google";
 import moviesActions from "./actions/movie.action";
 import SingleLoginForm from "./pages/auth/components/SingleLoginForm";
 import SingleRegisterForm from "./pages/auth/components/SingleRegisterForm";
+import genreActions from "./actions/genre.action";
+import reportActions from "./actions/report.action";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { isLogin } = useAppSelector(state => state.authentication);
 
   useEffect(() => {
+    dispatch(reportActions.getReports());
+    dispatch(genreActions.getGenres());
     dispatch(authenticationActions.check());
     dispatch(moviesActions.getMovieByRandom());
     dispatch(moviesActions.getMovieByDay(0, 20));
