@@ -33,7 +33,7 @@ const icon = "h-5 w-6";
 const locations = [
   "/home",
   "/about-us",
-  "/reports",
+  // "/reports",
   "/user/profile",
   "/user/favorite",
   "/user/history",
@@ -133,19 +133,19 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
             <hr className="mb-2 border-divider" />
 
-            <SidebarItem
+            {/* <SidebarItem
               name="Report"
               open={open}
               to="/reports"
               selected={currentMenu === 2}
               icon={<PresentationChartBarIcon className={icon} />}
-            />
+            /> */}
             
             <SidebarItem
               name="Profile"
               open={open}
               to="/user/profile"
-              selected={currentMenu === 3}
+              selected={currentMenu === 2}
               icon={<UserCircleIcon className={icon} />}
             />
 
@@ -153,7 +153,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="Favorite"
               open={open}
               to="/user/favorite"
-              selected={currentMenu === 4}
+              selected={currentMenu === 3}
               icon={<HeartIcon className={icon} />}
             />
 
@@ -161,7 +161,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="History"
               open={open}
               to="/user/history"
-              selected={currentMenu === 5}
+              selected={currentMenu === 4}
               icon={<ClockIcon className={icon} />}
             />
 
@@ -169,7 +169,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               open={open}
               name="Subcription"
               to="/user/subcription"
-              selected={currentMenu === 6}
+              selected={currentMenu === 5}
               icon={<CreditCardIcon className={icon} />}
             />
 
@@ -177,7 +177,7 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
               name="Password"
               open={open}
               to="/user/change-password"
-              selected={currentMenu === 7}
+              selected={currentMenu === 6}
               icon={<IdentificationIcon className={icon} />}
             />
 
