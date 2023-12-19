@@ -29,7 +29,7 @@ const WatchPage: FC = () => {
             className: "sticky h-[calc(100vh-60px)] right-0 left-0 top-[60px]",
           }}
         >
-          <div className="h-[424px] w-full bg-cblack-600 bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
+          <div className="h-[424px] rounded-lg w-full bg-cblack-600 bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
             <iframe
               allowFullScreen
               className="z-0 h-full w-full rounded-lg"

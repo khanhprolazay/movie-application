@@ -15,7 +15,7 @@ const HomePage: FC = () => {
       {/* --------------------------------Body----------------------------------- */}
       <div className="grid grid-cols-3 bg-transparent">
         {/* Content  */}
-        <div className="col-span-full border-r-divider pb-5 pr-4 lg:col-span-2 lg:border-r">
+        <div className="col-span-full border-r-divider pb-5 lg:col-span-2 lg:border-r lg:pr-4">
           <div className="hidden xs:block">
             <Typography
               variant="h1"

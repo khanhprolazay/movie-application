@@ -152,7 +152,7 @@ const SearchPage: FC = () => {
         {/* Content  */}
         <div
           ref={ref}
-          className="col-span-full border-r border-r-divider pr-4 pb-5 lg:col-span-2"
+          className="col-span-full border-r-divider pb-5 lg:col-span-2 lg:border-r lg:pr-4"
         >
           <h1 className="mt-6 flex justify-center font-manrope text-4xl font-semibold leading-9 text-slate-200 ">
             {keyword || year || genre}
