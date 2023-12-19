@@ -15,9 +15,12 @@
 
 # Node.js dependencies:
 node_modules/
-
 volumes/
+image/
+apps/auth-service/
+apps/movie-service/
+apps/user-service/
+apps/recommendation-service/
 
-tar/
-
+image.zip
 movie.sql

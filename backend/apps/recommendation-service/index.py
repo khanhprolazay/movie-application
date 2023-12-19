@@ -4,7 +4,7 @@ import json
 import os
 from dotenv import load_dotenv
 
-load_dotenv("../../config/env/development.env")
+load_dotenv("./config/env/production.env")
 
 broker_host = os.getenv("BROKER_HOST")
 broker_port = os.getenv("BROKER_PORT")
@@ -12,9 +12,9 @@ broker_vhost = os.getenv("BROKER_VHOST")
 broker_username = os.getenv("BROKER_USERNAME")
 broker_password = os.getenv("BROKER_PASSWORD")
 
-titles = pickle.load(open('./titles.pkl','rb'))
-indices = pickle.load(open('./indices.pkl','rb'))
-cosine_sim = pickle.load(open('./cosine_sim.pkl','rb'))
+titles = pickle.load(open('./apps/recommendation-service/titles.pkl','rb'))
+indices = pickle.load(open('./apps/recommendation-service/indices.pkl','rb'))
+cosine_sim = pickle.load(open('./apps/recommendation-service/cosine_sim.pkl','rb'))
 
 def get_recommendations(imdb_id):
     try:
@@ -35,6 +35,7 @@ def callback(channel, method, properties, body):
         imdbId = body_decode.get('data')
 
         recommendation = get_recommendations(imdbId)
+        print(recommendation)
         channel.basic_publish('', routing_key=properties.reply_to, body=recommendation, properties=pika.BasicProperties(correlation_id=properties.correlation_id))
     except:
         print(" [x] Error")
