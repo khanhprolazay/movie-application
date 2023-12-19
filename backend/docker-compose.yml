@@ -1,0 +1,57 @@
+version: '2.1'
+
+services:
+  # rabbitmq:
+  #   image: 'bitnami/rabbitmq:latest'
+  #   ports:
+  #     - '5672:5672'
+  #     - '15672:15672'
+  #   networks:
+  #     - backend
+  #   environment:
+  #     RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: true
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    networks:
+      - backend
+    ports:
+      - 23306:3306
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway:version1
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+
+  # auth-service:
+  #   container_name: auth-service
+  #   image: auth-service:version1
+  #   networks:
+  #     - backend
+
+  # user-service:
+  #   container_name: user-service
+  #   image: user-service:version1
+  #   networks:
+  #     - backend
+
+  # movie-service:
+  #   container_name: movie-service
+  #   image: movie-service:version1
+  #   networks:
+  #     - backend
+
+networks:
+  backend:
+    driver: bridge
+    name: movie-backend
