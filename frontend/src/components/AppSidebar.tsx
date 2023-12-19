@@ -9,7 +9,6 @@ import {
   IdentificationIcon,
   InformationCircleIcon,
   PowerIcon,
-  PresentationChartBarIcon,
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
 import {
@@ -215,7 +214,7 @@ const AppSideBar: FC = () => {
     <aside id="sidebar">
       {size.width < 992 ? (
         <Drawer
-          className="w-[196px]"
+          className="w-[196px] bg-[#2E323F]"
           open={open}
           onClose={() => dispatch(sidebarActions.close())}
         >

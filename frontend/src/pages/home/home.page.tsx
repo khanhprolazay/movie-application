@@ -15,7 +15,7 @@ const HomePage: FC = () => {
       {/* --------------------------------Body----------------------------------- */}
       <div className="grid grid-cols-3 bg-transparent">
         {/* Content  */}
-        <div className="col-span-full border-r border-r-divider pr-4 pb-5 lg:col-span-2">
+        <div className="col-span-full border-r-divider pb-5 pr-4 lg:col-span-2 lg:border-r">
           <div className="hidden xs:block">
             <Typography
               variant="h1"
@@ -24,7 +24,7 @@ const HomePage: FC = () => {
               Movies
             </Typography>
             <BannerCarousel />
-            <hr className="mt-5 border-divider"/>
+            <hr className="mt-5 border-divider" />
           </div>
 
           <Typography
@@ -35,7 +35,7 @@ const HomePage: FC = () => {
           </Typography>
           <PopularMovie />
 
-          <hr className="mt-5 border-divider"/>
+          <hr className="mt-5 border-divider" />
 
           {/* Check LogIn để Recommend */}
           {/* {loading && <Spinner color="red" className="h-10 w-10" />}
@@ -60,7 +60,7 @@ const HomePage: FC = () => {
           </Typography>
           <RecentlyMovie />
 
-          <hr className="mt-5 border-divider"/>
+          <hr className="mt-5 border-divider" />
 
           <Typography
             variant="h1"

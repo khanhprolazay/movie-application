@@ -17,10 +17,10 @@
     "docker:build:user-service": "docker build --no-cache -f ./apps/user-service/Dockerfile -t user-service:version1 .",
     "docker:build:movie-service": "docker build --no-cache -f ./apps/movie-service/Dockerfile -t movie-service:version1 .",
     "docker:build:all": "concurrently --kill-others \"npm run docker:build:api-gateway\" \"npm run docker:build:auth-service\" \"npm run docker:build:user-service\" \"npm run docker:build:movie-service\"",
-    "docker:export:api-gateway": "docker save -o ./tar/api-gateway.tar api-gateway:version1",
-    "docker:export:auth-service": "docker save -o ./tar/auth-service.tar auth-service:version1",
-    "docker:export:user-service": "docker save -o ./tar/user-service.tar user-service:version1",
-    "docker:export:movie-service": "docker save -o ./tar/movie-service.tar movie-service:version1",
+    "docker:export:api-gateway": "docker save -o ./image/api-gateway.tar api-gateway:version1",
+    "docker:export:auth-service": "docker save -o ./image/auth-service.tar auth-service:version1",
+    "docker:export:user-service": "docker save -o ./image/user-service.tar user-service:version1",
+    "docker:export:movie-service": "docker save -o ./image/movie-service.tar movie-service:version1",
     "docker:export:all": "concurrently --kill-others \"npm run docker:export:api-gateway\" \"npm run docker:export:auth-service\" \"npm run docker:export:user-service\" \"npm run docker:export:movie-service\"",
     "start:dev:api-gateway": "cross-env NODE_ENV=development nest start api-gateway --watch",
     "start:dev:auth-service": "cross-env NODE_ENV=development nest start auth-service --watch",
@@ -33,7 +33,7 @@
     "start:prod:movie-service": "cross-env NODE_ENV=production node dist/apps/movie-service/main.js",
     "start:prod:report-service": "cross-env NODE_ENV=development nest start report-service --watch",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "start": "nest start",
+    "start": "cross-env NODE_ENV=production node dist/apps/api-gateway/main.js",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/backend/main",
@@ -42,7 +42,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/backend/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/backend/test/jest-e2e.json",
+    "gcp-build": "nest build api-gateway"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.1.1",

@@ -12,12 +12,12 @@ const CarouselItem = (props: {
   return (
     <Link
       to={urlUtils.getDetailUrl(props.id)}
-      className="relative h-28 w-1/2 transform object-cover duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-36 md:h-44"
+      className="relative h-28 w-1/2 transform object-cover duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-36 lg:h-44"
     >
       <img
         src={props.image}
         alt="image 1"
-        className="h-28 w-full rounded sm:h-36 md:h-44"
+        className="h-28 w-full rounded sm:h-36 lg:h-44"
       />
       <Typography
         variant="h3"
@@ -41,7 +41,7 @@ export function BannerCarousel() {
   );
   return (
     <Carousel
-      className="h-32 w-full rounded sm:h-44 md:h-48"
+      className="h-32 w-full rounded sm:h-40 lg:h-48"
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-0 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
@@ -108,7 +108,7 @@ export function BannerCarousel() {
       autoplayDelay={6000}
     >
       {loading ? (
-        <div className="mx-auto flex space-x-5">
+        <div className="mx-auto h-full flex space-x-5">
           <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
             <div className="h-full w-full"></div>
           </div>

@@ -2,4 +2,4 @@ web: npm run build:api-gateway && npm run start:prod:api-gateway
 auth-service: npm run build:auth-service && npm run start:prod:auth-service
 user-service: npm run build:user-service && npm run start:prod:user-service
 movie-service: npm run build:movie-service && npm run start:prod:movie-service
-recommendation-service: cd apps/recommendation && python index.py
+# recommendation-service: cd apps/recommendation && python index.py
