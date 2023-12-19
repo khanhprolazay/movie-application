@@ -12,7 +12,10 @@ const PosterFilmResult = (props: { movie: Movie }) => {
   return (
     <div
       className="relative mx-auto mb-10 mt-5 object-cover text-gray-300 transition-colors hover:text-slate-100"
-      onClick={() => navigate(urlUtils.getDetailUrl(movie.id))}
+      onClick={() => {
+        window.scrollTo(0, 0)
+        navigate(urlUtils.getDetailUrl(movie.id));
+      }}
     >
       <LazyLoadImage
         alt="image 1"

@@ -10,8 +10,8 @@ type Props = {
 const ColumnContent = () => {
   return (
     <div className="flex w-full flex-col space-y-2">
-      <div className="h-2 w-4/5 rounded-md bg-gray-300 "></div>
-      <div className="h-2 w-3/5 rounded-md bg-gray-300 "></div>
+      <div className="h-2 w-4/5 rounded-md bg-slate-600 "></div>
+      <div className="h-2 w-3/5 rounded-md bg-slate-600 "></div>
     </div>
   );
 };
@@ -19,10 +19,10 @@ const ColumnContent = () => {
 const RowContent = () => {
   return (
     <div className="flex flex-col">
-      <div className="my-[10px] w-32 h-[10px] rounded-md bg-gray-300" />
-      <div className="h-2 w-28 mt-2 rounded-md bg-gray-300" />
-      <div className="h-2 w-24 mt-2 rounded-md bg-gray-300" />
-      <div className="h-2 w-40 mt-2 rounded-md bg-gray-300 " />
+      <div className="my-[10px] w-32 h-[10px] rounded-md bg-slate-600" />
+      <div className="h-2 w-28 mt-2 rounded-md bg-slate-600" />
+      <div className="h-2 w-24 mt-2 rounded-md bg-slate-600" />
+      <div className="h-2 w-40 mt-2 rounded-md bg-slate-600 " />
     </div>
   );
 };
@@ -52,7 +52,7 @@ const SkeletonCard: FC<Props> = ({
           direction === "column" ? "flex-col space-y-2" : "flex-row gap-2"
         }`}
       >
-        <div className={`${imageClassname} w-full bg-gray-300 rounded`}></div>
+        <div className={`${imageClassname} w-full bg-slate-600 rounded`}></div>
         {getContent()}
       </div>
     </div>

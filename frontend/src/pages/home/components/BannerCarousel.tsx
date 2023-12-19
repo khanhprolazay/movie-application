@@ -12,25 +12,24 @@ const CarouselItem = (props: {
   return (
     <Link
       to={urlUtils.getDetailUrl(props.id)}
-      className="relative h-28 w-1/2 transform object-cover duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-36 lg:h-44"
+      style={{ backgroundImage: `url('${props.image}')` }}
+      className={`relative h-32 w-1/2 transform rounded-lg bg-black bg-opacity-60 bg-cover  duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-40 xl:h-48`}
     >
-      <img
-        src={props.image}
-        alt="image 1"
-        className="h-28 w-full rounded sm:h-36 lg:h-44"
-      />
-      <Typography
-        variant="h3"
-        className="absolute bottom-6 left-3 font-manrope text-xs font-semibold text-white hover:cursor-pointer sm:text-sm md:text-base lg:text-xl"
-      >
-        {props.title}
-      </Typography>
-      <Typography
-        variant="h3"
-        className="absolute bottom-1 left-3 font-manrope text-xs font-medium text-white hover:cursor-pointer md:text-sm lg:text-base"
-      >
-        {props.year}
-      </Typography>
+      {/* <img src={props.image} alt="image 1" className="h-full w-full rounded" /> */}
+      <div className="absolute bottom-0 h-auto w-full bg-gradient-to-b from-transparent to-black px-2 pt-4 pb-2">
+        <Typography
+          variant="h3"
+          className="font-manrope text-xs sm:text-sm font-medium text-white hover:cursor-pointer md:text-base"
+        >
+          {props.title}
+        </Typography>
+        <Typography
+          variant="h3"
+          className="font-manrope text-xs font-normal text-white hover:cursor-pointer md:text-sm"
+        >
+          {props.year}
+        </Typography>
+      </div>
     </Link>
   );
 };
@@ -41,7 +40,10 @@ export function BannerCarousel() {
   );
   return (
     <Carousel
-      className="h-32 w-full rounded sm:h-40 lg:h-48"
+      // loop
+      // autoplay
+      // autoplayDelay={6000}
+      className="h-36 w-full rounded sm:h-44 xl:h-52"
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-0 left-2/4 z-50 flex -translate-x-2/4 gap-2">
           {new Array(length).fill("").map((_, i) => (
@@ -103,12 +105,9 @@ export function BannerCarousel() {
           </svg>
         </IconButton>
       )}
-      loop
-      autoplay
-      autoplayDelay={6000}
     >
       {loading ? (
-        <div className="mx-auto h-full flex space-x-5">
+        <div className="mx-auto flex h-full space-x-5">
           <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
             <div className="h-full w-full"></div>
           </div>

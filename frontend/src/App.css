@@ -107,3 +107,8 @@ main {
 body {
   background: linear-gradient(180deg, #2E323F 0%, #0A061A 100%);
 }
+
+.horizontal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #222;
+}

@@ -18,7 +18,6 @@ import PosterFilmResult from "./components/PosterFilmResult";
 import { useMovie } from "@/hooks/use-movie.hook";
 import TabContent, { TabType, TabValues } from "./components/Tab";
 import SkeletonCard from "@/components/SkeletonCard";
-import AppFallback from "@/components/AppFallback";
 import { useSlider } from "@/hooks/use-slider.hook";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
@@ -48,132 +47,157 @@ const MoviePage = () => {
   return (
     data && (
       <AppContainer className="z-10 pt-8">
-        <div className="relative grid min-h-[735.5px] w-full gap-4 sm:grid-cols-1 md:grid-cols-[294px_1fr]">
-          {loading ? (
-            <AppFallback />
-          ) : (
-            <>
-              <Card className="w-auto bg-form">
-                <CardHeader floated={false} className="rounded-md">
+        <div className="relative grid  w-full gap-4 sm:grid-cols-1 md:grid-cols-[216px_1fr] lg:grid-cols-[256px_1fr]  xl:grid-cols-[292px_1fr]">
+          <>
+            <Card className="w-auto bg-form">
+              <CardHeader
+                floated={false}
+                className="rounded-md md:h-64 lg:h-72 xl:h-96"
+              >
+                {loading ? (
+                  <div className="h-64 w-full animate-pulse bg-slate-600 sm:!h-[28rem] md:h-full xs:h-96"></div>
+                ) : (
                   <img
                     src={urlUtils.getImageUrl(data)}
                     alt="movie-picture"
-                    className="h-96 w-full"
+                    className="h-full w-full object-cover object-center"
                   />
-                </CardHeader>
-                <CardBody className="p-4 font-manrope">
-                  {data.directors.length !== 0 && (
-                    <>
-                      <Typography
-                        variant="h5"
-                        className="text-base font-bold text-slate-200/90"
-                      >
-                        Director
-                      </Typography>
-                      <Typography className="mb-2 text-[13.6px] text-slate-400">
-                        {data.directors[0].actor.name}
-                      </Typography>
-                    </>
-                  )}
+                )}
+              </CardHeader>
+              <CardBody className="p-4 font-manrope">
+                {loading ? (
+                  <>
+                    <div className="my-2 h-2 w-1/6 rounded bg-slate-700"></div>
+                    <div className="mb-6 h-2 w-3/4 rounded bg-slate-700"></div>
 
-                  <Typography
-                    variant="h5"
-                    className="text-base font-bold text-slate-200/90"
-                  >
-                    Release Date
-                  </Typography>
-                  <Typography className="mb-2 text-[13.6px] text-slate-400">
-                    {data.release}
-                  </Typography>
+                    <div className="my-2 h-2 w-1/6 rounded bg-slate-700"></div>
+                    <div className="mb-6 h-2 w-3/4 rounded bg-slate-700"></div>
 
-                  <Typography
-                    variant="h5"
-                    className="text-base font-bold text-slate-200/90"
-                  >
-                    Genres
-                  </Typography>
-                  <Typography className="mb-2 text-[13.6px] text-slate-400">
-                    {data.genres.map((genre) => genre.genre.name).join(", ")}
-                  </Typography>
+                    <div className="my-2 h-2 w-1/6 rounded bg-slate-700"></div>
+                    <div className="mb-6 h-2 w-3/4 rounded bg-slate-700"></div>
 
-                  {data.plot && (
-                    <div>
-                      <Typography
-                        variant="h5"
-                        className="text-base font-bold text-slate-200/90"
-                      >
-                        Plot
-                      </Typography>
-                      <div className="line-clamp-5">
-                        <Typography className=" text-[13.6px] text-slate-400">
-                          {data.plot}
+                    <div className="my-2 h-2 w-1/6 rounded bg-slate-700"></div>
+                    <div className="my-2 h-2 w-full rounded bg-slate-700"></div>
+                    <div className="my-2 h-2 w-full rounded bg-slate-700"></div>
+                    <div className="my-2 h-2 w-full rounded bg-slate-700"></div>
+                  </>
+                ) : (
+                  <>
+                    {data.directors.length !== 0 && (
+                      <>
+                        <Typography
+                          variant="h5"
+                          className="text-base font-bold text-slate-200/90"
+                        >
+                          Director
                         </Typography>
+                        <Typography className="mb-2 text-[13.6px] text-slate-400">
+                          {data.directors[0].actor.name}
+                        </Typography>
+                      </>
+                    )}
+                    <Typography
+                      variant="h5"
+                      className="text-base font-bold text-slate-200/90"
+                    >
+                      Release Date
+                    </Typography>
+                    <Typography className="mb-2 text-[13.6px] text-slate-400">
+                      {data.release}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      className="text-base font-bold text-slate-200/90"
+                    >
+                      Genres
+                    </Typography>
+                    <Typography className="mb-2 text-[13.6px] text-slate-400">
+                      {data.genres.map((genre) => genre.genre.name).join(", ")}
+                    </Typography>
+                    {data.plot && (
+                      <div>
+                        <Typography
+                          variant="h5"
+                          className="text-base font-bold text-slate-200/90"
+                        >
+                          Plot
+                        </Typography>
+                        <div className="line-clamp-6">
+                          <Typography className=" text-[13.6px] text-slate-400">
+                            {data.plot}
+                          </Typography>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </CardBody>
-              </Card>
+                    )}
+                  </>
+                )}
+              </CardBody>
+            </Card>
 
-              <div className="grid w-full grid-rows-[auto_1fr] gap-4">
-                <Card className="bg-form">
-                  <CardBody className="flex items-center justify-between p-4 font-manrope">
-                    <div>
+            <div className="grid w-full grid-rows-[auto_1fr] gap-4">
+              <Card className="bg-form">
+                <CardBody className="flex items-center justify-between p-4 font-manrope">
+                  {loading ? (
+                    <div className="h-9 rounded-lg"></div>
+                  ) : (
+                    <>
                       <Typography
                         variant="h2"
                         className="text-[28px] font-bold text-slate-200/90"
                       >
                         {data.title}
                       </Typography>
-                    </div>
-
-                    <Link to={urlUtils.getWatchUrl(data.id)}>
-                      <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
-                        Watch
-                      </Button>
-                    </Link>
-                  </CardBody>
-                </Card>
-                <Tabs
-                  value={activeTab}
-                  className="flex h-full flex-col rounded-xl bg-form"
+                      <Link to={urlUtils.getWatchUrl(data.id)}>
+                        <Button className="rounded bg-cred px-3 py-[6px] text-base font-medium capitalize hover:border-cred/80 hover:bg-cred/80">
+                          Watch
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </CardBody>
+              </Card>
+              <Tabs
+                value={activeTab}
+                className="flex h-full flex-col rounded-xl bg-form"
+              >
+                <TabsHeader
+                  className="rounded-none border-b border-divider bg-form bg-opacity-100 px-4"
+                  indicatorProps={{
+                    className:
+                      "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
+                  }}
                 >
-                  <TabsHeader
-                    className="rounded-none border-b border-divider bg-form bg-opacity-100 px-4"
-                    indicatorProps={{
-                      className:
-                        "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
-                    }}
-                  >
-                    {tabs.map(({ label, value }) => (
-                      <Tab
-                        key={`tab-${value}`}
-                        value={value}
-                        onClick={() => setActiveTab(value)}
-                        className={`${
-                          activeTab === value
-                            ? "text-sky-400"
-                            : "text-slate-100"
-                        } mr-6 w-auto px-0 py-2 text-sm`}
-                      >
-                        {label}
-                      </Tab>
-                    ))}
-                  </TabsHeader>
-                  <TabsBody className="h-full min-h-[336px]">
-                    {tabs.map((tab) => (
-                      <TabPanel
-                        key={tab.value}
-                        value={tab.value}
-                        className="h-full rounded-b-xl"
-                      >
+                  {tabs.map(({ label, value }) => (
+                    <Tab
+                      key={`tab-${value}`}
+                      value={value}
+                      onClick={() => setActiveTab(value)}
+                      className={`${
+                        activeTab === value ? "text-sky-400" : "text-slate-100"
+                      } mr-6 w-auto px-0 py-2 text-sm`}
+                    >
+                      {label}
+                    </Tab>
+                  ))}
+                </TabsHeader>
+                <TabsBody className="h-full min-h-[336px]">
+                  {tabs.map((tab) => (
+                    <TabPanel
+                      key={tab.value}
+                      value={tab.value}
+                      className="h-full rounded-b-xl"
+                    >
+                      {loading ? (
+                        <div className="h-full animate-pulse rounded-xl bg-slate-600"></div>
+                      ) : (
                         <TabContent tab={tab} />
-                      </TabPanel>
-                    ))}
-                  </TabsBody>
-                </Tabs>
-              </div>
-            </>
-          )}
+                      )}
+                    </TabPanel>
+                  ))}
+                </TabsBody>
+              </Tabs>
+            </div>
+          </>
         </div>
 
         {(related.length || relatedLoading) && (
@@ -182,7 +206,7 @@ const MoviePage = () => {
               <Typography className="font-manrope text-3xl font-bold text-slate-200">
                 More like this
               </Typography>
-              <div className="flex items-end gap-4">
+              <div className="hidden md:flex items-end gap-4">
                 <ChevronLeftIcon
                   onClick={handlePrev}
                   className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
@@ -197,7 +221,7 @@ const MoviePage = () => {
           </>
         )}
 
-        <div className="w-full max-w-full overflow-hidden">
+        <div className="w-full max-w-full scroll-smooth overflow-x-auto no-scrollbar md:overflow-hidden">
           <div
             className="mb-10 flex gap-4 transition-transform duration-500 ease-out"
             style={{

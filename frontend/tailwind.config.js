@@ -48,6 +48,7 @@ module.exports = withMT({
         },
         form: "#ffffff0d",
         input: "#ffffff0d",
+        image: "#00000000",
       },
 
       fontFamily: {

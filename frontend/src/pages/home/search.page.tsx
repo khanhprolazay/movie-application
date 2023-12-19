@@ -1,6 +1,6 @@
 import AppContainer from "@/components/AppContainer";
 import { Link, useSearchParams } from "react-router-dom";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useLayoutEffect, useRef } from "react";
 import {
   Card,
   CardBody,
@@ -19,6 +19,7 @@ import SkeletonCard from "@/components/SkeletonCard";
 import Empty from "@/components/Empty";
 import List from "./components/List";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import { useScrollToTop } from "@/hooks/use-scroll-to-top.hook";
 
 const SearchPage: FC = () => {
   const navigate = useNavigate();
@@ -31,7 +32,6 @@ const SearchPage: FC = () => {
   const keyword = searchParams.get("keyword");
   const genre = searchParams.get("genre");
   const page = parseInt(searchParams.get("page") || "");
-  const ref = useRef<HTMLDivElement | null>(null);
 
   const genres: Array<Genre> = [];
   if (genre !== null) {
@@ -47,14 +47,12 @@ const SearchPage: FC = () => {
     if (page === maxPage) return;
     searchParams.set("page", `${page + 1}`);
     setSearchParams(searchParams);
-    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const prev = () => {
     if (page === 1) return;
     searchParams.set("page", `${page - 1}`);
     setSearchParams(searchParams);
-    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   let linkTo = "";
@@ -69,6 +67,8 @@ const SearchPage: FC = () => {
   const prevLink = page === 1 ? `page=${1}` : `page=${page - 1}`;
   const nextLink = page === maxPage ? `page=${maxPage}` : `page=${page + 1}`;
 
+  useScrollToTop([year, keyword, genre, page]);
+
   useEffect(() => {
     if (year) dispatch(moviesActions.getMovieByYear(year, 30 * (page - 1), 30));
     else if (keyword)
@@ -82,7 +82,7 @@ const SearchPage: FC = () => {
       return (
         <List>
           {Array.from({ length: 50 }).map((_, index) => (
-            <SkeletonCard key={index} />
+            <SkeletonCard key={index} bodyClassname="!w-full" />
           ))}
         </List>
       );
@@ -151,7 +151,6 @@ const SearchPage: FC = () => {
       <div className="grid grid-cols-3 ">
         {/* Content  */}
         <div
-          ref={ref}
           className="col-span-full border-r-divider pb-5 lg:col-span-2 lg:border-r lg:pr-4"
         >
           <h1 className="mt-6 flex justify-center font-manrope text-4xl font-semibold leading-9 text-slate-200 ">

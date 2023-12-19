@@ -10,7 +10,7 @@ const AppLayout: FC = () => {
   return (
     <div className="flex w-screen">
       <AppSidebar />
-      <div className="relative max-h-screen w-full overflow-y-scroll bg-contain transition-all ease-in-out">
+      <div id="scroller" className="relative max-h-screen w-full overflow-y-scroll bg-contain transition-all ease-in-out">
         <AppHeader />
         <main className="relative min-h-[calc(100vh-60px)] !w-full">
           <Suspense fallback={<AppFallback />}>

@@ -24,12 +24,12 @@ const WatchPage: FC = () => {
     !loading && (
       <>
         <AppContainer
-          className="z-0 flex h-full items-center"
+          className="z-0 flex h-full pt-14 md:pt-0 md:items-center"
           containerProps={{
             className: "sticky h-[calc(100vh-60px)] right-0 left-0 top-[60px]",
           }}
         >
-          <div className="h-[424px] rounded-lg w-full bg-cblack-600 bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
+          <div className="h-[424px] w-full rounded-lg bg-cblack-600 bg-center bg-no-repeat sm:h-[548px] md:h-[596px] lg:h-[636px]">
             <iframe
               allowFullScreen
               className="z-0 h-full w-full rounded-lg"
@@ -164,6 +164,7 @@ const WatchPage: FC = () => {
                   effect="blur"
                   src={urlUtils.getImageUrl(data, "DESC")}
                   alt="film"
+                  className="rounded-lg"
                   wrapperClassName="h-[612px] w-full md:h-[696px] lg:h-[440px] lg:w-[272px] xl:w-[285px]"
                 />
               </div>
@@ -183,7 +184,7 @@ const WatchPage: FC = () => {
           <section className="relative z-10 w-full bg-[url('@/assets/images/services_bg.jpg')] bg-contain py-[100px] lg:py-[150px] lg:pt-[100px]">
             <AppContainer>
               <div className="grid h-auto grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_275px]">
-                <div className="w-full max-w-full overflow-hidden">
+                <div className="w-full max-w-full scroll-smooth overflow-x-auto no-scrollbar md:overflow-hidden">
                   <div
                     className="flex gap-4 transition-transform duration-500 ease-out"
                     style={{
@@ -208,8 +209,8 @@ const WatchPage: FC = () => {
                           >
                             <CardBody className="w-[165px] p-0">
                               <LazyLoadImage
-                                className="rounded"
-                                wrapperClassName="h-[251px] w-full"
+                                className="!rounded-lg"
+                                wrapperClassName="h-[251px] w-full rounded-lg"
                                 src={urlUtils.getImageUrl(movie)}
                               />
                               <div className="mt-1 line-clamp-1">
@@ -240,7 +241,7 @@ const WatchPage: FC = () => {
                     Also like <br /> this{" "}
                     <span className="text-cred">movie</span>
                   </Typography>
-                  <div className="flex gap-4">
+                  <div className="hidden gap-4 md:flex">
                     <ChevronLeftIcon
                       onClick={handlePrev}
                       className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
