@@ -4,15 +4,16 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ServiceSerializer } from './interceptor';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 dotenv.config({
   path: `config/env/${process.env.NODE_ENV}.env`
 });
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
 
-  app.enableCors({ origin: ['http://localhost:3000', 'https://movie.ledangminh.id.vn'] });
+  app.enableCors({ origin: ['http://localhost:3001', 'https://movie.ledangminh.id.vn'] });
   app.useGlobalInterceptors(new ServiceSerializer());
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,

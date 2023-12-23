@@ -20,7 +20,6 @@ const App: FC = () => {
   const { isLogin } = useAppSelector(state => state.authentication);
 
   useEffect(() => {
-    dispatch(reportActions.getReports());
     dispatch(genreActions.getGenres());
     dispatch(authenticationActions.check());
     dispatch(moviesActions.getMovieByRandom());
@@ -29,6 +28,11 @@ const App: FC = () => {
     dispatch(moviesActions.getMovieByRating(0, 20));
     dispatch(moviesActions.getMovieByRandomBackdrop());
   }, []);
+
+  useEffect(() => {
+    if (isLogin)
+      dispatch(reportActions.getReports());
+  }, [isLogin])
 
   useGoogleOneTapLogin({
     disabled: isLogin,

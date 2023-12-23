@@ -9,6 +9,7 @@ import {
   IdentificationIcon,
   InformationCircleIcon,
   PowerIcon,
+  PresentationChartBarIcon,
   UserCircleIcon,
 } from "@heroicons/react/20/solid";
 import {
@@ -132,13 +133,13 @@ const Sidebar: FC<SidebarProps> = ({ open, currentMenu }) => {
 
             <hr className="mb-2 border-divider" />
 
-            {/* <SidebarItem
+            <SidebarItem
               name="Report"
               open={open}
               to="/reports"
               selected={currentMenu === 2}
               icon={<PresentationChartBarIcon className={icon} />}
-            /> */}
+            />
             
             <SidebarItem
               name="Profile"

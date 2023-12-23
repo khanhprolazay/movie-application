@@ -13,9 +13,11 @@ const ReportDetailPage = () => {
     if (id) dispatch(reportActions.getReport(parseInt(id)));
   }, [id]);
 
+  console.log(current);
+
   return (
     <AppContainer containerProps={{ className: "my-10" }}>
-      {current ? <embed src={current?.embedUrl} className="w-full h-[700px]" /> : <></>};
+      {current?.embedUrl && <embed src={current.embedUrl} className="w-full h-[700px]" />};
     </AppContainer>
   );
 };

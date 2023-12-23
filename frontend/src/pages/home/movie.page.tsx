@@ -26,6 +26,8 @@ const MoviePage = () => {
   const [activeTab, setActiveTab] = useState<TabValues>("video");
   const { current, handlePrev, handleNext } = useSlider(related.length);
 
+  console.log(loading);
+
   const tabs: TabType[] = [
     {
       label: "Videos",
@@ -52,15 +54,15 @@ const MoviePage = () => {
             <Card className="w-auto bg-form">
               <CardHeader
                 floated={false}
-                className="rounded-md md:h-64 lg:h-72 xl:h-96"
+                className="h-[461px] rounded-md sm:h-[758px]  md:h-64 lg:h-72 xl:h-96"
               >
                 {loading ? (
-                  <div className="h-64 w-full animate-pulse bg-slate-600 sm:!h-[28rem] md:h-full xs:h-96"></div>
+                  <div className="h-full w-full animate-pulse bg-slate-600"></div>
                 ) : (
                   <img
                     src={urlUtils.getImageUrl(data)}
                     alt="movie-picture"
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-fill object-center"
                   />
                 )}
               </CardHeader>
@@ -161,7 +163,7 @@ const MoviePage = () => {
                 className="flex h-full flex-col rounded-xl bg-form"
               >
                 <TabsHeader
-                  className="rounded-none border-b border-divider bg-form bg-opacity-100 px-4"
+                  className="min-h-[44.8px] rounded-none border-b border-divider bg-form bg-opacity-100 px-4"
                   indicatorProps={{
                     className:
                       "bg-transparent border-b-2 border-sky-400 shadow-none rounded-none",
@@ -206,7 +208,7 @@ const MoviePage = () => {
               <Typography className="font-manrope text-3xl font-bold text-slate-200">
                 More like this
               </Typography>
-              <div className="hidden md:flex items-end gap-4">
+              <div className="hidden items-end gap-4 md:flex">
                 <ChevronLeftIcon
                   onClick={handlePrev}
                   className="h-10 w-10 cursor-pointer rounded-full border-2 border-slate-600 text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-400"
@@ -221,7 +223,7 @@ const MoviePage = () => {
           </>
         )}
 
-        <div className="w-full max-w-full scroll-smooth overflow-x-auto no-scrollbar md:overflow-hidden">
+        <div className="no-scrollbar w-full max-w-full overflow-x-auto scroll-smooth md:overflow-hidden">
           <div
             className="mb-10 flex gap-4 transition-transform duration-500 ease-out"
             style={{

@@ -1,0 +1,50 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: user-service
+  namespace: '790870150522'
+  selfLink: /apis/run.googleapis.com/v1/namespaces/790870150522/jobs/user-service
+  uid: a96105d2-3399-46d2-bf9d-ec78ed962f35
+  resourceVersion: AAYNJ9QgXq4
+  generation: 1
+  creationTimestamp: '2023-12-23T06:56:12.388026Z'
+  labels:
+    run.googleapis.com/satisfiesPzs: 'true'
+    cloud.googleapis.com/location: asia-east2
+    run.googleapis.com/lastUpdatedTime: '2023-12-23T06:56:12.388026Z'
+  annotations:
+    run.googleapis.com/client-name: cloud-console
+    run.googleapis.com/lastModifier: khanhprolazay@gmail.com
+    client.knative.dev/user-image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/user-service@sha256:28fd8fa8fb906ea16707ed7fac4d01a888e5cbc226a0ce94ff323f166d6f387a
+    run.googleapis.com/creator: khanhprolazay@gmail.com
+    run.googleapis.com/operation-id: 201c9ed8-115a-4f23-afa3-2673e28987af
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/client-name: cloud-console
+        client.knative.dev/user-image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/user-service@sha256:28fd8fa8fb906ea16707ed7fac4d01a888e5cbc226a0ce94ff323f166d6f387a
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      taskCount: 1
+      template:
+        spec:
+          containers:
+          - image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/user-service@sha256:28fd8fa8fb906ea16707ed7fac4d01a888e5cbc226a0ce94ff323f166d6f387a
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 512Mi
+          maxRetries: 3
+          timeoutSeconds: '600'
+          serviceAccountName: 790870150522-compute@developer.gserviceaccount.com
+status:
+  observedGeneration: 1
+  conditions:
+  - type: Ready
+    status: 'True'
+    lastTransitionTime: '2023-12-23T06:56:12.511165Z'
+  executionCount: 1
+  latestCreatedExecution:
+    name: user-service-pdgb9
+    creationTimestamp: '2023-12-23T06:56:13.874826Z'

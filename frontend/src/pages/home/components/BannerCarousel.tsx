@@ -15,11 +15,10 @@ const CarouselItem = (props: {
       style={{ backgroundImage: `url('${props.image}')` }}
       className={`relative h-32 w-1/2 transform rounded-lg bg-black bg-opacity-60 bg-cover  duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none sm:h-40 xl:h-48`}
     >
-      {/* <img src={props.image} alt="image 1" className="h-full w-full rounded" /> */}
-      <div className="absolute bottom-0 h-auto w-full bg-gradient-to-b from-transparent to-black px-2 pt-4 pb-2">
+      <div className="absolute bottom-0 h-auto w-full rounded-lg bg-gradient-to-b from-transparent to-black px-2 pb-2 pt-4">
         <Typography
           variant="h3"
-          className="font-manrope text-xs sm:text-sm font-medium text-white hover:cursor-pointer md:text-base"
+          className="font-manrope text-xs font-medium text-white hover:cursor-pointer sm:text-sm md:text-base"
         >
           {props.title}
         </Typography>
@@ -38,11 +37,12 @@ export function BannerCarousel() {
   const { data, loading } = useAppSelector(
     (state) => state.movie.randomBackdrop,
   );
+
   return (
     <Carousel
-      // loop
-      // autoplay
-      // autoplayDelay={6000}
+      loop
+      autoplay
+      autoplayDelay={6000}
       className="h-36 w-full rounded sm:h-44 xl:h-52"
       navigation={({ setActiveIndex, activeIndex, length }) => (
         <div className="absolute bottom-0 left-2/4 z-50 flex -translate-x-2/4 gap-2">
@@ -107,7 +107,7 @@ export function BannerCarousel() {
       )}
     >
       {loading ? (
-        <div className="mx-auto flex h-full space-x-5">
+        <div className="mx-auto flex h-32 sm:h-40 xl:h-48 space-x-5">
           <div className="h-full w-1/2 animate-pulse rounded bg-gray-300">
             <div className="h-full w-full"></div>
           </div>

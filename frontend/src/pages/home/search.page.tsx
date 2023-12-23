@@ -1,6 +1,6 @@
 import AppContainer from "@/components/AppContainer";
 import { Link, useSearchParams } from "react-router-dom";
-import { FC, useEffect, useLayoutEffect, useRef } from "react";
+import { FC, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -82,7 +82,7 @@ const SearchPage: FC = () => {
       return (
         <List>
           {Array.from({ length: 50 }).map((_, index) => (
-            <SkeletonCard key={index} bodyClassname="!w-full" />
+            <SkeletonCard key={index} bodyClassname="w-full !h-[248px] xs:h-[212px] sm:h-[190px] md:h-[262px] lg:h-[220px] xl:h-[230px]"/>
           ))}
         </List>
       );
@@ -104,11 +104,11 @@ const SearchPage: FC = () => {
               <LazyLoadImage
                 effect="blur"
                 src={urlUtils.getImageUrl(item)}
-                wrapperClassName="h-[170px] w-full md:h-[200px]"
+                wrapperClassName="w-full h-[248px] xs:h-[212px] sm:h-[190px] md:h-[262px] lg:h-[220px] xl:h-[230px]"
                 className="rounded"
               />
               {item.rating !== null && (
-                <div className="absolute right-1 top-1 flex cursor-pointer items-center rounded-lg px-2 py-0.5 text-sm text-white">
+                <div className="absolute right-1 top-1 flex cursor-pointer items-center rounded-lg bg-cblack-100 px-2 py-0.5 text-sm text-white">
                   {stringUtils.formatRating(item.rating)}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -150,9 +150,7 @@ const SearchPage: FC = () => {
 
       <div className="grid grid-cols-3 ">
         {/* Content  */}
-        <div
-          className="col-span-full border-r-divider pb-5 lg:col-span-2 lg:border-r lg:pr-4"
-        >
+        <div className="col-span-full border-r-divider pb-5 lg:col-span-2 lg:border-r lg:pr-4">
           <h1 className="mt-6 flex justify-center font-manrope text-4xl font-semibold leading-9 text-slate-200 ">
             {keyword || year || genre}
           </h1>

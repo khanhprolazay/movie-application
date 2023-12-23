@@ -1,7 +1,7 @@
 import Empty from "@/components/Empty";
 import { Cast, Video } from "@/type";
 import urlUtils from "@/utils/url.util";
-import { Avatar, Carousel, Typography } from "@material-tailwind/react";
+import { Avatar, Carousel, IconButton, Typography } from "@material-tailwind/react";
 import { FC } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 
@@ -72,7 +72,58 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
 
     case "video":
       return (
-        <Carousel navigation={() => <></>} loop>
+        <Carousel
+          loop
+          navigation={() => <></>}
+          prevArrow={({ handlePrev }) => (
+            <IconButton
+              variant="text"
+              color="white"
+              size="md"
+              onClick={handlePrev}
+              className="!absolute left-4 top-2/4 ml-1 -translate-y-2/4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12Typography8"
+                />
+              </svg>
+            </IconButton>
+          )}
+          nextArrow={({ handleNext }) => (
+            <IconButton
+              variant="text"
+              color="white"
+              size="md"
+              onClick={handleNext}
+              className="!absolute !right-4 top-2/4 mr-1 -translate-y-2/4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </IconButton>
+          )}
+        >
           {videos?.length === 0 ? (
             <Empty />
           ) : (
@@ -89,6 +140,7 @@ const TabContent: FC<{ tab: TabType }> = ({ tab }) => {
                 if (!aOfficial && bOfficial) return 1;
                 return 0;
               })
+              .slice(0, 3)
               .map((video) => (
                 <iframe
                   key={video.key}

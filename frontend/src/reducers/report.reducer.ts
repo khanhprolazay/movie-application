@@ -1,11 +1,11 @@
 import { reportConstants } from "@/constants/report.constant";
-import { ReduxAction, Report } from "@/type";
+import { ReduxAction, ReportModel, ReportResponse } from "@/type";
 
 export interface ReportRootState {
-  reports: Report[];
+  reports: ReportModel[];
   loading: boolean;
   error: string | null;
-  current: Report | null;
+  current: ReportModel | null;
 }
 
 const initialState: ReportRootState = {

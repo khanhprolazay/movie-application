@@ -1,8 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import OHBI from 'ohbi';
 import { LoggerService } from '@app/shared';
-import { CClient } from 'ohbi/dist/types/core';
+import OHBI from '@onhand-bi-dev/sdk';
+import { CClient } from '@onhand-bi-dev/sdk/core';
+
 
 @Injectable()
 export class ReportService implements OnModuleInit {
@@ -24,6 +25,8 @@ export class ReportService implements OnModuleInit {
       this.loggerService.error('Failed to initialize OHBI client');
       throw new Error('Failed to initialize OHBI client');
     }
+
+    console.log(await this.cclient.getReports());
   }
 
   getReports() {
@@ -31,6 +34,6 @@ export class ReportService implements OnModuleInit {
   }
 
   getReport(id: number) {
-    return this.cclient.getOne(id);
+    return this.cclient.getReport(id);
   }
 }

@@ -1,0 +1,50 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: movie-service
+  namespace: '790870150522'
+  selfLink: /apis/run.googleapis.com/v1/namespaces/790870150522/jobs/movie-service
+  uid: 866eb0dd-296a-4111-8107-fddcae99d9ae
+  resourceVersion: AAYNJ8M9sO4
+  generation: 1
+  creationTimestamp: '2023-12-23T06:50:27.761915Z'
+  labels:
+    run.googleapis.com/satisfiesPzs: 'true'
+    cloud.googleapis.com/location: asia-east2
+    run.googleapis.com/lastUpdatedTime: '2023-12-23T06:50:27.761915Z'
+  annotations:
+    run.googleapis.com/client-name: cloud-console
+    run.googleapis.com/lastModifier: khanhprolazay@gmail.com
+    client.knative.dev/user-image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/movie-service@sha256:605362a0933fd13adf2b011b8265737b8e7fe1917b3671c0be209f3ffcda8466
+    run.googleapis.com/creator: khanhprolazay@gmail.com
+    run.googleapis.com/operation-id: 7604568c-0ae6-42f8-b1a2-170d39f0306c
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/client-name: cloud-console
+        client.knative.dev/user-image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/movie-service@sha256:605362a0933fd13adf2b011b8265737b8e7fe1917b3671c0be209f3ffcda8466
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      taskCount: 1
+      template:
+        spec:
+          containers:
+          - image: asia-east2-docker.pkg.dev/tmt-movie/tmt-movie-docker-repo/movie-service@sha256:605362a0933fd13adf2b011b8265737b8e7fe1917b3671c0be209f3ffcda8466
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 512Mi
+          maxRetries: 3
+          timeoutSeconds: '600'
+          serviceAccountName: 790870150522-compute@developer.gserviceaccount.com
+status:
+  observedGeneration: 1
+  conditions:
+  - type: Ready
+    status: 'True'
+    lastTransitionTime: '2023-12-23T06:51:28.268358Z'
+  executionCount: 1
+  latestCreatedExecution:
+    name: movie-service-f7dsj
+    creationTimestamp: '2023-12-23T06:51:30.638309Z'
