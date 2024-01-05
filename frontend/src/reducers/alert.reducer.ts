@@ -1,5 +1,5 @@
 import alertConstant from "@/constants/alert.constant";
-import { Alert, ReduxAction } from "@/type";
+import { Alert, ReduxAction } from "@/models";
 
 interface AlertRootState {
   data: Alert[],

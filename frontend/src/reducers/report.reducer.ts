@@ -1,5 +1,5 @@
 import { reportConstants } from "@/constants/report.constant";
-import { ReduxAction, ReportModel, ReportResponse } from "@/type";
+import { ReduxAction, ReportModel } from "@/models";
 
 export interface ReportRootState {
   reports: ReportModel[];

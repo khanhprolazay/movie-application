@@ -6,90 +6,138 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { FC } from "react";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   FormContainer,
   grid,
   inputDisable,
   inputEnable,
-  inputHeader,
+  inputLabel,
   span,
 } from "./base";
 import AppContainer from "@/components/AppContainer";
+import { useForm } from "react-hook-form";
+import { User } from "@/type";
+import userActions from "@/actions/user.action";
+import alertActions from "@/actions/alert.action";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const ProfileForm: FC = () => {
-  const user = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
+  const { data, loading } = useAppSelector((state) => state.user);
+
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    phone: Yup.string().required("Phone is required"),
+    email: Yup.string().required("Email is required"),
+    sex: Yup.string().oneOf(["MALE", "FEMALE"])
+  });
+
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onError = (errors: any) => {
+    const firstErrorKey = Object.keys(errors)[0];
+    const firstErrorMessage = errors[firstErrorKey]?.message;
+    dispatch(alertActions.add("error", firstErrorMessage));
+  };
+  const onSubmit = (data: Partial<User>) =>
+    dispatch(userActions.updateUser(data));
 
   return (
     <AppContainer className="pt-8">
       <FormContainer header="My Profile" content="Manage your information">
         <div className="flex flex-col-reverse items-center justify-around md:flex-row md:items-stretch md:justify-between">
-          <form className="w-full md:w-2/3">
+          <form
+            className="w-full md:w-2/3"
+            onSubmit={handleSubmit(onSubmit as any, onError)}
+          >
             <div className={`${grid} items-baseline  gap-y-4`}>
-              <Typography variant="h6" className={`${span} ${inputHeader}`}>
+              <label
+                htmlFor="firstName"
+                className={`${span.label} ${inputLabel}`}
+              >
                 First name
-              </Typography>
+              </label>
               <Input
+                id="firstName"
                 className={inputEnable}
                 placeholder="Ex: Le Dang"
-                variant="standard"
                 color="white"
-                value={user ? user.firstName : ""}
-                containerProps={{ className: span }}
+                variant="standard"
+                {...register("firstName")}
+                containerProps={{ className: span.input }}
                 labelProps={{ className: "hidden" }}
+                defaultValue={data?.firstName}
               />
 
-              <Typography variant="h6" className={`${span} ${inputHeader}`}>
+              <label
+                htmlFor="lastName"
+                className={`${span.label} ${inputLabel}`}
+              >
                 Last name
-              </Typography>
+              </label>
               <Input
+                id="lastName"
                 className={inputEnable}
                 placeholder="Ex: Minh"
                 variant="standard"
                 color="white"
-                value={user ? user.lastName : ""}
-                containerProps={{ className: span }}
+                defaultValue={data?.lastName}
+                {...register("lastName")}
+                containerProps={{ className: span.input }}
                 labelProps={{ className: "hidden" }}
               />
 
-              <Typography variant="h6" className={`${span} ${inputHeader}`}>
+              <label htmlFor="phone" className={`${span.label} ${inputLabel}`}>
                 Phone
-              </Typography>
+              </label>
               <Input
+                id="phone"
                 className={inputDisable}
                 variant="standard"
                 placeholder="Mobile Number"
-                value={user ? user?.phone : ""}
+                defaultValue={data?.phone}
+                {...register("phone")}
                 style={{ fontStyle: "300" }}
                 color="white"
-                containerProps={{ className: span }}
+                containerProps={{ className: span.input }}
                 labelProps={{ className: "!text-slate-300" }}
               />
 
-              <Typography variant="h6" className={`${span} ${inputHeader}`}>
+              <label htmlFor="email" className={`${span.label} ${inputLabel}`}>
                 Email
-              </Typography>
+              </label>
               <Input
+                readOnly
+                id="email"
+                color="white"
+                variant="standard"
+                {...register("email")}
                 className={inputDisable}
                 placeholder="Email Address"
-                variant="standard"
-                disabled
-                color="white"
-                value={user ? user?.email : ""}
-                containerProps={{ className: span }}
+                defaultValue={data?.email}
                 style={{ fontStyle: "300" }}
+                containerProps={{ className: span.input }}
               />
 
               <div className={`${grid} col-span-full items-center`}>
-                <Typography variant="h6" className={`${span} ${inputHeader}`}>
+                <Typography
+                  variant="h6"
+                  className={`${span.label} ${inputLabel}`}
+                >
                   Sex
                 </Typography>
                 <div className={`-ml-3 flex w-full gap-x-4`}>
                   <Radio
-                    name="sex"
                     color="red"
+                    value="MALE"
+                    {...register("sex")}
                     className="active:!bg-red h-4 w-4"
-                    defaultChecked={user?.sex === "MALE"}
+                    defaultChecked={data?.sex === "MALE"}
                     label={
                       <Typography className="font-manrope text-sm font-normal text-slate-200">
                         Male
@@ -97,10 +145,11 @@ const ProfileForm: FC = () => {
                     }
                   />
                   <Radio
-                    name="sex"
                     color="red"
+                    value="FEMALE"
+                    {...register("sex")}
                     className="h-4 w-4"
-                    defaultChecked={user?.sex === "FEMALE"}
+                    defaultChecked={data?.sex === "FEMALE"}
                     label={
                       <Typography className="font-manrope text-sm font-normal text-slate-200">
                         Female
@@ -112,9 +161,11 @@ const ProfileForm: FC = () => {
 
               <div className="col-span-full mt-6 xs:col-span-9 xs:col-start-4 xs:mt-0">
                 <Button
+                  loading={loading}
                   color="red"
                   size="sm"
-                  className="rounded-sm font-manrope text-sm font-medium normal-case"
+                  type="submit"
+                  className="flex gap-2 rounded-sm font-manrope text-sm font-medium normal-case"
                 >
                   Save
                 </Button>
@@ -125,7 +176,7 @@ const ProfileForm: FC = () => {
           <div className="my-3 ml-8 border-r border-divider md:my-0 md:block" />
 
           <div className="flex w-full flex-col items-center gap-y-4 md:w-1/3">
-            <Avatar src={user?.avatar} className="h-24 w-24" alt="avatar" />
+            <Avatar src={data?.avatar} className="h-24 w-24" alt="avatar" />
             <Button
               color="red"
               variant="outlined"

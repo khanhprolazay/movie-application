@@ -65,9 +65,9 @@ export class UserService extends BaseService<User, UserRepository> {
 
   async updatePassword(dto: { id: number, data: UpdatePasswordDTO }) {
     const { id, data } = dto;
-    const { oldPassword, newPassword, reNewPassword } = data;
+    const { oldPassword, newPassword, confirmPassword } = data;
 
-    if (newPassword !== reNewPassword)
+    if (newPassword !== confirmPassword)
       throw new NotAcceptableException("Two new provided password must be the same !!!");
 
     const user = await this.repository.findOneBy({ id });

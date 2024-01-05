@@ -28,7 +28,7 @@ import { LoggerModule, Actor, Genre, Movie, Video, Service, CastToMovie, Directo
           database: configService.get('MOVIE_DATABASE_NAME'),
           username: configService.get('MOVIE_DATABASE_USER_USERNAME'),
           password: configService.get('MOVIE_DATABASE_USER_PASSWORD'),
-          synchronize: true,
+          // synchronize: true,
           dropSchema: false,
           ssl: configService.get('NODE_ENV') === 'production' && {
             rejectUnauthorized: true,

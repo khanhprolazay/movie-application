@@ -14,7 +14,7 @@ export class UpdatePasswordDTO  {
 
   @IsStrongPassword()
   @ApiProperty()
-  readonly reNewPassword: string
+  readonly confirmPassword: string
 }
 
 export class UpdateUserDTO {

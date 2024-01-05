@@ -129,7 +129,7 @@ const AboutUsPage: FC = () => {
               <span className="text-cred">TMT </span>Movies
             </Typography>
             <Typography className="mb-7 text-4xl font-extrabold sm:text-5xl  xl:text-6xl">
-              Unlimited <strong className="!text-cred">Movie</strong>, TV Shows,
+              Unlimited <strong className="!text-cred">Movie</strong>, TV Shows
               & More
             </Typography>
             <div className="mb-9 flex flex-wrap items-center gap-4 font-manrope">

@@ -1,14 +1,14 @@
 import authenticationConstants from "@/constants/authentication.constant";
-import { ReduxAction } from "@/type"
+import { ReduxAction } from "@/models"
 
 type AuthenticationRootState = {
-  isLogin: boolean,
+  authenticated: boolean,
   error: string,
   loading: boolean,
 }
 
 const initialState: AuthenticationRootState = {
-  isLogin: false,
+  authenticated: false,
   loading: false,
   error: "",
 }
@@ -25,14 +25,14 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state, 
         loading: false, 
-        isLogin: true
+        authenticated: true
       }
       
     case authenticationConstants.AUTH_CHECK_ERROR:
       return {
         ...state, 
         loading: false,
-        isLogin: false,
+        authenticated: false,
         error: action.payload?.error,
       }
 
@@ -46,7 +46,7 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state, 
         loading: false,
-        isLogin: true,
+        authenticated: true,
       }
     }
 
@@ -54,7 +54,7 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state,
         loading: false,
-        isLogin: false,
+        authenticated: false,
         error: action.payload?.error,
       }
     }
@@ -70,7 +70,7 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state,
         loading: false,
-        isLogin: false,
+        authenticated: false,
       }
     }
 
@@ -78,7 +78,7 @@ export function authentication(state: AuthenticationRootState = initialState, ac
       return {
         ...state,
         loading: false,
-        isLogin: false,
+        authenticated: false,
       }
     }
 

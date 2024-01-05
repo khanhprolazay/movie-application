@@ -81,13 +81,6 @@ const routes: RouteType[] = [
     accessible: ["ALL"]
   },
   {
-    path: "/user/subcription",
-    name: "Subcription",
-    element: ProfileForm,
-    login: true,
-    accessible: ["ALL"]
-  },
-  {
     path: "/user/favorite",
     name: "Favorite",
     element: ProfileForm,

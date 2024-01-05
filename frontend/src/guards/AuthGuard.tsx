@@ -10,10 +10,9 @@ type AuthGuardProps = {
 };
 
 const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
-  const isLogin = useAppSelector((state) => state.authentication.isLogin);
-  console.log(isLogin);
+  const {authenticated} = useAppSelector((state) => state.authentication);
 
-  return isLogin ? (
+  return authenticated ? (
     children
   ) : (
     <AppContainer className="flex w-full items-center justify-evenly">

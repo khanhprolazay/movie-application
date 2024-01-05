@@ -226,8 +226,8 @@ export class MovieService extends BaseService<Movie, MovieRepository> {
   async getByRandomBackdrop() {
     const ids = await this.repository
       .createQueryBuilder()
-      .select('movie.id')
-      .where('movie.backdropPath IS NOT NULL')
+      .select('id')
+      .where('backdropPath IS NOT NULL')
       .orderBy('RAND()')
       .take(10)
       .getRawMany()
@@ -258,7 +258,7 @@ export class MovieService extends BaseService<Movie, MovieRepository> {
   async getByRandom() {
     const ids = await this.repository
       .createQueryBuilder()
-      .select('movie.id')
+      .select('id')
       .orderBy('RAND()')
       .take(10)
       .getRawMany()

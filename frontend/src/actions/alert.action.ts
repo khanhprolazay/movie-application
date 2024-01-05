@@ -1,6 +1,6 @@
 import alertConstant from "@/constants/alert.constant";
 import { TypedDispatch } from "@/redux/store";
-import { Alert, AlertType } from "@/type";
+import { Alert, AlertType } from "@/models";
 import { v4 } from "uuid";
 
 function add(type: AlertType, message: string) {

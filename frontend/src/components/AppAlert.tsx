@@ -1,6 +1,6 @@
 import alertActions from "@/actions/alert.action";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Alert, AlertType } from "@/type";
+import { Alert, AlertType } from "@/models";
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,

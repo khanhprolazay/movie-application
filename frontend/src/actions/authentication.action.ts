@@ -1,5 +1,5 @@
 import authenticationConstants from "@/constants/authentication.constant";
-import { LoginDTO, ReduxAction, RegisterDTO } from "@/type";
+import { LoginDTO, ReduxAction, RegisterDTO } from "@/models";
 import tokenUtils from "@/utils/token.util";
 import userActions from "./user.action";
 import { TypedDispatch } from "@/redux/store";
@@ -126,7 +126,7 @@ function register(values: RegisterDTO, navigate: NavigateFunction) {
       })
       .catch((err) => {
         dispatch(error(err));
-        dispatch(alertActions.add("error", err));
+        dispatch(alertActions.add("error", err[0]));
       });
 
     function request(): ReduxAction {

@@ -17,7 +17,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ServiceSerializer());
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    forbidNonWhitelisted: true,
   }));
 
   const config = new DocumentBuilder()

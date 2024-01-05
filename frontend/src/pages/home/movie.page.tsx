@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import urlUtils from "@/utils/url.util";
 import PosterFilmResult from "./components/PosterFilmResult";
 import { useMovie } from "@/hooks/use-movie.hook";
-import TabContent, { TabType, TabValues } from "./components/Tab";
+import TabContent, { TabType, TabValues } from "./components/TabContent";
 import SkeletonCard from "@/components/SkeletonCard";
 import { useSlider } from "@/hooks/use-slider.hook";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";

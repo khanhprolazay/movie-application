@@ -1,7 +1,7 @@
 import movieService from "@/services/movie.service";
 import genreConstants from "@/constants/genre.constant";
 import { TypedDispatch } from "@/redux/store";
-import { Genre, ReduxAction } from "@/type";
+import { Genre, ReduxAction } from "@/models";
 
 function getGenres() {
   return (dispatch: TypedDispatch) => {

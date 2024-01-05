@@ -1,5 +1,5 @@
 import genreConstants from "@/constants/genre.constant";
-import { ReduxAction, Genre } from "@/type";
+import { ReduxAction, Genre } from "@/models";
 
 export interface GenreRootState {
   loading: boolean,

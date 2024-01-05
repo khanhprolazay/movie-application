@@ -1,4 +1,4 @@
-import { LoginDTO, LoginResponseDto, RegisterDTO } from "@/type";
+import { LoginDTO, LoginResponseDto, RegisterDTO } from "@/models";
 import { axiosClient } from "./axios-client";
 import axios from "axios";
 

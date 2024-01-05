@@ -71,7 +71,7 @@ const MovieAside = () => {
       </ul>
 
       <Link
-        to="/detail/7255"
+        to="/movie/7255"
         className="relative h-auto w-auto transform object-cover duration-300 ease-in-out hover:cursor-pointer hover:opacity-50 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       >
         <LazyLoadImage

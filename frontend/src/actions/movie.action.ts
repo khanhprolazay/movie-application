@@ -1,7 +1,7 @@
 import movieService from "@/services/movie.service";
 import moviesConstants from "@/constants/movie.constants";
 import { TypedDispatch } from "@/redux/store";
-import { DetailMovie, Genre, Movie, ReduxAction } from "@/type";
+import { DetailMovie, Genre, Movie, ReduxAction } from "@/models";
 
 const moviesActions = {
   getMovieByRating,
@@ -14,6 +14,9 @@ const moviesActions = {
   getMovieByKeyword,
   getMovieDetail,
   getRelatedMovie,
+  setKeyword,
+  setYear,
+  setGenres
 };
 export default moviesActions;
 
@@ -316,6 +319,45 @@ function getRelatedMovie(imdbId: string) {
     return {
       type: moviesConstants.GET_RELATED_MOVIE_ERROR,
       payload: { error },
+    };
+  }
+}
+
+function setKeyword(keyword: string) {
+  return (dispatch: TypedDispatch) => {
+    dispatch(success(keyword));
+  };
+
+  function success(keyword: string): ReduxAction {
+    return {
+      type: moviesConstants.SET_KEYWORD_MOVIE,
+      payload: { keyword },
+    };
+  }
+}
+
+function setYear(year: number) {
+  return (dispatch: TypedDispatch) => {
+    dispatch(success(year));
+  };
+
+  function success(year: number): ReduxAction {
+    return {
+      type: moviesConstants.SET_YEAR_MOVIE,
+      payload: { year },
+    };
+  }
+}
+
+function setGenres(genres: string[]) {
+  return (dispatch: TypedDispatch) => {
+    dispatch(success(genres));
+  };
+
+  function success(genres: string[]): ReduxAction {
+    return {
+      type: moviesConstants.SET_GENRES_MOVIE,
+      payload: { genres },
     };
   }
 }

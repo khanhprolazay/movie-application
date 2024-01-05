@@ -1,9 +1,9 @@
 import "./App.css";
 import { getRoutersWithRole } from "./routes";
-import { FC,  useEffect } from "react";
+import { FC,  useEffect, useLayoutEffect } from "react";
 import AppLayout from "./components/AppLayout";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import authenticationActions from "./actions/authentication.action";
 import AuthLayout from "./pages/auth/AuthLayout";
 import AppAlert from "./components/AppAlert";
@@ -13,11 +13,11 @@ import moviesActions from "./actions/movie.action";
 import SingleLoginForm from "./pages/auth/components/SingleLoginForm";
 import SingleRegisterForm from "./pages/auth/components/SingleRegisterForm";
 import genreActions from "./actions/genre.action";
-import reportActions from "./actions/report.action";
 
 const App: FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isLogin } = useAppSelector(state => state.authentication);
+  const { authenticated } = useAppSelector(state => state.authentication);
 
   useEffect(() => {
     dispatch(genreActions.getGenres());
@@ -29,13 +29,8 @@ const App: FC = () => {
     dispatch(moviesActions.getMovieByRandomBackdrop());
   }, []);
 
-  useEffect(() => {
-    if (isLogin)
-      dispatch(reportActions.getReports());
-  }, [isLogin])
-
   useGoogleOneTapLogin({
-    disabled: isLogin,
+    disabled: authenticated,
     onSuccess: (credentialResponse) =>
       dispatch(
         authenticationActions.googleLogin({
@@ -45,12 +40,26 @@ const App: FC = () => {
     onError: () => console.log("Error"),
   });
 
+  useLayoutEffect(() => {
+    const hash = window.location.hash;
+    const redirect = localStorage.getItem("redirect");
+
+    if (!authenticated && hash && hash !== "#/home") 
+      localStorage.setItem("redirect", hash);
+
+    if (authenticated && redirect) {
+      navigate(redirect);
+      localStorage.removeItem("redirect"); 
+    }
+
+  }, [authenticated])
+
   return (
     <>
       <AppAlert />
       <Routes>
         <Route element={<AppLayout />}>
-          {getRoutersWithRole(isLogin, "USER").map((route) => (
+          {getRoutersWithRole(authenticated, "USER").map((route) => (
             <Route
               path={route.path}
               key={route.name}
@@ -58,7 +67,7 @@ const App: FC = () => {
             />
           ))}
         </Route>
-        { !isLogin && (
+        { !authenticated && (
           <Route path="/auth" element={<AuthLayout />}>
             <Route path="login" element={<SingleLoginForm />} />
             <Route path="register" element={<SingleRegisterForm />} />

@@ -1,4 +1,4 @@
-import { Genre, Movie, DetailMovie } from "@/type";
+import { Genre, Movie, DetailMovie } from "@/models";
 import { axiosClient } from "./axios-client";
 
 class MovieService {

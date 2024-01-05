@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { LoggerService } from '@app/shared';
-import OHBI from '@onhand-bi-dev/sdk';
+import OHBI from '@onhand-bi-dev/sdk/index.node';
 import { CClient } from '@onhand-bi-dev/sdk/core';
 
 

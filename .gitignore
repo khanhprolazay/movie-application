@@ -2,6 +2,7 @@
 */image
 */dist
 */config/env/production.env
+*/config/ca
 
 data/*/*.csv
 data/*/*.json

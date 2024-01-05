@@ -1,5 +1,5 @@
 import sidebarConstants from "@/constants/sidebar.constant"
-import { ReduxAction } from "@/type"
+import { ReduxAction } from "@/models"
 
 type SidebarRootState = {
   open: boolean,

@@ -1,5 +1,5 @@
 import userConstants from "@/constants/user.constant";
-import { ReduxAction, User } from "@/type";
+import { ReduxAction, User } from "@/models";
 
 export interface UserRootState {
   loading: boolean,
@@ -29,6 +29,43 @@ export function user(state: UserRootState = initialState, action: ReduxAction): 
       }
 
     case userConstants.GET_USER_ERROR:
+      return {
+        ...state,
+        loading: false,
+      }
+
+    case userConstants.UPDATE_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case userConstants.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        data: action.payload?.user,
+        loading: false,
+      }
+
+    case userConstants.UPDATE_USER_ERROR: 
+      return {
+        ...state,
+        loading: false,
+      }
+
+    case userConstants.UPDATE_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case userConstants.UPDATE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      }
+
+    case userConstants.UPDATE_PASSWORD_ERROR:
       return {
         ...state,
         loading: false,

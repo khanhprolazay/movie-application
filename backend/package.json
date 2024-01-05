@@ -74,7 +74,7 @@
     "@nestjs/platform-fastify": "^10.3.0",
     "@nestjs/swagger": "^7.1.14",
     "@nestjs/typeorm": "^10.0.0",
-    "@onhand-bi-dev/sdk": "^0.1.9",
+    "@onhand-bi-dev/sdk": "^0.1.10",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
     "argon2": "^0.31.1",
