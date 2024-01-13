@@ -106,11 +106,6 @@ Sau khi liệt kê và giải quyết các vấn đề ở trên, hệ thống c
 <h4 align="center">Trang xem phim</h4>
 
 <p align="center" style="margin-top:5rem;">
-  <img src="./images/trang-xem-phim.png" />
-</p>
-<h4 align="center">Trang about us</h4>
-
-<p align="center" style="margin-top:5rem;">
   <img src="./images/trang-dang-nhap.png" />
 </p>
 <h4 align="center">Trang đăng nhập</h4>
