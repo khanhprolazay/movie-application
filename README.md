@@ -4,6 +4,12 @@
 
 Project này hướng đến việc xây dựng một website xem phim tập trung vào phần giao diện người dùng và thiết kế hệ thống đáp ứng được khả năng về hiệu suất và khả năng mở rộng.
 
+## Công nghệ sử dụng
+- Front-end: Reactjs, Redux thunk
+- Back-end: Nestjs, Docker
+- Database: Mysql
+- Message broker: RabbitMQ
+
 ## Phân tích hệ thống
 
 ### Vấn đề trải nghiệm người dùng
