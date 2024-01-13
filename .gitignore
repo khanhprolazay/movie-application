@@ -19,8 +19,6 @@ frontend/*.zip
 
 */volumes
 
-images
-
 spark/.ipynb_checkpoints
 spark/checkpoint_dir
 
