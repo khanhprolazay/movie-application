@@ -78,7 +78,6 @@ Sau khi liệt kê và giải quyết các vấn đề ở trên, hệ thống c
   - User service: Chịu trách nhiệm xử lý các tác vụ liên quan đến thông tin user.
   - Movie service: Chịu trách nhiệm xử lý các tác vụ liên quan đến thông tin các bộ phim.
   - Recommendation service: Chịu trách nhiệm gợi ý phim.
-  - Recommendation service: Chịu trách nhiệm gợi ý phim.
 <p align="center">
   <img src="./images/architecture.png" />
 </p>
